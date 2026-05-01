@@ -1,0 +1,35 @@
+title: My GitBook Blog
+description: Notes, essays, and technical writing.
+author: Your Name
+
+remote_theme: sighingnow/jekyll-gitbook
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-feed
+  - jekyll-seo-tag
+
+url: ""
+baseurl: ""
+
+markdown: kramdown
+syntax_highlighter_style: colorful
+
+toc:
+  enabled: true
+  h_min: 1
+  h_max: 3
+
+collections:
+  pages:
+    output: true
+    permalink: /:collection/:name/
+
+ordered_collections:
+  - posts
+  - pages
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
