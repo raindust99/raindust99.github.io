@@ -1,0 +1,6 @@
+.book-header .btn[aria-label="Facebook"],
+.book-header .btn[aria-label="Twitter"],
+.book-header .btn[aria-label="Share"],
+.book-header .font-settings {
+    display: none !important;
+}

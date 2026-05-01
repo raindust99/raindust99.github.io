@@ -21,6 +21,8 @@
         if (link.querySelector('.exc-trigger')) return;
 
         var sectionUrl = link.getAttribute('href');
+        chapter.classList.add('has-custom-children');
+
         var trigger = document.createElement('i');
         trigger.className = 'exc-trigger fa';
         trigger.addEventListener('click', function(event) {
@@ -94,12 +96,21 @@
         scheduleRender();
     }
 
-    if (window.require) {
-        window.require(['gitbook'], function(gitbook) {
+    function bindGitbookEvents(gitbook) {
+        if (!gitbook || !gitbook.events) return;
+
+        if (typeof gitbook.events.bind === 'function') {
             gitbook.events.bind('page.change', scheduleRender);
-            scheduleRender();
-        });
-    } else if (window.gitbook && window.gitbook.events) {
-        window.gitbook.events.bind('page.change', scheduleRender);
+        } else if (typeof gitbook.events.on === 'function') {
+            gitbook.events.on('page.change', scheduleRender);
+        }
+
+        scheduleRender();
+    }
+
+    if (typeof require === 'function') {
+        require(['gitbook'], bindGitbookEvents);
+    } else if (window.gitbook) {
+        bindGitbookEvents(window.gitbook);
     }
 })();
