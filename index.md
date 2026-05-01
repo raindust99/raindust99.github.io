@@ -4,8 +4,14 @@ title: Home
 permalink: /
 ---
 
-# My GitBook Blog
+Security study notes.
 
-Welcome. This site is built with Jekyll and the GitBook-style theme.
+보안을 공부하며 정리하는 공간입니다.
 
-Start writing posts in the `_posts` folder.
+## Sections
+
+- [네트워크](/network/)
+
+- [실습](/lab/)
+
+- [Project](/project/)

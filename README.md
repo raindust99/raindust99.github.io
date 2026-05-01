@@ -1,31 +1,10 @@
-# Jekyll GitBook Blog
+# Security Study Notes
 
-This is a GitHub Pages blog using the `sighingnow/jekyll-gitbook` remote theme.
+보안을 공부하며 정리하는 개인 블로그입니다.
 
-## Local Preview
+## Sections
 
-```bash
-bundle install
-bundle exec jekyll serve
-```
-
-Then open:
-
-```text
-http://localhost:4000
-```
-
-## GitHub Pages
-
-1. Create a repository named `USERNAME.github.io` for a personal site, or any repository name for a project site.
-2. Push these files to GitHub.
-3. In the repository settings, enable GitHub Pages.
-4. If this is a project site, set `baseurl` in `_config.yml` to `"/REPOSITORY_NAME"`.
-
-## Writing Posts
-
-Add posts to `_posts` with this filename format:
-
-```text
-YYYY-MM-DD-title.md
-```
+- 네트워크
+- 실습
+- Project
+- About

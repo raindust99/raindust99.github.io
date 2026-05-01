@@ -1,5 +1,5 @@
-title: My GitBook Blog
-description: Notes, essays, and technical writing.
+title: Home
+description: Security study notes.
 author: Your Name
 
 remote_theme: sighingnow/jekyll-gitbook
@@ -20,13 +20,17 @@ toc:
   h_min: 1
   h_max: 3
 
+sharing:
+  facebook: false
+  twitter: false
+  all: []
+
 collections:
   pages:
     output: true
     permalink: /:collection/:name/
 
 ordered_collections:
-  - posts
   - pages
 
 exclude:
