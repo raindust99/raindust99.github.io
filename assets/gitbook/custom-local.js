@@ -1,12 +1,11 @@
 (function() {
     var sections = {
         '/network/': [
-            { title: 'OSI 7\uacc4\uce35', url: '/network/osi-7-layer/' },
-            { title: '\uc11c\ube0c\ub137 \ub9c8\uc2a4\ud06c', url: '/network/subnet-mask/' }
+            { title: 'OSI 7\uacc4\uce35', url: '/network/osi-7-layer/' }
         ],
         '/lab/': [
-            { title: 'VM\uc5d0 Rocky 9.7 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/rocky-9-7-vm/' },
-            { title: 'Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/windows-10-11/' }
+            { title: 'VMWare\uc5d0 Rocky 9.7 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/rocky-9-7-vm/' },
+            { title: 'VMWare\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/windows-10-11/' }
         ],
         '/project/': [
             { title: '\ubaa8\uc758\ud574\ud0b9', url: '/project/pentest/' }
@@ -82,12 +81,71 @@
                 chapter.classList.remove('has-active-child');
             }
         });
+
+        var aboutLink = document.querySelector('.book-summary a[href="/about/"]');
+        var aboutChapter = aboutLink && aboutLink.closest('li.chapter');
+        var previous = aboutChapter && aboutChapter.previousElementSibling;
+        if (aboutChapter && (!previous || !previous.classList.contains('divider'))) {
+            var divider = document.createElement('li');
+            divider.className = 'divider custom-about-divider';
+            aboutChapter.parentNode.insertBefore(divider, aboutChapter);
+        }
     }
 
     function scheduleRender() {
         renderSectionLinks();
+        formatSearchResults();
         window.setTimeout(renderSectionLinks, 0);
+        window.setTimeout(formatSearchResults, 0);
         window.setTimeout(renderSectionLinks, 100);
+        window.setTimeout(formatSearchResults, 100);
+    }
+
+    function formatSearchResults() {
+        var labels = [
+            'VMWare\uc5d0 Rocky 9.7 \uc124\uce58 \ubc0f \uc124\uc815',
+            'VMWare\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815',
+            'OSI 7\uacc4\uce35',
+            '\ubaa8\uc758\ud574\ud0b9'
+        ];
+        var queryElement = document.querySelector('.search-query');
+        var query = queryElement ? queryElement.textContent : '';
+
+        function escapeHtml(value) {
+            return value
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#39;');
+        }
+
+        function escapeRegExp(value) {
+            return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function highlight(value) {
+            var escaped = escapeHtml(value);
+            if (!query) return escaped;
+
+            return escaped.replace(
+                new RegExp('(' + escapeRegExp(escapeHtml(query)) + ')', 'gi'),
+                '<span class="search-highlight-keyword">$1</span>'
+            );
+        }
+
+        document.querySelectorAll('.search-results-list .search-results-item p').forEach(function(result) {
+            var text = result.textContent;
+            var matchedLabels = labels.filter(function(label) {
+                return text.indexOf(label) !== -1;
+            });
+
+            if (matchedLabels.length < 2) return;
+
+            result.innerHTML = matchedLabels.map(function(label) {
+                return '<span class="search-result-line">' + highlight(label) + '</span>';
+            }).join('');
+        });
     }
 
     if (document.readyState === 'loading') {
@@ -95,6 +153,12 @@
     } else {
         scheduleRender();
     }
+
+    document.addEventListener('keyup', function(event) {
+        if (event.target && event.target.matches('#book-search-input input, #book-search-input-inside input')) {
+            window.setTimeout(formatSearchResults, 150);
+        }
+    });
 
     function bindGitbookEvents(gitbook) {
         if (!gitbook || !gitbook.events) return;

@@ -4,3 +4,7 @@
 .book-header .font-settings {
     display: none !important;
 }
+
+.search-results-item .search-result-line {
+    display: block;
+}
