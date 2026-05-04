@@ -8,3 +8,59 @@
 .search-results-item .search-result-line {
     display: block;
 }
+
+.navigation.navigation-prev,
+.navigation.navigation-next {
+    display: none !important;
+}
+
+.page-toc {
+    position: fixed;
+    top: 170px;
+    right: 34px;
+    width: 220px;
+    max-height: calc(100vh - 220px);
+    overflow: auto;
+    padding-left: 16px;
+    border-left: 2px solid #e6e6e6;
+    color: #555;
+    z-index: 10;
+}
+
+.page-toc-title {
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+}
+
+.page-toc ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.page-toc li {
+    margin: 0 0 8px;
+    line-height: 1.35;
+}
+
+.page-toc a {
+    color: #555;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.page-toc a:hover {
+    color: #008cff;
+}
+
+.page-toc-h3 {
+    padding-left: 12px;
+}
+
+@media (max-width: 1400px) {
+    .page-toc {
+        display: none;
+    }
+}

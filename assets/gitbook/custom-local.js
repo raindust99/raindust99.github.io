@@ -4,8 +4,9 @@
             { title: 'OSI 7\uacc4\uce35', url: '/network/osi-7-layer/' }
         ],
         '/lab/': [
-            { title: 'VMWare\uc5d0 Rocky 9.7 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/rocky-9-7-vm/' },
-            { title: 'VMWare\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/windows-10-11/' }
+            { title: 'VMWare NAT \uc124\uc815', url: '/lab/vmware-nat/' },
+            { title: 'VMWare\uc5d0 Rocky 9.7 \uc124\uce58', url: '/lab/rocky-9-7-vm/' },
+            { title: 'VMWare\uc5d0 Windows 10, 11 \uc124\uce58', url: '/lab/windows-10-11/' }
         ],
         '/project/': [
             { title: '\ubaa8\uc758\ud574\ud0b9', url: '/project/pentest/' }
@@ -95,16 +96,73 @@
     function scheduleRender() {
         renderSectionLinks();
         formatSearchResults();
+        renderPageToc();
         window.setTimeout(renderSectionLinks, 0);
         window.setTimeout(formatSearchResults, 0);
+        window.setTimeout(renderPageToc, 0);
         window.setTimeout(renderSectionLinks, 100);
         window.setTimeout(formatSearchResults, 100);
+        window.setTimeout(renderPageToc, 100);
+    }
+
+    function slugify(value) {
+        return value
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^\w\-가-힣]/g, '');
+    }
+
+    function renderPageToc() {
+        var oldToc = document.querySelector('.page-toc');
+        if (oldToc) oldToc.remove();
+
+        var content = document.querySelector('.markdown-section');
+        if (!content) return;
+
+        var headings = Array.from(content.querySelectorAll('h2, h3'));
+        if (headings.length === 0) return;
+
+        var toc = document.createElement('nav');
+        toc.className = 'page-toc';
+
+        var title = document.createElement('div');
+        title.className = 'page-toc-title';
+        title.textContent = '목차';
+        toc.appendChild(title);
+
+        var list = document.createElement('ul');
+
+        headings.forEach(function(heading, index) {
+            if (!heading.id) {
+                heading.id = slugify(heading.textContent) || 'section-' + index;
+            }
+
+            var item = document.createElement('li');
+            item.className = 'page-toc-' + heading.tagName.toLowerCase();
+
+            var link = document.createElement('a');
+            link.href = '#' + heading.id;
+            link.textContent = heading.textContent;
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                history.replaceState(null, '', '#' + heading.id);
+            });
+
+            item.appendChild(link);
+            list.appendChild(item);
+        });
+
+        toc.appendChild(list);
+        document.body.appendChild(toc);
     }
 
     function formatSearchResults() {
         var labels = [
-            'VMWare\uc5d0 Rocky 9.7 \uc124\uce58 \ubc0f \uc124\uc815',
-            'VMWare\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815',
+            'VMWare NAT \uc124\uc815',
+            'VMWare\uc5d0 Rocky 9.7 \uc124\uce58',
+            'VMWare\uc5d0 Windows 10, 11 \uc124\uce58',
             'OSI 7\uacc4\uce35',
             '\ubaa8\uc758\ud574\ud0b9'
         ];
