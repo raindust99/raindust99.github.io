@@ -22,6 +22,21 @@
     background: transparent;
 }
 
+.markdown-section pre {
+    background: #eeeeee;
+}
+
+.markdown-section pre,
+.markdown-section pre code,
+.markdown-section pre code span {
+    color: #111111 !important;
+}
+
+.markdown-section :not(pre) > code {
+    color: #111111;
+    background: #eeeeee;
+}
+
 .page-toc {
     position: fixed;
     top: 170px;
