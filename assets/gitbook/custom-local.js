@@ -4,9 +4,15 @@
             { title: 'OSI 7\uacc4\uce35', url: '/network/osi-7-layer/' }
         ],
         '/lab/': [
-            { title: 'VMWare NAT \uc124\uc815', url: '/lab/vmware-nat/' },
-            { title: 'VMWare\uc5d0 Rocky 9.7 \uc124\uce58', url: '/lab/rocky-9-7-vm/' },
-            { title: 'VMWare\uc5d0 Windows 10, 11 \uc124\uce58', url: '/lab/windows-10-11/' }
+            {
+                title: 'VMWare',
+                key: 'vmware',
+                children: [
+                    { title: 'VMWare NAT \uc124\uc815', url: '/lab/vmware-nat/' },
+                    { title: 'VMWare\uc5d0 Rocky 9.7 \uc124\uce58', url: '/lab/rocky-9-7-vm/' },
+                    { title: 'VMWare\uc5d0 Windows 10, 11 \uc124\uce58', url: '/lab/windows-10-11/' }
+                ]
+            }
         ],
         '/project/': [
             { title: '\ubaa8\uc758\ud574\ud0b9', url: '/project/pentest/' }
@@ -18,10 +24,12 @@
     }
 
     function ensureTrigger(chapter, link) {
-        if (link.querySelector('.exc-trigger')) return;
-
         var sectionUrl = link.getAttribute('href');
         chapter.classList.add('has-custom-children');
+
+        link.querySelectorAll('.exc-trigger').forEach(function(oldTrigger) {
+            oldTrigger.remove();
+        });
 
         var trigger = document.createElement('i');
         trigger.className = 'exc-trigger fa';
@@ -29,14 +37,81 @@
             event.preventDefault();
             event.stopPropagation();
             chapter.classList.toggle('expanded');
-            window.localStorage.setItem('sidebar-expanded-' + sectionUrl, chapter.classList.contains('expanded'));
+            window.sessionStorage.setItem('sidebar-expanded-' + sectionUrl, chapter.classList.contains('expanded'));
         });
 
         link.appendChild(trigger);
     }
 
+    function ensureNestedTrigger(item, label, storageKey) {
+        item.classList.add('has-custom-children');
+
+        label.querySelectorAll('.exc-trigger').forEach(function(oldTrigger) {
+            oldTrigger.remove();
+        });
+
+        var trigger = document.createElement('i');
+        trigger.className = 'exc-trigger fa';
+        trigger.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            item.classList.toggle('expanded');
+            window.sessionStorage.setItem(storageKey, item.classList.contains('expanded'));
+        });
+
+        label.appendChild(trigger);
+    }
+
+    function createSidebarItem(item, currentPath, storagePrefix) {
+        var child = document.createElement('li');
+        var label;
+        var hasActiveChild = false;
+
+        if (item.url) {
+            label = document.createElement('a');
+            label.href = item.url;
+            label.textContent = item.title;
+
+            if (currentPath === item.url) {
+                child.className = 'active';
+                hasActiveChild = true;
+            }
+        } else {
+            label = document.createElement('span');
+            label.textContent = item.title;
+        }
+
+        child.appendChild(label);
+
+        if (item.children && item.children.length) {
+            var nestedList = document.createElement('ul');
+            var storageKey = storagePrefix + '-' + item.key;
+
+            item.children.forEach(function(nestedItem) {
+                var nested = createSidebarItem(nestedItem, currentPath, storageKey);
+                if (nested.hasActiveChild) hasActiveChild = true;
+                nestedList.appendChild(nested.element);
+            });
+
+            child.appendChild(nestedList);
+            ensureNestedTrigger(child, label, storageKey);
+
+            if (window.sessionStorage.getItem(storageKey) === 'true') {
+                child.classList.add('expanded');
+            } else {
+                child.classList.remove('expanded');
+            }
+        }
+
+        return {
+            element: child,
+            hasActiveChild: hasActiveChild
+        };
+    }
+
     function renderSectionLinks() {
         var currentPath = normalizePath(window.location.pathname);
+        window.localStorage.removeItem('expChapters');
 
         Object.keys(sections).forEach(function(sectionUrl) {
             var link = document.querySelector('.book-summary a[href="' + sectionUrl + '"]');
@@ -52,25 +127,15 @@
             var hasActiveChild = false;
 
             sections[sectionUrl].forEach(function(item) {
-                var child = document.createElement('li');
-                var childLink = document.createElement('a');
-
-                childLink.href = item.url;
-                childLink.textContent = item.title;
-
-                if (currentPath === item.url) {
-                    child.className = 'active';
-                    hasActiveChild = true;
-                }
-
-                child.appendChild(childLink);
-                list.appendChild(child);
+                var rendered = createSidebarItem(item, currentPath, 'sidebar-expanded-' + sectionUrl);
+                if (rendered.hasActiveChild) hasActiveChild = true;
+                list.appendChild(rendered.element);
             });
 
             chapter.appendChild(list);
             ensureTrigger(chapter, link);
 
-            if (window.localStorage.getItem('sidebar-expanded-' + sectionUrl) === 'true') {
+            if (window.sessionStorage.getItem('sidebar-expanded-' + sectionUrl) === 'true') {
                 chapter.classList.add('expanded');
             } else {
                 chapter.classList.remove('expanded');
@@ -103,6 +168,8 @@
         window.setTimeout(renderSectionLinks, 100);
         window.setTimeout(formatSearchResults, 100);
         window.setTimeout(renderPageToc, 100);
+        window.setTimeout(renderSectionLinks, 300);
+        window.setTimeout(renderSectionLinks, 800);
     }
 
     function slugify(value) {
@@ -110,12 +177,15 @@
             .trim()
             .toLowerCase()
             .replace(/\s+/g, '-')
-            .replace(/[^\w\-가-힣]/g, '');
+            .replace(/[^\w\-\uAC00-\uD7A3]/g, '');
     }
 
     function renderPageToc() {
         var oldToc = document.querySelector('.page-toc');
         if (oldToc) oldToc.remove();
+
+        var oldToggle = document.querySelector('.page-toc-toggle');
+        if (oldToggle) oldToggle.remove();
 
         var content = document.querySelector('.markdown-section');
         if (!content) return;
@@ -128,10 +198,11 @@
 
         var title = document.createElement('div');
         title.className = 'page-toc-title';
-        title.textContent = '목차';
+        title.textContent = '\ubaa9\ucc28';
         toc.appendChild(title);
 
         var list = document.createElement('ul');
+        var tocLinks = [];
 
         headings.forEach(function(heading, index) {
             if (!heading.id) {
@@ -148,16 +219,66 @@
                 event.preventDefault();
                 heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 history.replaceState(null, '', '#' + heading.id);
+                setActiveTocLine(index);
             });
 
             item.appendChild(link);
             list.appendChild(item);
+            tocLinks.push({ heading: heading, link: link });
         });
 
         toc.appendChild(list);
-        document.body.appendChild(toc);
-    }
 
+        var toggle = document.createElement('button');
+        toggle.className = 'page-toc-toggle';
+        toggle.type = 'button';
+        toggle.setAttribute('aria-label', '\ubaa9\ucc28 \uc5f4\uae30');
+
+        headings.forEach(function(heading, index) {
+            var line = document.createElement('span');
+            line.dataset.tocIndex = index;
+            toggle.appendChild(line);
+        });
+
+        function setActiveTocLine(activeIndex) {
+            toggle.querySelectorAll('span').forEach(function(line, index) {
+                line.classList.toggle('active', index === activeIndex);
+            });
+            tocLinks.forEach(function(item, index) {
+                item.link.classList.toggle('active', index === activeIndex);
+            });
+        }
+
+        function isNearScrollBottom() {
+            var bodyInner = document.querySelector('.body-inner');
+            var scroller = bodyInner && bodyInner.scrollHeight > bodyInner.clientHeight ? bodyInner : document.documentElement;
+            var scrollTop = scroller === document.documentElement ? (window.pageYOffset || scroller.scrollTop) : scroller.scrollTop;
+            return scrollTop + scroller.clientHeight >= scroller.scrollHeight - 8;
+        }
+
+        function updateActiveTocLine() {
+            if (isNearScrollBottom()) {
+                setActiveTocLine(headings.length - 1);
+                return;
+            }
+
+            var activeIndex = 0;
+            headings.forEach(function(heading, index) {
+                if (heading.getBoundingClientRect().top <= 140) {
+                    activeIndex = index;
+                }
+            });
+            setActiveTocLine(activeIndex);
+        }
+
+        document.body.appendChild(toggle);
+        document.body.appendChild(toc);
+
+        updateActiveTocLine();
+        var bodyInner = document.querySelector('.body-inner');
+        if (bodyInner) bodyInner.addEventListener('scroll', updateActiveTocLine, { passive: true });
+        window.addEventListener('scroll', updateActiveTocLine, { passive: true });
+    }
     function formatSearchResults() {
         var labels = [
             'VMWare NAT \uc124\uc815',
@@ -236,3 +357,5 @@
         bindGitbookEvents(window.gitbook);
     }
 })();
+
+
