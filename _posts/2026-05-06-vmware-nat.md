@@ -28,8 +28,7 @@ VMWare Workstation에서 Edit-Virtual Network Editor을 누른다. <br>
 ### 3. NAT 네트워크로 사용할 VMnet8
 ![이미지](/assets/images/VMWareNat/NAT3.png) <br>
 VMnet8은 VMWare에서 기본적으로 NAT 용도로 사용되는 가상 네트워크이다. <br>
-Connect a host virtual adapter to this network 항목을 체크하여, 호스트 PC에도 VMnet8 가상 어댑터가 연결되도록 설정하였다. <br>
-VMnet8의 네트워크 대역을 다음과 같이 설정하였다.
+Connect a host virtual adapter to this network 항목을 체크하여, 호스트 PC에도 VMnet8 가상 어댑터가 연결되도록 설정하고 네트워크 대역을 다음과 같이 설정하였다.
 ```text
 Subnet IP   : 10.0.0.0
 Subnet mask : 255.255.255.0

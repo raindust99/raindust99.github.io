@@ -86,7 +86,12 @@
     display: none;
 }
 
+
 @media (max-width: 1700px) {
+    .book .book-body .page-wrapper .page-inner {
+        padding-right: 88px;
+    }
+
     .page-toc-toggle {
         display: flex;
         position: fixed;
@@ -149,6 +154,10 @@
 }
 
 @media (max-width: 760px) {
+    .book .book-body .page-wrapper .page-inner {
+        padding-right: 58px;
+    }
+
     .page-toc-toggle {
         top: 96px;
         right: 14px;

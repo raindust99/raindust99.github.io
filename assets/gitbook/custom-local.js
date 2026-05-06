@@ -9,8 +9,8 @@
                 key: 'vmware',
                 children: [
                     { title: 'VMWare NAT \uc124\uc815', url: '/lab/vmware-nat/' },
-                    { title: 'VMWare\uc5d0 Rocky 9.7 \uc124\uce58', url: '/lab/rocky-9-7-vm/' },
-                    { title: 'VMWare\uc5d0 Windows 10, 11 \uc124\uce58', url: '/lab/windows-10-11/' }
+                    { title: 'VMWare\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/rocky-9-7-vm/' },
+                    { title: 'VMWare\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/windows-10-11/' }
                 ]
             }
         ],
@@ -282,8 +282,8 @@
     function formatSearchResults() {
         var labels = [
             'VMWare NAT \uc124\uc815',
-            'VMWare\uc5d0 Rocky 9.7 \uc124\uce58',
-            'VMWare\uc5d0 Windows 10, 11 \uc124\uce58',
+            'VMWare\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815',
+            'VMWare\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815',
             'OSI 7\uacc4\uce35',
             '\ubaa8\uc758\ud574\ud0b9'
         ];
