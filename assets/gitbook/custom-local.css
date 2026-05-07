@@ -1,3 +1,53 @@
+.book-summary li.chapter[data-path="/lab/vmware/"],
+.book-summary li.chapter[data-path="/lab/server/"] {
+    display: none !important;
+}
+.back-to-top {
+    right: 300px !important;
+    bottom: 22px !important;
+    width: 44px !important;
+    height: 44px !important;
+    text-align: center;
+    z-index: 25;
+}
+
+.back-to-top i {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    display: block;
+    width: 44px;
+    height: 44px;
+    margin: 0 !important;
+    font-size: 20px !important;
+    line-height: 44px !important;
+}
+
+.book .book-body .page-wrapper .page-inner {
+    padding-bottom: 96px;
+}
+
+@media (max-width: 1240px) {
+    .back-to-top {
+        right: 22px !important;
+    }
+}
+
+@media (max-width: 760px) {
+    .back-to-top {
+        right: 12px !important;
+        bottom: 12px !important;
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    .back-to-top i {
+        width: 38px;
+        height: 38px;
+        font-size: 18px !important;
+        line-height: 38px !important;
+    }
+}
 .book-header .btn[aria-label="Facebook"],
 .book-header .btn[aria-label="Twitter"],
 .book-header .btn[aria-label="Share"],
@@ -37,6 +87,38 @@
     background: #eeeeee;
 }
 
+.book .book-summary ul.summary li.has-custom-children > a,
+.book .book-summary ul.summary li.has-custom-children > span {
+    min-height: 40px;
+    padding-left: 44px;
+}
+
+.book .book-summary ul.summary li.has-custom-children > span {
+    cursor: pointer;
+}
+
+.book .book-summary .exc-trigger {
+    left: 0;
+    top: 0;
+    width: 38px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #364149;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.book .book-summary .exc-trigger:hover {
+    color: #008cff;
+    background: rgba(0, 140, 255, 0.08);
+}
+
+.book .book-summary .has-custom-children.expanded > a > .exc-trigger,
+.book .book-summary .has-custom-children.expanded > span > .exc-trigger {
+    color: #008cff;
+}
 .page-toc {
     position: fixed;
     top: 170px;

@@ -5,12 +5,22 @@
         ],
         '/lab/': [
             {
-                title: 'VMWare',
+                title: 'VMware \uad6c\uc131 \uc2e4\uc2b5',
+                url: '/lab/vmware/',
                 key: 'vmware',
                 children: [
-                    { title: 'VMWare NAT \uc124\uc815', url: '/lab/vmware-nat/' },
-                    { title: 'VMWare\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/rocky-9-7-vm/' },
-                    { title: 'VMWare\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/windows-10-11/' }
+                    { title: 'VMware NAT \uc124\uc815', url: '/lab/vmware-nat/' },
+                    { title: 'VMware\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/rocky-9-7-vm/' },
+                    { title: 'VMware\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/windows-10-11/' },
+                    { title: 'VMware Clone\uc73c\ub85c \uac00\uc0c1\uba38\uc2e0 \ubcf5\uc81c\ud558\uae30', url: '/lab/vmware-clone/' }
+                ]
+            },
+            {
+                title: '\uc11c\ubc84 \uc2e4\uc2b5',
+                url: '/lab/server/',
+                key: 'server',
+                children: [
+                    { title: 'Rocky Linux\uc5d0 DHCP \uc11c\ubc84 \uad6c\uc131\ud558\uae30', url: '/lab/rocky-dhcp-server/' }
                 ]
             }
         ],
@@ -21,6 +31,13 @@
 
     function normalizePath(path) {
         return path.replace(/\/index\.html$/, '/');
+    }
+    function removeStandaloneLabPages() {
+        ['/lab/vmware/', '/lab/server/'].forEach(function(url) {
+            document.querySelectorAll('.book-summary li.chapter[data-path="' + url + '"]').forEach(function(chapter) {
+                chapter.remove();
+            });
+        });
     }
 
     function ensureTrigger(chapter, link) {
@@ -33,10 +50,13 @@
 
         var trigger = document.createElement('i');
         trigger.className = 'exc-trigger fa';
+        trigger.setAttribute('aria-label', 'Toggle submenu');
+        trigger.setAttribute('title', 'Toggle submenu');
         trigger.addEventListener('click', function(event) {
             event.preventDefault();
             event.stopPropagation();
             chapter.classList.toggle('expanded');
+            trigger.setAttribute('aria-expanded', chapter.classList.contains('expanded'));
             window.sessionStorage.setItem('sidebar-expanded-' + sectionUrl, chapter.classList.contains('expanded'));
         });
 
@@ -52,14 +72,26 @@
 
         var trigger = document.createElement('i');
         trigger.className = 'exc-trigger fa';
+        trigger.setAttribute('aria-label', 'Toggle submenu');
+        trigger.setAttribute('title', 'Toggle submenu');
         trigger.addEventListener('click', function(event) {
             event.preventDefault();
             event.stopPropagation();
             item.classList.toggle('expanded');
+            trigger.setAttribute('aria-expanded', item.classList.contains('expanded'));
             window.sessionStorage.setItem(storageKey, item.classList.contains('expanded'));
         });
 
         label.appendChild(trigger);
+
+        if (label.tagName.toLowerCase() === 'span') {
+            label.addEventListener('click', function(event) {
+                if (event.target === trigger) return;
+                item.classList.toggle('expanded');
+                trigger.setAttribute('aria-expanded', item.classList.contains('expanded'));
+                window.sessionStorage.setItem(storageKey, item.classList.contains('expanded'));
+            });
+        }
     }
 
     function createSidebarItem(item, currentPath, storagePrefix) {
@@ -159,16 +191,21 @@
     }
 
     function scheduleRender() {
+        removeStandaloneLabPages();
         renderSectionLinks();
         formatSearchResults();
         renderPageToc();
+        window.setTimeout(removeStandaloneLabPages, 0);
         window.setTimeout(renderSectionLinks, 0);
         window.setTimeout(formatSearchResults, 0);
         window.setTimeout(renderPageToc, 0);
+        window.setTimeout(removeStandaloneLabPages, 100);
         window.setTimeout(renderSectionLinks, 100);
         window.setTimeout(formatSearchResults, 100);
         window.setTimeout(renderPageToc, 100);
+        window.setTimeout(removeStandaloneLabPages, 300);
         window.setTimeout(renderSectionLinks, 300);
+        window.setTimeout(removeStandaloneLabPages, 800);
         window.setTimeout(renderSectionLinks, 800);
     }
 
@@ -281,9 +318,9 @@
     }
     function formatSearchResults() {
         var labels = [
-            'VMWare NAT \uc124\uc815',
-            'VMWare\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815',
-            'VMWare\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815',
+            'VMware NAT \uc124\uc815',
+            'VMware\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815',
+            'VMware\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815',
             'OSI 7\uacc4\uce35',
             '\ubaa8\uc758\ud574\ud0b9'
         ];
