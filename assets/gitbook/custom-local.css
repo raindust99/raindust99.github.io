@@ -92,6 +92,11 @@
     background: transparent;
 }
 
+.markdown-section img {
+    border: 1px solid #000000;
+    box-sizing: border-box;
+}
+
 .markdown-section pre {
     background: #eeeeee;
 }

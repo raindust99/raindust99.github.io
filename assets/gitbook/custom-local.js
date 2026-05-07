@@ -12,7 +12,7 @@
                     { title: 'VMware NAT \uc124\uc815', url: '/lab/vmware-nat/' },
                     { title: 'VMware\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/rocky-9-7-vm/' },
                     { title: 'VMware\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/windows-10-11/' },
-                    { title: 'VMware Clone\uc73c\ub85c \uac00\uc0c1\uba38\uc2e0 \ubcf5\uc81c\ud558\uae30', url: '/lab/vmware-clone/' }
+                    { title: 'VMware Clone\uc744 \uc774\uc6a9\ud55c \uac00\uc0c1\uba38\uc2e0 \ubcf5\uc81c \ubc0f \uc2a4\ub0c5\uc0f7 \uc124\uc815', url: '/lab/vmware-clone/' }
                 ]
             },
             {
@@ -35,7 +35,8 @@
     var builtContentStatus = {
         '/network/osi-7-layer/': true,
         '/lab/vmware-nat/': true,
-        '/lab/rocky-9-7-vm/': true
+        '/lab/rocky-9-7-vm/': true,
+        '/lab/vmware-clone/': true
     };
     var contentStatusCache = {};
 
