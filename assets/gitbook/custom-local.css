@@ -1,3 +1,23 @@
+.book-summary li.is-hidden-by-empty-content,
+.markdown-section li.is-hidden-by-empty-content {
+    display: none !important;
+}
+
+.markdown-section li:has(a[href="/network/osi-7-layer/"]),
+.markdown-section li:has(a[href="/lab/vmware/"]),
+.markdown-section li:has(a[href="/lab/server/"]),
+.markdown-section li:has(a[href="/lab/vmware-nat/"]),
+.markdown-section li:has(a[href="/lab/rocky-9-7-vm/"]),
+.markdown-section li:has(a[href="/lab/windows-10-11/"]),
+.markdown-section li:has(a[href="/lab/vmware-clone/"]),
+.markdown-section li:has(a[href="/lab/rocky-dhcp-server/"]),
+.markdown-section li:has(a[href="/project/pentest/"]) {
+    display: none;
+}
+
+.markdown-section li.is-visible-by-content {
+    display: list-item !important;
+}
 .book-summary li.chapter[data-path="/lab/vmware/"],
 .book-summary li.chapter[data-path="/lab/server/"] {
     display: none !important;
@@ -261,4 +281,27 @@
 .page-toc-toggle span.active {
     width: 17px;
     background: #222;
+}
+/* Final sidebar spacing overrides */
+.book .book-summary ul.summary li a,
+.book .book-summary ul.summary li span {
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+}
+
+.book .book-summary ul.summary li.has-custom-children > a,
+.book .book-summary ul.summary li.has-custom-children > span {
+    min-height: 32px !important;
+    padding-left: 38px !important;
+}
+
+.book .book-summary .exc-trigger {
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.book-summary .sidebar-count {
+    display: inline !important;
+    margin-left: 2px !important;
+    white-space: nowrap !important;
 }
