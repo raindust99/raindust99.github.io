@@ -342,6 +342,10 @@
             } else {
                 child.classList.remove('expanded');
             }
+
+            var initialCount = countContentItems(item.children, builtContentStatus);
+            child.classList.toggle('is-hidden-by-empty-content', initialCount === 0);
+            setSidebarCount(label, initialCount);
         }
 
         if ((!item.children || item.children.length === 0) && item.url && !builtContentStatus[item.url]) {
@@ -379,6 +383,7 @@
 
             chapter.appendChild(list);
             ensureTrigger(chapter, link);
+            setSidebarCount(link, countContentItems(sections[sectionUrl], builtContentStatus));
 
             if (window.sessionStorage.getItem('sidebar-expanded-' + sectionUrl) === 'true') {
                 chapter.classList.add('expanded');
