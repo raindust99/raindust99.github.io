@@ -11,8 +11,9 @@
                 children: [
                     { title: 'VMware NAT \uc124\uc815', url: '/lab/vmware-nat/' },
                     { title: 'VMware\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/rocky-9-7-vm/' },
-                    { title: 'VMware\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/windows-10-11/' },
-                    { title: 'VMware Clone\uc744 \uc774\uc6a9\ud55c \uac00\uc0c1\uba38\uc2e0 \ubcf5\uc81c \ubc0f \uc2a4\ub0c5\uc0f7 \uc124\uc815', url: '/lab/vmware-clone/' }
+                    { title: 'VMware Clone을 이용한 rocky9.4 복제 및 스냅샷 설정', url: '/lab/vmware-clone/' },
+                    { title: 'VMware에 Windows 10 설치 및 설정', url: '/lab/windows-10/' },
+                    { title: 'VMware에 Windows 11 설치 및 설정', url: '/lab/windows-11/' }
                 ]
             },
             {
@@ -36,6 +37,7 @@
         '/network/osi-7-layer/': true,
         '/lab/vmware-nat/': true,
         '/lab/rocky-9-7-vm/': true,
+        '/lab/windows-10/': true,
         '/lab/vmware-clone/': true
     };
     var contentStatusCache = {};
@@ -543,7 +545,9 @@
         var labels = [
             'VMware NAT \uc124\uc815',
             'VMware\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815',
-            'VMware\uc5d0 Windows 10, 11 \uc124\uce58 \ubc0f \uc124\uc815',
+            'VMware Clone을 이용한 rocky9.4 복제 및 스냅샷 설정',
+            'VMware에 Windows 10 설치 및 설정',
+            'VMware에 Windows 11 설치 및 설정',
             'OSI 7\uacc4\uce35',
             '\ubaa8\uc758\ud574\ud0b9'
         ];

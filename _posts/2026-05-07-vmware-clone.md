@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "VMware Clone을 이용한 가상머신 복제 및 스냅샷 설정"
+title: "VMware Clone을 이용한 rocky9.4 복제 및 스냅샷 설정"
 date: 2026-05-07 01:00:00 +0900
 category: lab
 permalink: /lab/vmware-clone/

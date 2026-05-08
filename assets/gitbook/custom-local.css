@@ -8,7 +8,8 @@
 .markdown-section li:has(a[href="/lab/server/"]),
 .markdown-section li:has(a[href="/lab/vmware-nat/"]),
 .markdown-section li:has(a[href="/lab/rocky-9-7-vm/"]),
-.markdown-section li:has(a[href="/lab/windows-10-11/"]),
+.markdown-section li:has(a[href="/lab/windows-10/"]),
+.markdown-section li:has(a[href="/lab/windows-11/"]),
 .markdown-section li:has(a[href="/lab/vmware-clone/"]),
 .markdown-section li:has(a[href="/lab/rocky-dhcp-server/"]),
 .markdown-section li:has(a[href="/project/pentest/"]) {
