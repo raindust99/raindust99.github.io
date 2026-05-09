@@ -3,25 +3,8 @@
     display: none !important;
 }
 
-.markdown-section li:has(a[href="/network/osi-7-layer/"]),
-.markdown-section li:has(a[href="/lab/vmware/"]),
-.markdown-section li:has(a[href="/lab/server/"]),
-.markdown-section li:has(a[href="/lab/vmware-nat/"]),
-.markdown-section li:has(a[href="/lab/rocky-9-7-vm/"]),
-.markdown-section li:has(a[href="/lab/windows-10/"]),
-.markdown-section li:has(a[href="/lab/windows-11/"]),
-.markdown-section li:has(a[href="/lab/vmware-clone/"]),
-.markdown-section li:has(a[href="/lab/rocky-dhcp-server/"]),
-.markdown-section li:has(a[href="/project/pentest/"]) {
-    display: none;
-}
-
 .markdown-section li.is-visible-by-content {
     display: list-item !important;
-}
-.book-summary li.chapter[data-path="/lab/vmware/"],
-.book-summary li.chapter[data-path="/lab/server/"] {
-    display: none !important;
 }
 .back-to-top {
     right: 300px !important;
@@ -96,6 +79,25 @@
 .markdown-section img {
     border: 1px solid #000000;
     box-sizing: border-box;
+}
+
+.markdown-section .post-image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 12px 0 24px;
+}
+
+.markdown-section .post-image-grid img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+@media (max-width: 640px) {
+    .markdown-section .post-image-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .markdown-section pre {
