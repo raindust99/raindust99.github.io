@@ -38,6 +38,7 @@
         '/lab/vmware-nat/': true,
         '/lab/rocky-9-7-vm/': true,
         '/lab/windows-10/': true,
+        '/lab/windows-11/': true,
         '/lab/vmware-clone/': true
     };
     var contentStatusCache = {};
