@@ -21,7 +21,11 @@
                 url: '/lab/server/',
                 key: 'server',
                 children: [
-                    { title: 'Rocky Linux\uc5d0 DHCP \uc11c\ubc84 \uad6c\uc131\ud558\uae30', url: '/lab/rocky-dhcp-server/' }
+                    { title: 'Rocky Linux에 DHCP 서버 구성하기', url: '/lab/rocky-dhcp-server/' },
+                    { title: 'Rocky Linux에 Active mode FTP 서버 구성', url: '/lab/rocky-active-ftp-server/' },
+                    { title: 'Rocky Linux에 Passive mode FTP 서버 구성', url: '/lab/rocky-passive-ftp-server/' },
+                    { title: 'Rocky Linux에 DNS+WEB 서버 구성', url: '/lab/rocky-dns-web-server/' },
+                    { title: 'Rocky Linux에 Mail 서버 구성', url: '/lab/rocky-mail-server/' }
                 ]
             }
         ],
@@ -39,7 +43,8 @@
         '/lab/rocky-9-7-vm/': true,
         '/lab/windows-10/': true,
         '/lab/windows-11/': true,
-        '/lab/vmware-clone/': true
+        '/lab/vmware-clone/': true,
+        '/lab/rocky-dhcp-server/': true
     };
     var contentStatusCache = {};
 

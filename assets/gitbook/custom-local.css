@@ -2,7 +2,22 @@
 .markdown-section li.is-hidden-by-empty-content {
     display: none !important;
 }
-
+.markdown-section li:has(a[href="/network/osi-7-layer/"]),
+.markdown-section li:has(a[href="/lab/vmware/"]),
+.markdown-section li:has(a[href="/lab/server/"]),
+.markdown-section li:has(a[href="/lab/vmware-nat/"]),
+.markdown-section li:has(a[href="/lab/rocky-9-7-vm/"]),
+.markdown-section li:has(a[href="/lab/windows-10/"]),
+.markdown-section li:has(a[href="/lab/windows-11/"]),
+.markdown-section li:has(a[href="/lab/vmware-clone/"]),
+.markdown-section li:has(a[href="/lab/rocky-dhcp-server/"]),
+.markdown-section li:has(a[href="/lab/rocky-active-ftp-server/"]),
+.markdown-section li:has(a[href="/lab/rocky-passive-ftp-server/"]),
+.markdown-section li:has(a[href="/lab/rocky-dns-web-server/"]),
+.markdown-section li:has(a[href="/lab/rocky-mail-server/"]),
+.markdown-section li:has(a[href="/project/pentest/"]) {
+    display: none;
+}
 .markdown-section li.is-visible-by-content {
     display: list-item !important;
 }
@@ -113,6 +128,24 @@
 .markdown-section :not(pre) > code {
     color: #111111;
     background: #eeeeee;
+}
+
+.markdown-section table thead tr,
+.markdown-section table thead th {
+    background: #dddddd;
+}
+
+.markdown-section table,
+.markdown-section table th,
+.markdown-section table td {
+    border-color: #000000;
+}
+
+.markdown-section table tbody tr,
+.markdown-section table tbody tr:nth-child(2n),
+.markdown-section table tbody tr:nth-child(odd),
+.markdown-section table tbody td {
+    background: #ffffff;
 }
 
 .book .book-summary ul.summary li.has-custom-children > a,
