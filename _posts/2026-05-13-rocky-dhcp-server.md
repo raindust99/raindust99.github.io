@@ -21,7 +21,7 @@ Rocky Linux에 DHCP 서버를 설치하고 설정 파일을 구성한 뒤, Windo
 
 ### 2. DHCP 설정 파일 수정
 
-- DHCP 서버의 설정 파일
+- DHCP 서버의 설정 파일 <br>
 
   ```bash
   vi /etc/dhcp/dhcpd.conf
@@ -32,7 +32,7 @@ Rocky Linux에 DHCP 서버를 설치하고 설정 파일을 구성한 뒤, Windo
 
 <br>
 
-- vi 편집기 명령어 모드
+- vi 편집기 명령어 모드 <br>
 
   ```
   :$r /usr/share/doc/dhcp-server/dhcpd.conf.example
@@ -43,7 +43,7 @@ Rocky Linux에 DHCP 서버를 설치하고 설정 파일을 구성한 뒤, Windo
 
 <br>
 
-- vi 편집기 편집 모드
+- vi 편집기 편집 모드 <br>
 
   ```
   :1,51d      ← 1번 줄부터 51번 줄까지 삭제
@@ -57,13 +57,13 @@ Rocky Linux에 DHCP 서버를 설치하고 설정 파일을 구성한 뒤, Windo
 
 <br>
 
-- 수정된 DHCP 서버의 설정 파일
+- 수정된 DHCP 서버의 설정 파일 <br>
   ![이미지](/assets/images/rockydhcp/dhcp1.png) <br>
   최종적으로 위와 같이 설정 파일을 완성한다.
 
 <br>
 
-- 주요 항목 설명
+- 주요 항목 설명 <br>
 
   | 항목 | 설명 |
   |---|---|
@@ -76,101 +76,89 @@ Rocky Linux에 DHCP 서버를 설치하고 설정 파일을 구성한 뒤, Windo
 
 <br>
 
-### 3. DHCP 예약 기능 (IP 고정 할당)
+- DHCP 예약 기능 (IP 고정 할당) <br>
 
-```
-host w10 {
-  hardware ethernet 00:00:00:00:00:01;  ← 클라이언트의 MAC 주소
-  fixed-address 10.0.0.101;             ← 고정으로 할당할 IP 주소
-}
-```
+  ```
+  host w10 {
+    hardware ethernet 00:00:00:00:00:01;  ← 클라이언트의 MAC 주소
+    fixed-address 10.0.0.101;             ← 고정으로 할당할 IP 주소
+  }
+  ```
 
-  `host` 블록을 사용하면 특정 MAC 주소를 가진 장치에 항상 동일한 IP를 할당할 수 있다.
-  이를 IP 예약(Reservation) 또는 고정 할당(Static Assignment) 이라고 한다.
-
-
-<br>
-
-### 4. DHCP 서비스 시작
-
-```bash
-systemctl enable --now dhcp
-```
-설정이 완료되면 DHCP 서버를 시작하고, 부팅 시 자동으로 실행되도록 등록한다.
+    `host` 블록을 사용하면 특정 MAC 주소를 가진 장치에 항상 동일한 IP를 할당할 수 있다.
+    이를 IP 예약(Reservation) 또는 고정 할당(Static Assignment) 이라고 한다.
 
 
 <br>
 
-### 5. Windows 10 / 11에서 DHCP 사용하기
+### 3. DHCP 서비스 시작
 
-- IP 주소 자동 받기 설정
-
-  * `Window + R` → `ncpa.cpl` 실행 → `Ethernet0` 우클릭 → `속성` → `인터넷 프로토콜 버전 4(TCP/IPv4)` 더블클릭 → `자동으로 IP 주소 받기` 선택 후 확인
-
-- MAC 주소 변경 (DHCP 예약 맞추기)
-
-DHCP 서버에서 MAC 주소 기반으로 IP를 예약했다면, Windows에서 MAC 주소를 맞춰줘야 한다.
-
-`Win + R` → `ncpa.cpl` 실행 → `Ethernet0` 우클릭 → `속성`  
-→ `구성` → `고급` 탭 → `Locally Administered Address` 선택  
-→ `값` 라디오버튼 선택 후 MAC 주소 입력
-
-- **Windows 10:** `000000000001`
-- **Windows 11:** `000000000002`
+  ```bash
+  systemctl enable --now dhcp
+  ```
+  설정이 완료되면 DHCP 서버를 시작하고, 부팅 시 자동으로 실행되도록 등록한다.
 
 
-- CMD에서 IP 갱신 확인
+<br>
 
-설정 후 CMD를 열고 아래 명령어로 IP를 갱신하고 확인한다.
+### 4. Windows 10 / 11에서 DHCP 사용하기
 
-```cmd
-ipconfig /release    ← 현재 할당된 IP 반납
-ipconfig /renew      ← DHCP 서버에서 새로운 IP 요청
-ipconfig /all        ← 현재 IP 정보 상세 확인
-```
+- MAC 주소 변경 (DHCP 예약 맞추기) <br>
+DHCP 서버에서 MAC 주소 기반으로 IP를 예약했다면, Windows에서 MAC 주소를 맞춰줘야 한다. Windows 10은 `000000000001`로 Windows 11은 `000000000002`로 설정해주었다.
 
-`ipconfig /all` 결과에서 `DHCP Enabled: Yes`와 할당된 IP를 확인할 수 있다.
+  ![이미지](/assets/images/rockydhcp/dhcp2.png) <br>
+  ![이미지](/assets/images/rockydhcp/dhcp3.png) <br>
+  ![이미지](/assets/images/rockydhcp/dhcp5.png) <br>
 
----
+<br>
 
-### 6. 알아두면 좋은 것들
+- IP 주소 자동 받기 설정 <br>
+  ![이미지](/assets/images/rockydhcp/dhcp4.png) <br>
+
+<br>
+
+- CMD에서 IP 갱신 확인 <br>
+  ![이미지](/assets/images/rockydhcp/dhcp6.png) <br>
+  ![이미지](/assets/images/rockydhcp/dhcp7.png) <br>
+  ![이미지](/assets/images/rockydhcp/dhcp8.png) <br>
+  ```cmd
+  ipconfig /release    ← 현재 할당된 IP 반납
+  ipconfig /renew      ← DHCP 서버에서 새로운 IP 요청
+  ipconfig /all        ← 현재 IP 정보 상세 확인
+  ```
+  설정 후 CMD를 열고 아래 명령어로 IP를 갱신하고 확인한다.
+  `ipconfig /all` 결과에서 `DHCP Enabled: Yes`와 할당된 IP를 확인할 수 있다.
+
+<br>
+
+### 5. 알아두면 좋은 것들
 
 - 오류 확인
+  ```bash
+  journalctl -xe
+  ```
+  DHCP 서비스에 문제가 생겼을 때는 아래 명령어로 로그를 확인한다. 설정 파일의 문법 오류나 서비스 실패 원인을 자세히 확인할 수 있다.
 
-DHCP 서비스에 문제가 생겼을 때는 아래 명령어로 로그를 확인한다.
-
-```bash
-journalctl -xe
-```
-
-설정 파일의 문법 오류나 서비스 실패 원인을 자세히 확인할 수 있다.
+<br>
 
 - DHCP 임대 현황 확인
-
-DHCP 서버에서 현재 어떤 클라이언트가 IP를 할당받아 사용 중인지 확인할 수 있다.
-
 ```bash
 vi /var/lib/dhcpd/dhcpd.leases
 ```
+  DHCP 서버에서 현재 어떤 클라이언트가 IP를 할당받아 사용 중인지 확인할 수 있다.
+  dhcpd.leases 파일에는 동적으로 할당된 IP의 임대 정보가 기록된다.
+  다만, `host` 블록으로 설정한 예약 IP(fixed-address)는 이 파일에 기록되지 않는다.
+  예약 IP는 항상 고정으로 할당되기 때문에 lease 추적 대상이 아니다.
 
-이 파일에는 **동적으로 할당된 IP의 임대 정보**가 기록된다.
-다만, `host` 블록으로 설정한 **예약 IP(fixed-address)는 이 파일에 기록되지 않는다.**  
-예약 IP는 항상 고정으로 할당되기 때문에 lease 추적 대상이 아니다.
+<br>
 
 - DHCP 서버 삭제
-
-DHCP 서버가 더 이상 필요 없을 때는 아래와 같이 제거한다.
-
-```bash
-dnf autoremove -y dhcp-server
-```
-
-단, 이 명령어만으로는 설정 파일과 임대 데이터가 남아 있다.
-완전히 삭제하려면 관련 디렉토리도 함께 제거한다.
-
-```bash
-rm -rf /etc/dhcp /var/lib/dhcp
-```
-
-> `/etc/dhcp` : DHCP 설정 파일 디렉토리  
-> `/var/lib/dhcp` : IP 임대 정보 파일 디렉토리
+  ```bash
+  dnf autoremove -y dhcp-server
+  rm -rf /etc/dhcp /var/lib/dhcp
+  ```
+  DHCP 서버가 더 이상 필요 없을 때는 아래와 같이 제거한다.
+  단, 이 명령어만으로는 설정 파일과 임대 데이터가 남아 있다.
+  완전히 삭제하려면 관련 디렉토리도 함께 제거한다.
+  > `/etc/dhcp` : DHCP 설정 파일 디렉토리  
+  > `/var/lib/dhcp` : IP 임대 정보 파일 디렉토리
