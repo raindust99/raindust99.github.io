@@ -45,6 +45,7 @@
         '/lab/windows-11/': true,
         '/lab/vmware-clone/': true,
         '/lab/rocky-dhcp-server/': true,
+        '/lab/rocky-active-ftp-server/': true,
         '/lab/rocky-passive-ftp-server/': true
     };
     var contentStatusCache = {};

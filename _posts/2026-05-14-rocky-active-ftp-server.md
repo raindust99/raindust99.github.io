@@ -5,3 +5,260 @@ date: 2026-05-13 00:00:00 +0900
 category: lab
 permalink: /lab/rocky-active-ftp-server/
 ---
+Rocky Linux 9.4에 vsftpd를 설치하고 Active mode로 FTP 서버를 구성한 뒤, Windows 10 / 11 클라이언트에서 CMD와 FileZilla로 접속하는 과정을 정리하였다.
+
+---
+
+### 1. vsftpd 설치
+
+```bash
+dnf install -y vsftpd
+```
+
+Rocky Linux에서 FTP 서버 패키지인 vsftpd를 설치한다.
+
+<br>
+
+### 2. 사용자 계정 생성
+
+```bash
+useradd a
+useradd b
+echo 'It1' | passwd --stdin a
+echo 'It1' | passwd --stdin b
+```
+
+FTP 접속에 사용할 계정을 생성하고 비밀번호를 설정한다.
+
+- 생성된 계정 확인
+
+  ```bash
+  cat /etc/passwd          # 계정 목록 확인
+  cat /etc/shadow          # 비밀번호 해시값 확인 (SHA-256)
+  ```
+
+<br>
+
+### 3. vsftpd 설정 파일 수정
+
+```bash
+vi /etc/vsftpd/vsftpd.conf
+```
+
+아래 항목들을 주석 제거 및 수정한다.
+
+| 줄 번호 | 설정 내용 |
+|---|---|
+| 52번줄 | `xferlog_file=/var/log/xferlog` (주석 제거) |
+| 59번줄 | `idle_session_timeout=300` (주석 제거 후 300초로 변경) |
+| 62번줄 | `data_connection_timeout=60` (주석 제거 후 60초로 변경) |
+| 86번줄 | `ftpd_banner=Warning!` (주석 제거 후 내용 변경) |
+| 101번줄 | `chroot_list_enable=YES` (주석 제거) |
+| 103번줄 | `chroot_list_file=/etc/vsftpd/chroot_list` (주석 제거) |
+
+마지막 줄에 아래 내용을 추가한 후 저장한다.
+
+```
+allow_writeable_chroot=YES
+```
+
+<br>
+
+### 4. chroot_list 파일 설정
+
+```bash
+vi /etc/vsftpd/chroot_list
+```
+
+상위 디렉터리로 이동을 **제한할** 계정을 등록한다. 여기서는 `a` 계정만 등록한다.
+
+```
+a
+```
+
+- `chroot_list`에 등록된 계정은 자신의 홈 디렉터리 밖으로 나갈 수 없다.
+- 등록되지 않은 `b` 계정은 `cd ..` 명령어로 상위 디렉터리 이동이 가능하다.
+
+<br>
+
+### 5. 테스트용 파일 생성
+
+```bash
+truncate -s 100M 1.txt
+dd if=/dev/zero of=/home/a/a.txt bs=300 count=1
+dd if=/dev/zero of=/home/b/b.txt bs=300 count=1
+```
+
+파일 생성 후 확인한다.
+
+```bash
+ls -alh
+ls -alh /home/{a,b}
+```
+
+<br>
+
+### 6. vsftpd 서비스 시작
+
+```bash
+systemctl enable --now vsftpd
+```
+
+FTP 서버를 시작하고 부팅 시 자동으로 실행되도록 등록한다.
+
+```bash
+ss -nat    # 네트워크 연결 상태 확인 (21번 포트 LISTEN 확인)
+```
+
+<br>
+
+### 7. 방화벽 설정
+
+```bash
+firewall-cmd --permanent --zone=public --add-port=20-21/tcp
+firewall-cmd --reload
+firewall-cmd --list-all
+```
+
+- FTP Active mode에서는 20번(데이터), 21번(제어) 포트를 모두 열어야 한다.
+- 기본 존(public)에 추가하는 경우 `--zone=public`은 생략 가능하다.
+- 포트를 삭제하려면 `--remove-port` 옵션을 사용한다.
+
+  ```bash
+  firewall-cmd --permanent --zone=public --remove-port=21/tcp
+  ```
+
+<br>
+
+### 8. 로그 확인
+
+```bash
+vi /var/log/xferlog
+```
+
+FTP 전송 로그를 확인할 수 있다.
+
+```
+Tue Apr 28 11:47:18 2026 1 ::ffff:10.0.0.101 300 /a.txt a _ o r a ftp 0 * c
+Tue Apr 28 11:48:14 2026 1 ::ffff:10.0.0.101 300 /aa.txt a _ i r a ftp 0 * c
+```
+
+- `10.0.0.101` : 접속한 클라이언트 IP
+- `o` : 다운로드 (outbound)
+- `i` : 업로드 (inbound)
+
+<br>
+
+### 9. 설정 파일을 한 폴더로 관리하는 방법
+
+설정 파일들을 한 곳에 모아서 관리할 수도 있다.
+
+```bash
+mkdir /ftp
+vi /ftp/ch       # chroot 설정 파일
+vi /ftp/ba       # 배너 파일
+```
+
+vsftpd.conf에서 경로를 아래와 같이 변경한다.
+
+```
+xferlog_file=/ftp/xferlog
+banner_file=/ftp/ba
+chroot_list_file=/ftp/ch
+```
+
+<br>
+
+---
+
+### 10. Windows에서 FTP 접속하기
+
+#### CMD에서 접속하는 방법
+
+```cmd
+ftp 10.0.0.12
+```
+
+사용자명 `a`, 비밀번호 `It1`을 입력하여 접속한다.
+
+접속 후 `ls`를 실행했을 때 응답이 없다면 Windows 방화벽에서 FTP 프로그램을 허용해야 한다.
+
+- **Windows 방화벽 설정**
+  1. `Win+R` → `control` → 작은 아이콘 보기 → Windows Defender 방화벽
+  2. 고급 설정 → 인바운드 규칙
+  3. 기존 `파일 전송 프로그램` 규칙 삭제
+  4. 인바운드 규칙 우클릭 → 새 규칙 → 프로그램 선택
+  5. 다음 프로그램 경로: `ftp.exe` 찾아보기
+  6. 이름: `ftp` → 마침
+
+방화벽 설정 후 CMD를 다시 열고 동일하게 접속한다.
+
+- **계정별 동작 차이 확인**
+
+  ```
+  cd ..
+  ls
+  ```
+
+  - `a` 계정: `cd ..` 해도 홈 디렉터리 밖으로 나가지지 않음 (`chroot_list` 등록됨)
+  - `b` 계정: `cd ..` 하면 상위 디렉터리로 이동 가능 (`chroot_list` 미등록)
+
+- **Windows CMD에서 유용한 FTP 명령어**
+
+  | 명령어 | 설명 |
+  |---|---|
+  | `ls` | 원격 서버 파일 목록 확인 |
+  | `!dir` | 로컬 파일 목록 확인 |
+  | `lcd` | 로컬 폴더 이동 |
+
+<br>
+
+#### FileZilla에서 접속하는 방법
+
+- **사이트 등록**
+  1. 파일 → 사이트 관리자 → 새 사이트
+  2. 일반 탭: 호스트 `10.0.0.12`, 로그온 유형: 비밀번호 묻기, 사용자: `a`
+  3. 전송 설정 탭: 능동형(Active) 또는 수동형(Passive) 선택
+  4. 확인 후 저장
+
+- **접속**
+  1. 파일 메뉴 아래 사이트 관리자 아이콘 클릭 → `10.0.0.12` 선택
+  2. 비밀번호 `It1` 입력
+
+  접속 후 연결이 되지 않는다면 방화벽에서 FileZilla를 허용해야 한다. 상단에 X 표시 아이콘이 보이면 방화벽 차단 상태이다.
+
+- **Windows 방화벽 설정 (FileZilla)**
+  1. FileZilla 바탕화면 아이콘 우클릭 → 속성 → 대상 경로 복사
+  2. `Win+R` → `control` → Windows Defender 방화벽 → 고급 설정
+  3. 인바운드 규칙에서 기존 `FileZilla FTP Client` 삭제
+  4. 새 규칙 → 프로그램 → 복사한 경로 붙여넣기 (앞뒤 `"` 제거)
+  5. 이름: `filezilla` → 마침
+
+  설정 후 상단의 체크 표시 아이콘을 클릭하면 정상 연결된다.
+
+- **접속 계정 변경**
+  1. 파일 → 사이트 관리자 → 해당 사이트에서 사용자명 변경
+  2. 사이트 관리자 아이콘으로 재접속 후 비밀번호 `It1` 입력
+
+<br>
+
+---
+
+### 알아두면 좋은 것들
+
+- **vsftpd 및 계정 삭제**
+
+  ```bash
+  dnf autoremove -y vsftpd
+  rm -rf /etc/vsftpd
+  userdel -r a      # -r 옵션으로 홈 디렉터리까지 함께 삭제
+  ```
+
+  > `-r` 옵션 없이 삭제하면 `/home/a`, `/var/spool/mail/a` 디렉터리가 남아 있어, 동일 이름으로 계정을 재생성했을 때 UID 불일치 문제가 발생할 수 있다.
+
+- **트리 구조로 디렉터리 확인**
+
+  ```bash
+  dnf install -y tree
+  tree /home
+  ```
