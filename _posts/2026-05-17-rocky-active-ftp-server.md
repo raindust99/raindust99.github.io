@@ -97,7 +97,7 @@ systemctl enable --now vsftpd
 ss -nat
 ```
 
-![이미지](/assets/images/activeFTP/activeftp2.png) <br>
+![이미지](/assets/images/ActiveFTP/activeftp2.png) <br>
 
 FTP 서버를 시작하고 부팅 시 자동으로 실행되도록 등록하고 네트워크 연결 상태를 확인한다. (21번 포트 LISTEN 확인)
 
@@ -112,7 +112,7 @@ firewall-cmd --reload
 firewall-cmd --list-all
 ```
 
-![이미지](/assets/images/activeFTP/activeftp3.png) <br>
+![이미지](/assets/images/ActiveFTP/activeftp3.png) <br>
 
 FTP Active mode에서는 20번(데이터), 21번(제어) 포트를 모두 열어야 한다. <br>
 기본 존(public)에 추가하는 경우 `--zone=public`은 생략 가능하고 포트를 삭제하려면 `--remove-port` 옵션을 사용한다. <br>
@@ -125,7 +125,7 @@ FTP Active mode에서는 20번(데이터), 21번(제어) 포트를 모두 열어
 vi /var/log/xferlog
 ```
 
-![이미지](/assets/images/activeFTP/activeftp18.png) <br>
+![이미지](/assets/images/ActiveFTP/activeftp18.png) <br>
 
 FTP 전송 로그를 확인할 수 있다. <br>
 
@@ -159,27 +159,27 @@ chroot_list_file=/ftp/ch    # 103번 줄
 
 - **CMD에서 접속하는 방법** <br>
 
-  ![이미지](/assets/images/activeFTP/activeftp4.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp5.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp4.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp5.png) <br>
   접속 후 `ls`를 명령어를 입력하면 Windows 보안 경고가 나온다. <br>
   이를 취소하고 Windows 방화벽 설정에서 따로 설정할 것이다. <br>
 
 <br>
 
 - **Windows 방화벽 설정** <br>
-  ![이미지](/assets/images/activeFTP/activeftp6.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp7.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp8.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp9.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp6.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp7.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp8.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp9.png) <br>
   기존에 있던 파일 전송 프로그램은 삭제해준다. <br>
 
   <br>
 
-  ![이미지](/assets/images/activeFTP/activeftp10.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp11.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp13.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp14.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp15.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp10.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp11.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp13.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp14.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp15.png) <br>
   방화벽 설정 후 CMD를 다시 열고 동일하게 접속해보면 Windows 보안 경고가 나오지 않고 결과를 확인할 수 있다. <br>
 
 <br>
@@ -187,8 +187,8 @@ chroot_list_file=/ftp/ch    # 103번 줄
 - **계정별 동작 차이 확인** <br>
 
   <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; align-items: start;">
-    <img src="/assets/images/activeFTP/activeftp16.png" alt="이미지" style="width: 100%; height: auto; display: block;">
-    <img src="/assets/images/activeFTP/activeftp17.png" alt="이미지" style="width: 100%; height: auto; display: block;">
+    <img src="/assets/images/ActiveFTP/activeftp16.png" alt="이미지" style="width: 100%; height: auto; display: block;">
+    <img src="/assets/images/ActiveFTP/activeftp17.png" alt="이미지" style="width: 100%; height: auto; display: block;">
   </div>
 
   <br>
@@ -210,44 +210,44 @@ chroot_list_file=/ftp/ch    # 103번 줄
 ### 11. Windows에서 FileZilla를 통해 접속하는 방법
 
 - **사이트 등록** <br>
-  ![이미지](/assets/images/activeFTP/activeftp19.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp20.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp21.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp22.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp19.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp20.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp21.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp22.png) <br>
 
 <br>
 
 - **접속** <br>
-  ![이미지](/assets/images/activeFTP/activeftp23.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp24.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp25.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp23.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp24.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp25.png) <br>
   접속하면 Windows 보안 경고가 나온다. CMD에서 처럼 Windows 방화벽 설정에서 따로 설정할 것이다. <br>
 
 <br>
 
 - **Windows 방화벽 설정 (FileZilla)** <br>
-  ![이미지](/assets/images/activeFTP/activeftp26.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp26.png) <br>
   FileZilla의 경로를 복사해준다 <br>
 
   <br>
 
-  ![이미지](/assets/images/activeFTP/activeftp27.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp27.png) <br>
   기존에 있던 FileZilla FTP Client은 삭제해준다. <br>
 
   <br>
 
-  ![이미지](/assets/images/activeFTP/activeftp28.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp29.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp30.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp31.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp32.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp28.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp29.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp30.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp31.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp32.png) <br>
   설정 후 다시 연결해보면 정상 연결된다.
 
 <br>
 
 - **계정별 동작 차이 확인** <br>
-  ![이미지](/assets/images/activeFTP/activeftp33.png) <br>
-  ![이미지](/assets/images/activeFTP/activeftp34.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp33.png) <br>
+  ![이미지](/assets/images/ActiveFTP/activeftp34.png) <br>
   - `a` 계정: 홈 디렉터리 밖이 보이지 않음 (`chroot_list` 등록됨) <br>
   - `b` 계정: 상위 디렉터리가 보임 (`chroot_list` 미등록) <br>
 
@@ -273,4 +273,4 @@ chroot_list_file=/ftp/ch    # 103번 줄
   dnf install -y tree
   tree /home
   ```
-  ![이미지](/assets/images/activeFTP/activeftp1.png)
+  ![이미지](/assets/images/ActiveFTP/activeftp1.png)
