@@ -171,6 +171,10 @@ chroot_list_file=/ftp/ch    # 103번 줄
   ![이미지](/assets/images/activeFTP/activeftp7.png) <br>
   ![이미지](/assets/images/activeFTP/activeftp8.png) <br>
   ![이미지](/assets/images/activeFTP/activeftp9.png) <br>
+  기존에 있던 파일 전송 프로그램은 삭제해준다. <br>
+
+  <br>
+
   ![이미지](/assets/images/activeFTP/activeftp10.png) <br>
   ![이미지](/assets/images/activeFTP/activeftp11.png) <br>
   ![이미지](/assets/images/activeFTP/activeftp13.png) <br>
@@ -188,8 +192,8 @@ chroot_list_file=/ftp/ch    # 103번 줄
   </div>
 
   <br>
-  - `a` 계정: `cd ..` 해도 홈 디렉터리 밖으로 나가지지 않음 (`chroot_list` 등록됨)
-  - `b` 계정: `cd ..` 하면 상위 디렉터리로 이동 가능 (`chroot_list` 미등록)
+  - `a` 계정: `cd ..` 해도 홈 디렉터리 밖으로 나가지지 않음 (`chroot_list` 등록됨) <br>
+  - `b` 계정: `cd ..` 하면 상위 디렉터리로 이동 가능 (`chroot_list` 미등록) <br>
 
 <br>
 
@@ -206,38 +210,48 @@ chroot_list_file=/ftp/ch    # 103번 줄
 ### 11. Windows에서 FileZilla를 통해 접속하는 방법
 
 - **사이트 등록** <br>
-  1. 파일 → 사이트 관리자 → 새 사이트
-  2. 일반 탭: 호스트 `10.0.0.12`, 로그온 유형: 비밀번호 묻기, 사용자: `a`
-  3. 전송 설정 탭: 능동형(Active) 또는 수동형(Passive) 선택
-  4. 확인 후 저장
+  ![이미지](/assets/images/activeFTP/activeftp19.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp20.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp21.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp22.png) <br>
 
 <br>
 
 - **접속** <br>
-  1. 파일 메뉴 아래 사이트 관리자 아이콘 클릭 → `10.0.0.12` 선택
-  2. 비밀번호 `It1` 입력
-
-  접속 후 연결이 되지 않는다면 방화벽에서 FileZilla를 허용해야 한다. 상단에 X 표시 아이콘이 보이면 방화벽 차단 상태이다.
+  ![이미지](/assets/images/activeFTP/activeftp23.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp24.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp25.png) <br>
+  접속하면 Windows 보안 경고가 나온다. CMD에서 처럼 Windows 방화벽 설정에서 따로 설정할 것이다. <br>
 
 <br>
 
 - **Windows 방화벽 설정 (FileZilla)** <br>
-  1. FileZilla 바탕화면 아이콘 우클릭 → 속성 → 대상 경로 복사
-  2. `Win+R` → `control` → Windows Defender 방화벽 → 고급 설정
-  3. 인바운드 규칙에서 기존 `FileZilla FTP Client` 삭제
-  4. 새 규칙 → 프로그램 → 복사한 경로 붙여넣기 (앞뒤 `"` 제거)
-  5. 이름: `filezilla` → 마침
+  ![이미지](/assets/images/activeFTP/activeftp26.png) <br>
+  FileZilla의 경로를 복사해준다 <br>
 
-  설정 후 상단의 체크 표시 아이콘을 클릭하면 정상 연결된다.
+  <br>
+
+  ![이미지](/assets/images/activeFTP/activeftp27.png) <br>
+  기존에 있던 FileZilla FTP Client은 삭제해준다. <br>
+
+  <br>
+
+  ![이미지](/assets/images/activeFTP/activeftp28.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp29.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp30.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp31.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp32.png) <br>
+  설정 후 다시 연결해보면 정상 연결된다.
 
 <br>
 
-- **접속 계정 변경**
-  1. 파일 → 사이트 관리자 → 해당 사이트에서 사용자명 변경
-  2. 사이트 관리자 아이콘으로 재접속 후 비밀번호 `It1` 입력
+- **계정별 동작 차이 확인** <br>
+  ![이미지](/assets/images/activeFTP/activeftp33.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp34.png) <br>
+  - `a` 계정: 홈 디렉터리 밖이 보이지 않음 (`chroot_list` 등록됨) <br>
+  - `b` 계정: 상위 디렉터리가 보임 (`chroot_list` 미등록) <br>
 
 <br>
-
 
 ### 알아두면 좋은 것들
 
