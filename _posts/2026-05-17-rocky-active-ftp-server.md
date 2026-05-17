@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Rocky Linux에 Active mode FTP 서버 구성"
-date: 2026-05-13 00:00:00 +0900
+date: 2026-05-17 00:00:00 +0900
 category: lab
 permalink: /lab/rocky-active-ftp-server/
 ---
@@ -28,14 +28,14 @@ echo 'It1' | passwd --stdin a
 echo 'It1' | passwd --stdin b
 ```
 
-FTP 접속에 사용할 계정을 생성하고 비밀번호를 설정한다.
+FTP 접속에 사용할 계정을 생성하고 비밀번호를 설정한다. <br>
 
-- 생성된 계정 확인
+<br>
 
-  ```bash
-  cat /etc/passwd          # 계정 목록 확인
-  cat /etc/shadow          # 비밀번호 해시값 확인 (SHA-256)
-  ```
+  > 생성된 계정 확인 <br>
+  > `cat /etc/passwd` : 계정 목록 확인 <br>
+  > `cat /etc/shadow` : 비밀번호 해시값 확인 (SHA-256)
+
 
 <br>
 
@@ -70,11 +70,7 @@ allow_writeable_chroot=YES
 vi /etc/vsftpd/chroot_list
 ```
 
-상위 디렉터리로 이동을 **제한할** 계정을 등록한다. 여기서는 `a` 계정만 등록한다.
-
-```
-a
-```
+상위 디렉터리로 이동을 제한할 계정을 등록한다. 여기서는 `a` 계정만 등록한다. <br>
 
 - `chroot_list`에 등록된 계정은 자신의 홈 디렉터리 밖으로 나갈 수 없다.
 - 등록되지 않은 `b` 계정은 `cd ..` 명령어로 상위 디렉터리 이동이 가능하다.
@@ -84,17 +80,13 @@ a
 ### 5. 테스트용 파일 생성
 
 ```bash
-truncate -s 100M 1.txt
 dd if=/dev/zero of=/home/a/a.txt bs=300 count=1
 dd if=/dev/zero of=/home/b/b.txt bs=300 count=1
-```
-
-파일 생성 후 확인한다.
-
-```bash
 ls -alh
 ls -alh /home/{a,b}
 ```
+
+파일 생성 후 확인한다.
 
 <br>
 
@@ -102,13 +94,13 @@ ls -alh /home/{a,b}
 
 ```bash
 systemctl enable --now vsftpd
+ss -nat
 ```
 
-FTP 서버를 시작하고 부팅 시 자동으로 실행되도록 등록한다.
+![이미지](/assets/images/activeFTP/activeftp2.png) <br>
 
-```bash
-ss -nat    # 네트워크 연결 상태 확인 (21번 포트 LISTEN 확인)
-```
+FTP 서버를 시작하고 부팅 시 자동으로 실행되도록 등록하고 네트워크 연결 상태를 확인한다. (21번 포트 LISTEN 확인)
+
 
 <br>
 
@@ -120,13 +112,10 @@ firewall-cmd --reload
 firewall-cmd --list-all
 ```
 
-- FTP Active mode에서는 20번(데이터), 21번(제어) 포트를 모두 열어야 한다.
-- 기본 존(public)에 추가하는 경우 `--zone=public`은 생략 가능하다.
-- 포트를 삭제하려면 `--remove-port` 옵션을 사용한다.
+![이미지](/assets/images/activeFTP/activeftp3.png) <br>
 
-  ```bash
-  firewall-cmd --permanent --zone=public --remove-port=21/tcp
-  ```
+FTP Active mode에서는 20번(데이터), 21번(제어) 포트를 모두 열어야 한다. <br>
+기본 존(public)에 추가하는 경우 `--zone=public`은 생략 가능하고 포트를 삭제하려면 `--remove-port` 옵션을 사용한다. <br>
 
 <br>
 
@@ -136,12 +125,9 @@ firewall-cmd --list-all
 vi /var/log/xferlog
 ```
 
-FTP 전송 로그를 확인할 수 있다.
+![이미지](/assets/images/activeFTP/activeftp18.png) <br>
 
-```
-Tue Apr 28 11:47:18 2026 1 ::ffff:10.0.0.101 300 /a.txt a _ o r a ftp 0 * c
-Tue Apr 28 11:48:14 2026 1 ::ffff:10.0.0.101 300 /aa.txt a _ i r a ftp 0 * c
-```
+FTP 전송 로그를 확인할 수 있다. <br>
 
 - `10.0.0.101` : 접속한 클라이언트 IP
 - `o` : 다운로드 (outbound)
@@ -162,46 +148,50 @@ vi /ftp/ba       # 배너 파일
 vsftpd.conf에서 경로를 아래와 같이 변경한다.
 
 ```
-xferlog_file=/ftp/xferlog
-banner_file=/ftp/ba
-chroot_list_file=/ftp/ch
+xferlog_file=/ftp/xferlog   # 52번줄
+banner_file=/ftp/ba         # 86번줄
+chroot_list_file=/ftp/ch    # 103번 줄
 ```
 
 <br>
 
----
+### 10. Windows CMD에서 FTP 접속하기
 
-### 10. Windows에서 FTP 접속하기
+- **CMD에서 접속하는 방법** <br>
 
-#### CMD에서 접속하는 방법
+  ![이미지](/assets/images/activeFTP/activeftp4.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp5.png) <br>
+  접속 후 `ls`를 명령어를 입력하면 Windows 보안 경고가 나온다. <br>
+  이를 취소하고 Windows 방화벽 설정에서 따로 설정할 것이다. <br>
 
-```cmd
-ftp 10.0.0.12
-```
+<br>
 
-사용자명 `a`, 비밀번호 `It1`을 입력하여 접속한다.
+- **Windows 방화벽 설정** <br>
+  ![이미지](/assets/images/activeFTP/activeftp6.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp7.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp8.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp9.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp10.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp11.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp13.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp14.png) <br>
+  ![이미지](/assets/images/activeFTP/activeftp15.png) <br>
+  방화벽 설정 후 CMD를 다시 열고 동일하게 접속해보면 Windows 보안 경고가 나오지 않고 결과를 확인할 수 있다. <br>
 
-접속 후 `ls`를 실행했을 때 응답이 없다면 Windows 방화벽에서 FTP 프로그램을 허용해야 한다.
+<br>
 
-- **Windows 방화벽 설정**
-  1. `Win+R` → `control` → 작은 아이콘 보기 → Windows Defender 방화벽
-  2. 고급 설정 → 인바운드 규칙
-  3. 기존 `파일 전송 프로그램` 규칙 삭제
-  4. 인바운드 규칙 우클릭 → 새 규칙 → 프로그램 선택
-  5. 다음 프로그램 경로: `ftp.exe` 찾아보기
-  6. 이름: `ftp` → 마침
+- **계정별 동작 차이 확인** <br>
 
-방화벽 설정 후 CMD를 다시 열고 동일하게 접속한다.
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; align-items: start;">
+    <img src="/assets/images/activeFTP/activeftp16.png" alt="이미지" style="width: 100%; height: auto; display: block;">
+    <img src="/assets/images/activeFTP/activeftp17.png" alt="이미지" style="width: 100%; height: auto; display: block;">
+  </div>
 
-- **계정별 동작 차이 확인**
-
-  ```
-  cd ..
-  ls
-  ```
-
+  <br>
   - `a` 계정: `cd ..` 해도 홈 디렉터리 밖으로 나가지지 않음 (`chroot_list` 등록됨)
   - `b` 계정: `cd ..` 하면 상위 디렉터리로 이동 가능 (`chroot_list` 미등록)
+
+<br>
 
 - **Windows CMD에서 유용한 FTP 명령어**
 
@@ -213,21 +203,25 @@ ftp 10.0.0.12
 
 <br>
 
-#### FileZilla에서 접속하는 방법
+### 11. Windows에서 FileZilla를 통해 접속하는 방법
 
-- **사이트 등록**
+- **사이트 등록** <br>
   1. 파일 → 사이트 관리자 → 새 사이트
   2. 일반 탭: 호스트 `10.0.0.12`, 로그온 유형: 비밀번호 묻기, 사용자: `a`
   3. 전송 설정 탭: 능동형(Active) 또는 수동형(Passive) 선택
   4. 확인 후 저장
 
-- **접속**
+<br>
+
+- **접속** <br>
   1. 파일 메뉴 아래 사이트 관리자 아이콘 클릭 → `10.0.0.12` 선택
   2. 비밀번호 `It1` 입력
 
   접속 후 연결이 되지 않는다면 방화벽에서 FileZilla를 허용해야 한다. 상단에 X 표시 아이콘이 보이면 방화벽 차단 상태이다.
 
-- **Windows 방화벽 설정 (FileZilla)**
+<br>
+
+- **Windows 방화벽 설정 (FileZilla)** <br>
   1. FileZilla 바탕화면 아이콘 우클릭 → 속성 → 대상 경로 복사
   2. `Win+R` → `control` → Windows Defender 방화벽 → 고급 설정
   3. 인바운드 규칙에서 기존 `FileZilla FTP Client` 삭제
@@ -236,13 +230,14 @@ ftp 10.0.0.12
 
   설정 후 상단의 체크 표시 아이콘을 클릭하면 정상 연결된다.
 
+<br>
+
 - **접속 계정 변경**
   1. 파일 → 사이트 관리자 → 해당 사이트에서 사용자명 변경
   2. 사이트 관리자 아이콘으로 재접속 후 비밀번호 `It1` 입력
 
 <br>
 
----
 
 ### 알아두면 좋은 것들
 
@@ -256,9 +251,12 @@ ftp 10.0.0.12
 
   > `-r` 옵션 없이 삭제하면 `/home/a`, `/var/spool/mail/a` 디렉터리가 남아 있어, 동일 이름으로 계정을 재생성했을 때 UID 불일치 문제가 발생할 수 있다.
 
+<br>
+
 - **트리 구조로 디렉터리 확인**
 
   ```bash
   dnf install -y tree
   tree /home
   ```
+  ![이미지](/assets/images/activeFTP/activeftp1.png)
