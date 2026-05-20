@@ -137,15 +137,6 @@ firewall-cmd --list-all
 
 Passive mode에서는 제어 포트(21번)와 데이터 포트 범위(65000~65010)를 모두 열어야 한다. <br>
 
-  > **직접 XML 파일 수정으로 포트를 추가하는 방법** <br>
-  > ```bash
-  > vi /etc/firewalld/zones/public.xml
-  > ```
-  > 아래 내용을 추가해도 동일하게 방화벽에 포트가 등록된다.
-  > ```xml
-  > <port port="65000-65010" protocol="tcp"/>
-  > ```
-  > 수정 후 `firewall-cmd --reload`를 실행해야 적용된다.
 
 <br>
 
@@ -165,52 +156,20 @@ FTP 전송 로그를 확인할 수 있다. <br>
 ### 10. Windows CMD에서 FTP 접속하기
 
 - **CMD에서 접속하는 방법** <br>
-
-  ```
-  ftp 10.0.0.12
-  사용자: z
-  암호: It1
-  ```
-
-  접속 후 `ls`를 입력하면 Windows 보안 경고가 나온다. <br>
-  이를 취소하고 Windows 방화벽 설정에서 따로 설정할 것이다. <br>
-
-<br>
-
-- **Windows 방화벽 설정** <br>
-
-  Win+R → `control` → 범주 → 작은 아이콘 → Windows Defender 방화벽 → 고급 설정 → 인바운드 규칙 <br>
-
-  1. 기존에 있던 **파일 전송 프로그램** 규칙을 삭제한다.
-  2. 인바운드 규칙 우클릭 → 새 규칙 → **프로그램** 선택
-  3. 다음 프로그램 경로 찾아보기 : `ftp.exe` 선택
-  4. 연결 허용 → 다음 → 이름 : `ftp` → 마침
-
-  방화벽 설정 후 CMD를 다시 열고 동일하게 접속하면 보안 경고 없이 정상 동작한다. <br>
+  ![이미지](/assets/images/passiveftp/passiveftp1.png) <br>
 
 <br>
 
 - **계정별 동작 차이 확인** <br>
-
+  ![이미지](/assets/images/passiveftp/passiveftp2.png) <br>
   - `z` 계정 (`/ftp/ch` 등록됨): `cd ..` 해도 홈 디렉터리 밖으로 나가지지 않음 <br>
   - 미등록 계정: `cd ..` 하면 상위 디렉터리로 이동 가능 <br>
 
 <br>
 
 - **Active mode vs Passive mode 동작 차이** <br>
-
-  FileZilla 사이트 관리자의 **전송 설정** 탭에서 능동형(Active) / 수동형(Passive)을 선택하여 전환할 수 있다. <br>
   Passive mode에서는 클라이언트가 서버에 데이터 포트를 요청하고, 서버가 지정한 포트(65000~65010)로 연결되는 방식이다. <br>
 
-<br>
-
-- **Windows CMD에서 유용한 FTP 명령어**
-
-  | 명령어 | 설명 |
-  |---|---|
-  | `ls` | 원격 서버 파일 목록 확인 |
-  | `!dir` | 로컬 파일 목록 확인 |
-  | `lcd` | 로컬 폴더 이동 |
 
 <br>
 
@@ -218,55 +177,26 @@ FTP 전송 로그를 확인할 수 있다. <br>
 
 - **사이트 등록** <br>
 
-  파일 → 사이트 관리자 → 새 사이트 → 이름 설정 <br>
-
-  - 일반 탭 : 호스트 `10.0.0.12`, 로그온 유형 `비밀번호 묻기`, 사용자 `z`
-  - 전송 설정 탭 : **수동형(Passive)** 선택
-  - 확인 → 저장
+  ![이미지](/assets/images/passiveftp/passiveftp3.png) <br>
+  ![이미지](/assets/images/passiveftp/passiveftp4.png) <br>
+  ![이미지](/assets/images/passiveftp/passiveftp5.png) <br>
 
 <br>
 
 - **접속** <br>
 
-  파일 밑에 사이트관리자 열기 → 사이트 선택 → 비밀번호 : `It1` <br>
-  접속 시 Windows 보안 경고가 나오면 취소 후 방화벽 설정을 진행한다. <br>
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; align-items: start;">
+    <img src="/assets/images/passiveftp/passiveftp6.png" alt="이미지" style="width: 100%; height: auto; display: block;">
+    <img src="/assets/images/passiveftp/passiveftp7.png" alt="이미지" style="width: 100%; height: auto; display: block;">
+  </div> <br>
+  ![이미지](/assets/images/passiveftp/passiveftp8.png) <br>
 
-<br>
-
-- **Windows 방화벽 설정 (FileZilla)** <br>
-
-  1. FileZilla 바로가기 우클릭 → 속성 → 대상 경로 복사
-  2. Windows Defender 방화벽 → 고급 설정 → 인바운드 규칙
-  3. 기존 **FileZilla FTP Client** 규칙 삭제
-  4. 새 규칙 → 프로그램 → 복사한 경로 붙여넣기 (`"` 제거)
-  5. 연결 허용 → 다음 → 이름 : `filezilla` → 마침
-
-  설정 후 상단의 연결 아이콘(컴퓨터에 체크 표시)을 클릭하면 정상 연결된다. <br>
-
-<br>
-
-- **계정 전환 방법** <br>
-
-  파일 → 사이트 관리자 → 해당 사이트에서 사용자 변경 → 파일 밑에 사이트관리자 열기 → 사이트 선택 → 비밀번호 : `It1`
 
 <br>
 
 ### 알아두면 좋은 것들
 
-- **vsftpd 및 계정 삭제**
-
-  ```bash
-  dnf autoremove -y vsftpd
-  rm -rf /etc/vsftpd
-  rm -rf /ftp
-  userdel -r z      # -r 옵션으로 홈 디렉터리까지 함께 삭제
-  ```
-
-  > `-r` 옵션 없이 삭제하면 `/home/z`, `/var/spool/mail/z` 디렉터리가 남아 있어, 동일 이름으로 계정을 재생성했을 때 UID 불일치 문제가 발생할 수 있다.
-
-<br>
-
-- **Active mode와 Passive mode 비교**
+- **Active mode와 Passive mode 비교** <br>
 
   | 구분 | Active mode | Passive mode |
   |---|---|---|
@@ -275,13 +205,12 @@ FTP 전송 로그를 확인할 수 있다. <br>
   | 방화벽 친화성 | 낮음 (클라이언트 인바운드 필요) | 높음 (클라이언트 아웃바운드만 필요) |
   | 주요 설정 | `connect_from_port_20=YES` | `pasv_enable=YES`, `pasv_min/max_port` |
 
-<br>
-
-- **트리 구조로 디렉터리 확인**
-
+- **방화벽 XML 파일 수정으로 포트를 추가하는 방법** <br>
   ```bash
-  dnf install -y tree
-  tree /home
-  tree /ftp
+  vi /etc/firewalld/zones/public.xml
   ```
-
+  
+  ```xml
+  <port port="65000-65010" protocol="tcp"/>
+  ```
+  - 수정 후 `firewall-cmd --reload`를 실행해야 적용된다.
