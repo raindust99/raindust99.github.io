@@ -1,12 +1,13 @@
 ---
 layout: post
 title: "Rocky Linux에 DNS+WEB 서버 구성"
-date: 2026-05-21 00:00:00 +0900
+date: 2026-05-22 00:00:00 +0900
 category: lab
 permalink: /lab/rocky-dns-web-server/
 ---
+Rocky Linux 9.4에 Apache httpd와 BIND(named)를 설치하고 가상 호스트 및 사용자 인증 설정, 주/보조 DNS 영역 구성까지 한 번에 정리하였다.
 
-
+---
 
 ### 1. Apache HTTP Server 설치
 
