@@ -421,24 +421,24 @@ http://blog.이니셜.local
 
 <br>
 
-### 12. 삭제 방법
+### 12. 알아두면 좋은 것
 
-- HTTP Server 제거
+- 삭제 방법 <br>
 
-```bash
-firewall-cmd --permanent --remove-port=80/tcp
-firewall-cmd --reload
-dnf autoremove -y httpd
-```
-
-- DNS Server 제거
-
-```bash
-firewall-cmd --permanent --remove-port=53/tcp
-firewall-cmd --permanent --remove-port=53/udp
-firewall-cmd --reload
-dnf autoremove -y bind bind-utils bind-libs
-rm -rf /etc/named.conf.rpmsave /etc/named.rfc1912.zones.rpmsave /var/named
-```
-
----
+  - HTTP Server 제거
+  
+  ```bash
+  firewall-cmd --permanent --remove-port=80/tcp
+  firewall-cmd --reload
+  dnf autoremove -y httpd
+  ```
+  
+  - DNS Server 제거
+  
+  ```bash
+  firewall-cmd --permanent --remove-port=53/tcp
+  firewall-cmd --permanent --remove-port=53/udp
+  firewall-cmd --reload
+  dnf autoremove -y bind bind-utils bind-libs
+  rm -rf /etc/named.conf.rpmsave /etc/named.rfc1912.zones.rpmsave /var/named
+  ```
