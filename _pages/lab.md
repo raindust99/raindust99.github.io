@@ -6,4 +6,5 @@ permalink: /lab/
 ---
 
 - [VMware 구성 실습](/lab/vmware/)
-- [서버 실습](/lab/server/)
+- [Rocky 서버 실습](/lab/server/)
+- [Windows Server 실습](/lab/windows-server/)

@@ -13,11 +13,13 @@
                     { title: 'VMware\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/rocky-9-7-vm/' },
                     { title: 'VMware Clone을 이용한 rocky9.4 복제 및 스냅샷 설정', url: '/lab/vmware-clone/' },
                     { title: 'VMware에 Windows 10 설치 및 설정', url: '/lab/windows-10/' },
-                    { title: 'VMware에 Windows 11 설치 및 설정', url: '/lab/windows-11/' }
+                    { title: 'VMware에 Windows 11 설치 및 설정', url: '/lab/windows-11/' },
+                    { title: 'VMware에 Windows 2022 Server VM 설치 및 설정', url: '/lab/windows-2022-server-vm/' },
+                    { title: 'VMware Clone을 이용한 Windows 2022 Server 복제 및 스냅샷 설정', url: '/lab/windows-2022-server-clone/' }
                 ]
             },
             {
-                title: '\uc11c\ubc84 \uc2e4\uc2b5',
+                title: 'Rocky 서버 실습',
                 url: '/lab/server/',
                 key: 'server',
                 children: [
@@ -25,15 +27,21 @@
                     { title: 'Rocky Linux에 Active mode FTP 서버 구성', url: '/lab/rocky-active-ftp-server/' },
                     { title: 'Rocky Linux에 Passive mode FTP 서버 구성', url: '/lab/rocky-passive-ftp-server/' },
                     { title: 'Rocky Linux에 DNS+WEB 서버 구성', url: '/lab/rocky-dns-web-server/' },
-                    { title: 'Rocky Linux에 Mail 서버 구성', url: '/lab/rocky-mail-server/' }
+                    { title: 'Rocky Linux에 DNS+Mail 서버 구성', url: '/lab/rocky-mail-server/' },
+                    { title: 'Wordpress + MySQL + HAProxy 구성', url: '/lab/wordpress-mysql-haproxy/' }
                 ]
+            },
+            {
+                title: 'Windows Server 실습',
+                url: '/lab/windows-server/',
+                key: 'windows-server',
+                children: []
             }
         ],
         '/project/': [
             { title: '\ubaa8\uc758\ud574\ud0b9', url: '/project/pentest/' }
         ]
     };
-
     function normalizePath(path) {
         return path.replace(/\/index\.html$/, '/');
     }
@@ -47,7 +55,8 @@
         '/lab/rocky-dhcp-server/': true,
         '/lab/rocky-active-ftp-server/': true,
         '/lab/rocky-passive-ftp-server/': true,
-        '/lab/rocky-dns-web-server/': true
+        '/lab/rocky-dns-web-server/': true,
+        '/lab/rocky-mail-server/': true
     };
     var contentStatusCache = {};
 
@@ -252,7 +261,7 @@
         });
     }
     function removeStandaloneLabPages() {
-        ['/lab/vmware/', '/lab/server/'].forEach(function(url) {
+        ['/lab/vmware/', '/lab/server/', '/lab/windows-server/'].forEach(function(url) {
             document.querySelectorAll('.book-summary li.chapter[data-path="' + url + '"]').forEach(function(chapter) {
                 chapter.remove();
             });
@@ -557,6 +566,10 @@
             'VMware Clone을 이용한 rocky9.4 복제 및 스냅샷 설정',
             'VMware에 Windows 10 설치 및 설정',
             'VMware에 Windows 11 설치 및 설정',
+            'VMware에 Windows 2022 Server VM 설치 및 설정',
+            'VMware Clone을 이용한 Windows 2022 Server 복제 및 스냅샷 설정',
+            'Wordpress + MySQL + HAProxy 구성',
+            'Rocky Linux에 DNS+Mail 서버 구성',
             'OSI 7\uacc4\uce35',
             '\ubaa8\uc758\ud574\ud0b9'
         ];

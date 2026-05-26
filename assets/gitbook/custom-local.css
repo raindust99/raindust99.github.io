@@ -15,6 +15,10 @@
 .markdown-section li:has(a[href="/lab/rocky-passive-ftp-server/"]),
 .markdown-section li:has(a[href="/lab/rocky-dns-web-server/"]),
 .markdown-section li:has(a[href="/lab/rocky-mail-server/"]),
+.markdown-section li:has(a[href="/lab/windows-server/"]),
+.markdown-section li:has(a[href="/lab/windows-2022-server-vm/"]),
+.markdown-section li:has(a[href="/lab/windows-2022-server-clone/"]),
+.markdown-section li:has(a[href="/lab/wordpress-mysql-haproxy/"]),
 .markdown-section li:has(a[href="/project/pentest/"]) {
     display: none;
 }
