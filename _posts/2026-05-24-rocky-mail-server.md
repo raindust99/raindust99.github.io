@@ -14,7 +14,7 @@ Rocky Linux 9 환경에서 **BIND**(DNS), **Postfix**(SMTP), **Dovecot**(POP3/IM
 
 ---
 
-## 구성 흐름
+### 구성 흐름
 
 ```
 [클라이언트]
@@ -28,7 +28,7 @@ Rocky Linux 9 환경에서 **BIND**(DNS), **Postfix**(SMTP), **Dovecot**(POP3/IM
     └── Dovecot  (POP3 :110 / IMAP :143)
 ```
 
----
+<br>
 
 ## 1. DNS 서버에 메일 관련 레코드 추가
 
@@ -352,7 +352,6 @@ echo "test mail body" | mail -s "test subject" x@kjy.local
 
 Postfix는 `kjy.local`의 MX 레코드를 DNS에서 조회해 `mx1.kjy.local(10.0.0.23)`로 메일을 전달한다.
 
----
 
 ## 9. Thunderbird에서 계정 연결하기
 
