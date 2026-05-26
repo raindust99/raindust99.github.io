@@ -30,138 +30,137 @@ Rocky Linux 9 환경에서 **BIND**(DNS), **Postfix**(SMTP), **Dovecot**(POP3/IM
 
 <br>
 
-## 1. DNS 서버에 메일 관련 레코드 추가
+### 1. DNS 서버에 메일 관련 레코드 추가
 
 메일 서버를 도메인으로 사용하려면 DNS에 A 레코드와 MX 레코드를 등록해야 한다.
 
-### BIND 설치
+- BIND 설치
 
-```bash
-dnf install -y bind bind-utils
-systemctl enable --now named
-```
+    ```bash
+    dnf install -y bind bind-utils
+    systemctl enable --now named
+    ```
 
-### 정방향 조회 영역 설정
+- 정방향 조회 영역 설정
 
-```bash
-vi /etc/named.conf
-```
+    ```bash
+    vi /etc/named.conf
+    ```
 
-`options` 블록에 아래 항목을 추가 또는 수정한다.
+    `options` 블록에 아래 항목을 추가 또는 수정한다.
 
-```
-options {
-    listen-on port 53 { any; };
-    allow-query { any; };
-    ...
-};
-```
+    ```
+    options {
+        listen-on port 53 { any; };
+        allow-query { any; };
+        ...
+    };
+    ```
 
-영역 선언을 추가한다.
+    영역 선언을 추가한다.
 
-```
-zone "kjy.local" IN {
-    type master;
-    file "/var/named/kjy.local.zone";
-    allow-transfer { 10.0.0.22; };   # 보조 DNS가 있는 경우
-};
-```
+    ```
+    zone "kjy.local" IN {
+        type master;
+        file "/var/named/kjy.local.zone";
+        allow-transfer { 10.0.0.22; };   # 보조 DNS가 있는 경우
+    };
+    ```
 
-### 정방향 조회 영역 파일 작성
+- 정방향 조회 영역 파일 작성
 
-```bash
-vi /var/named/kjy.local.zone
-```
+    ```bash
+    vi /var/named/kjy.local.zone
+    ```
 
-```
-$TTL 86400
-@   IN  SOA  ns1.kjy.local.  root.kjy.local. (
-            2024010101  ; Serial
-            3600        ; Refresh
-            900         ; Retry
-            604800      ; Expire
-            86400 )     ; Minimum TTL
+    ```
+    $TTL 86400
+    @   IN  SOA  ns1.kjy.local.  root.kjy.local. (
+                2024010101  ; Serial
+                3600        ; Refresh
+                900         ; Retry
+                604800      ; Expire
+                86400 )     ; Minimum TTL
 
-; 네임 서버
-@       IN  NS   ns1.kjy.local.
+    ; 네임 서버
+    @       IN  NS   ns1.kjy.local.
 
-; A 레코드
-@       IN  A    10.0.0.21
-ns1     IN  A    10.0.0.21
-www     IN  A    10.0.0.22
-ftp     IN  A    10.0.0.22
-mx1     IN  A    10.0.0.23
+    ; A 레코드
+    @       IN  A    10.0.0.21
+    ns1     IN  A    10.0.0.21
+    www     IN  A    10.0.0.22
+    ftp     IN  A    10.0.0.22
+    mx1     IN  A    10.0.0.23
 
-; MX 레코드 (메일 서버 지정)
-@       IN  MX   10  mx1.kjy.local.
-```
+    ; MX 레코드 (메일 서버 지정)
+    @       IN  MX   10  mx1.kjy.local.
+    ```
 
-> MX 레코드의 숫자(10)는 우선순위다. 숫자가 낮을수록 먼저 사용된다.
+    > MX 레코드의 숫자(10)는 우선순위다. 숫자가 낮을수록 먼저 사용된다.
 
-### 역방향 조회 영역 설정
+- 역방향 조회 영역 설정
 
-`/etc/named.conf`에 역방향 영역 선언을 추가한다.
+    `/etc/named.conf`에 역방향 영역 선언을 추가한다.
 
-```
-zone "0.0.10.in-addr.arpa" IN {
-    type master;
-    file "/var/named/0.0.10.in-addr.arpa.zone";
-    allow-transfer { 10.0.0.22; };
-};
-```
+    ```
+    zone "0.0.10.in-addr.arpa" IN {
+        type master;
+        file "/var/named/0.0.10.in-addr.arpa.zone";
+        allow-transfer { 10.0.0.22; };
+    };
+    ```
 
-### 역방향 조회 영역 파일 작성
+- 역방향 조회 영역 파일 작성
 
-```bash
-vi /var/named/0.0.10.in-addr.arpa.zone
-```
+    ```bash
+    vi /var/named/0.0.10.in-addr.arpa.zone
+    ```
 
-```
-$TTL 86400
-@   IN  SOA  ns1.kjy.local.  root.kjy.local. (
-            2024010101
-            3600
-            900
-            604800
-            86400 )
+    ```
+    $TTL 86400
+    @   IN  SOA  ns1.kjy.local.  root.kjy.local. (
+                2024010101
+                3600
+                900
+                604800
+                86400 )
 
-@   IN  NS   ns1.kjy.local.
+    @   IN  NS   ns1.kjy.local.
 
-; PTR 레코드
-21  IN  PTR  ns1.kjy.local.
-23  IN  PTR  mx1.kjy.local.
-```
+    ; PTR 레코드
+    21  IN  PTR  ns1.kjy.local.
+    23  IN  PTR  mx1.kjy.local.
+    ```
 
-### 영역 파일 권한 설정 및 BIND 재시작
+- 영역 파일 권한 설정 및 BIND 재시작
 
-```bash
-chown root:named /var/named/kjy.local.zone
-chown root:named /var/named/0.0.10.in-addr.arpa.zone
+    ```bash
+    chown root:named /var/named/kjy.local.zone
+    chown root:named /var/named/0.0.10.in-addr.arpa.zone
 
-# 설정 문법 확인
-named-checkconf
-named-checkzone kjy.local /var/named/kjy.local.zone
-named-checkzone 0.0.10.in-addr.arpa /var/named/0.0.10.in-addr.arpa.zone
+    # 설정 문법 확인
+    named-checkconf
+    named-checkzone kjy.local /var/named/kjy.local.zone
+    named-checkzone 0.0.10.in-addr.arpa /var/named/0.0.10.in-addr.arpa.zone
 
-systemctl restart named
-```
+    systemctl restart named
+    ```
 
-### DNS 레코드 확인
+- DNS 레코드 확인
 
-```bash
-# A 레코드 확인
-nslookup mx1.kjy.local 10.0.0.21
+    ```bash
+    # A 레코드 확인
+    nslookup mx1.kjy.local 10.0.0.21
 
-# MX 레코드 확인
-nslookup -type=MX kjy.local 10.0.0.21
+    # MX 레코드 확인
+    nslookup -type=MX kjy.local 10.0.0.21
 
-# 역방향 확인
-nslookup 10.0.0.23 10.0.0.21
-```
+    # 역방향 확인
+    nslookup 10.0.0.23 10.0.0.21
+    ```
 
----
 
-## 2. 클라이언트 DNS 설정
+### 2. 클라이언트 DNS 설정
 
 메일 클라이언트(Thunderbird를 사용할 PC)의 DNS를 `10.0.0.21`로 지정해야 `mx1.kjy.local`로 접속할 수 있다.
 
@@ -183,7 +182,7 @@ nmcli con up "연결이름"
 
 ---
 
-## 3. 방화벽 포트 열기 (Mail 서버)
+### 3. 방화벽 포트 열기 (Mail 서버)
 
 메일 서버(`10.0.0.23`)에서 아래 포트를 허용한다.
 
@@ -212,20 +211,20 @@ firewall-cmd --reload
 
 ---
 
-## 4. Postfix 설치 및 설정 (SMTP)
+### 4. Postfix 설치 및 설정 (SMTP)
 
-### 설치
+- 설치
 
-```bash
-dnf install -y postfix
-systemctl enable --now postfix
-```
+    ```bash
+    dnf install -y postfix
+    systemctl enable --now postfix
+    ```
 
-### main.cf 설정
+- main.cf 설정
 
-```bash
-vi /etc/postfix/main.cf
-```
+    ```bash
+    vi /etc/postfix/main.cf
+    ```
 
 ```
 # 호스트 이름 (DNS의 A 레코드와 일치해야 함)
@@ -247,7 +246,7 @@ mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 home_mailbox = Maildir/
 ```
 
-### 재시작
+- 재시작
 
 ```bash
 systemctl restart postfix
@@ -256,16 +255,16 @@ systemctl status postfix
 
 ---
 
-## 5. Dovecot 설치 및 설정 (POP3/IMAP)
+### 5. Dovecot 설치 및 설정 (POP3/IMAP)
 
-### 설치
+- 설치
 
 ```bash
 dnf install -y dovecot
 systemctl enable --now dovecot
 ```
 
-### 프로토콜 활성화
+- 프로토콜 활성화
 
 ```bash
 vi /etc/dovecot/dovecot.conf
@@ -275,7 +274,7 @@ vi /etc/dovecot/dovecot.conf
 protocols = imap pop3
 ```
 
-### 메일박스 위치 설정
+- 메일박스 위치 설정
 
 ```bash
 vi /etc/dovecot/conf.d/10-mail.conf
@@ -285,7 +284,7 @@ vi /etc/dovecot/conf.d/10-mail.conf
 mail_location = maildir:~/Maildir
 ```
 
-### 인증 설정
+- 인증 설정
 
 ```bash
 vi /etc/dovecot/conf.d/10-auth.conf
@@ -299,7 +298,7 @@ auth_mechanisms = plain login
 
 > ⚠️ 운영 환경에서는 SSL/TLS를 적용하고 `disable_plaintext_auth = yes`로 설정해야 한다.
 
-### 재시작
+- 재시작
 
 ```bash
 systemctl restart dovecot
@@ -308,7 +307,7 @@ systemctl status dovecot
 
 ---
 
-## 6. 메일 계정 생성
+### 6. 메일 계정 생성
 
 Rocky Linux에서는 OS 사용자가 곧 메일 계정이다.
 
@@ -324,7 +323,7 @@ echo "It1" | passwd --stdin y
 
 ---
 
-## 7. 로그 확인
+### 7. 로그 확인
 
 ```bash
 # 실시간 로그 확인
@@ -336,15 +335,15 @@ journalctl -u postfix -u dovecot -f
 
 ---
 
-## 8. 동작 확인
+### 8. 동작 확인
 
-### 포트 리스닝 확인
+- 포트 리스닝 확인
 
 ```bash
 ss -tlnp | grep -E '25|110|143'
 ```
 
-### MX 레코드를 통한 메일 발송 테스트
+- MX 레코드를 통한 메일 발송 테스트
 
 ```bash
 echo "test mail body" | mail -s "test subject" x@kjy.local
@@ -353,17 +352,17 @@ echo "test mail body" | mail -s "test subject" x@kjy.local
 Postfix는 `kjy.local`의 MX 레코드를 DNS에서 조회해 `mx1.kjy.local(10.0.0.23)`로 메일을 전달한다.
 
 
-## 9. Thunderbird에서 계정 연결하기
+### 9. Thunderbird에서 계정 연결하기
 
-### 사전 조건
+- 사전 조건
 
 클라이언트 PC의 DNS가 `10.0.0.21`로 설정되어 있어야 `mx1.kjy.local`로 접속할 수 있다.
 
-### 계정 추가
+- 계정 추가
 
 설정 → 계정 설정 → 새 계정 → 메일 계정 → MANUAL CONFIGURATION
 
-### 수신 서버 설정
+- 수신 서버 설정
 
 | 항목 | 값 |
 |------|-----|
@@ -373,7 +372,7 @@ Postfix는 `kjy.local`의 MX 레코드를 DNS에서 조회해 `mx1.kjy.local(10.
 | 인증 방식 | 안전하지 않게 전송되는 비밀번호 |
 | 사용자 이름 | `x` |
 
-### 발신 서버 설정
+- 발신 서버 설정
 
 | 항목 | 값 |
 |------|-----|
@@ -383,14 +382,14 @@ Postfix는 `kjy.local`의 MX 레코드를 DNS에서 조회해 `mx1.kjy.local(10.
 | 인증 방식 | 안전하지 않게 전송되는 비밀번호 |
 | 사용자 이름 | `x` |
 
-### 발신 서버 편집
+- 발신 서버 편집
 
 설정 → 계정 설정 → 보내는 서버 편집 → 보안 연결 : 없음 / 인증 방식 : 안전하지 않게 전송되는 비밀번호 → 확인
 
-### 테스트
+- 테스트
 
 새 메시지 → 자기 자신(`x@kjy.local`)에게 메일 발송 → 받은 편지함, 보낸 편지함에서 모두 확인되면 정상 동작.
 
-### 계정 삭제
+- 계정 삭제
 
 설정 → 우측 상단 삭제 → 메시지 데이터 삭제 체크 → 제거
