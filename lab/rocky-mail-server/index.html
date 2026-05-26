@@ -1,0 +1,841 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    <head><meta charset="UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"><title>Rocky Linux에 DNS+Mail 서버 구성 · Home</title><meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="Security study notes."><meta name="generator" content="Jekyll (using style of GitBook)"><meta name="author" content="Your Name"><link rel="stylesheet" href="/assets/gitbook/style.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-expandable-chapters-small2/expandable-chapters-small.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-fontsettings/website.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-search-pro/search.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-splitter/splitter.css">
+
+<link rel="stylesheet" href="/assets/gitbook/rouge/colorful.css">
+
+<link rel="stylesheet" href="/assets/gitbook/custom.css">
+<link rel="stylesheet" href="/assets/gitbook/custom-local.css">
+
+<meta name="HandheldFriendly" content="true"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/gitbook/images/apple-touch-icon-precomposed-152.png">
+<link rel="shortcut icon" href="/" type="image/x-icon">
+
+
+
+
+            <link rel="prev" href="/lab/rocky-dns-web-server/" />
+        
+
+        
+            <link rel="next" href="/lab/windows-2022-server-clone/" />
+        
+    </head>
+    <body>
+        <div class="book"><div class="book-summary">
+    <script type="text/javascript">
+        // Fixes the page links scroll problem on both desktop and mobile browsers
+        function pageScrollToTop(element) {
+            // both mobile and non-mobile
+            $('div.body-inner').animate({scrollTop: 0});
+            $(element).parent().find('li>ul>li').removeClass('active');
+            return true;  // propagate
+        }
+        // Fixes the anchor links scroll problem on mobile browsers
+        function mobilePageScrollToAnchor(element) {
+            $(element).closest('li.chapter').find('ul>li').removeClass('active');
+            $(element).parent().addClass('active');
+            if ($(document).width() <= 1240) {
+                let target = $($(element).attr('href'));
+                if (target.length) {
+                    $('div.body-inner').animate({
+                        scrollTop: target.get(0).offsetTop,
+                    });
+                }
+            }
+            return true;
+        }
+    </script>
+
+    <nav role="navigation">
+        <div id="book-search-input" role="search">
+            <input type="text" placeholder="Type to search" />
+        </div>
+        <div id="book-search-input-link" role="search">
+            <a href="/assets/search.html">Click to Search</a>
+        </div>
+        <ul class="summary">
+            
+            <li class="chapter" data-level="1.1" data-path="">
+            
+                <a href="/" onclick="pageScrollToTop(this)">
+                    Home
+                </a>
+                
+                    
+                
+            </li>
+
+            <li class="divider"></li>
+
+            
+                
+                    
+                    <!-- <p>pages</p> -->
+                    
+                        
+
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/network/">
+                            
+                                <a href="/network/" onclick="pageScrollToTop(this)">
+                                    네트워크
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/">
+                            
+                                <a href="/lab/" onclick="pageScrollToTop(this)">
+                                    실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/project/">
+                            
+                                <a href="/project/" onclick="pageScrollToTop(this)">
+                                    Project
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/vmware/">
+                            
+                                <a href="/lab/vmware/" onclick="pageScrollToTop(this)">
+                                    VMware 구성 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/about/">
+                            
+                                <a href="/about/" onclick="pageScrollToTop(this)">
+                                    About
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/server/">
+                            
+                                <a href="/lab/server/" onclick="pageScrollToTop(this)">
+                                    Rocky 서버 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/windows-server/">
+                            
+                                <a href="/lab/windows-server/" onclick="pageScrollToTop(this)">
+                                    Windows Server 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+
+                        
+                            <li class="divider"></li>
+                        
+                    
+                
+            
+        </ul>
+    </nav>
+</div>
+<div class="book-body">
+                <div class="book-header" role="navigation">
+                    <!-- Title -->
+                    <h1>
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                        
+                            <a href="." >Rocky Linux에 DNS+Mail 서버 구성</a>
+                        
+                    </h1>
+                </div>
+
+                <div class="body-inner"><div class="page-wrapper" tabindex="-1" role="main">
+    
+
+    <div class="page-inner">
+        <div id="book-search-results">
+            <div class="search-noresults">
+                <section class="normal markdown-section">
+                    
+                        <h1 id="/lab/rocky-mail-server">Rocky Linux에 DNS+Mail 서버 구성</h1>
+                    
+
+                    <p>Rocky Linux 9 환경에서 <strong>BIND</strong>(DNS), <strong>Postfix</strong>(SMTP), <strong>Dovecot</strong>(POP3/IMAP)을 함께 구성해 도메인 이름으로 메일을 주고받는 방법을 정리한다.</p>
+
+<blockquote>
+  <p>실습 환경</p>
+  <ul>
+    <li>DNS 서버 : <code class="language-plaintext highlighter-rouge">10.0.0.21</code> (ns1.kjy.local)</li>
+    <li>Mail 서버 : <code class="language-plaintext highlighter-rouge">10.0.0.23</code> (mx1.kjy.local)</li>
+    <li>도메인 : <code class="language-plaintext highlighter-rouge">kjy.local</code></li>
+  </ul>
+</blockquote>
+
+<hr />
+
+<h3 id="구성-흐름">구성 흐름</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[클라이언트]
+    │
+    ▼
+[DNS 서버 10.0.0.21]   ← mx1.kjy.local → 10.0.0.23 (MX 레코드)
+    │
+    ▼
+[Mail 서버 10.0.0.23]
+    ├── Postfix  (SMTP  :25)
+    └── Dovecot  (POP3 :110 / IMAP :143)
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="1-dns-서버에-메일-관련-레코드-추가">1. DNS 서버에 메일 관련 레코드 추가</h2>
+
+<p>메일 서버를 도메인으로 사용하려면 DNS에 A 레코드와 MX 레코드를 등록해야 한다.</p>
+
+<h3 id="bind-설치">BIND 설치</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dnf <span class="nb">install</span> <span class="nt">-y</span> <span class="nb">bind </span>bind-utils
+systemctl <span class="nb">enable</span> <span class="nt">--now</span> named
+</code></pre></div></div>
+
+<h3 id="정방향-조회-영역-설정">정방향 조회 영역 설정</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/named.conf
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">options</code> 블록에 아래 항목을 추가 또는 수정한다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>options {
+    listen-on port 53 { any; };
+    allow-query { any; };
+    ...
+};
+</code></pre></div></div>
+
+<p>영역 선언을 추가한다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zone "kjy.local" IN {
+    type master;
+    file "/var/named/kjy.local.zone";
+    allow-transfer { 10.0.0.22; };   # 보조 DNS가 있는 경우
+};
+</code></pre></div></div>
+
+<h3 id="정방향-조회-영역-파일-작성">정방향 조회 영역 파일 작성</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /var/named/kjy.local.zone
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$TTL 86400
+@   IN  SOA  ns1.kjy.local.  root.kjy.local. (
+            2024010101  ; Serial
+            3600        ; Refresh
+            900         ; Retry
+            604800      ; Expire
+            86400 )     ; Minimum TTL
+
+; 네임 서버
+@       IN  NS   ns1.kjy.local.
+
+; A 레코드
+@       IN  A    10.0.0.21
+ns1     IN  A    10.0.0.21
+www     IN  A    10.0.0.22
+ftp     IN  A    10.0.0.22
+mx1     IN  A    10.0.0.23
+
+; MX 레코드 (메일 서버 지정)
+@       IN  MX   10  mx1.kjy.local.
+</code></pre></div></div>
+
+<blockquote>
+  <p>MX 레코드의 숫자(10)는 우선순위다. 숫자가 낮을수록 먼저 사용된다.</p>
+</blockquote>
+
+<h3 id="역방향-조회-영역-설정">역방향 조회 영역 설정</h3>
+
+<p><code class="language-plaintext highlighter-rouge">/etc/named.conf</code>에 역방향 영역 선언을 추가한다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zone "0.0.10.in-addr.arpa" IN {
+    type master;
+    file "/var/named/0.0.10.in-addr.arpa.zone";
+    allow-transfer { 10.0.0.22; };
+};
+</code></pre></div></div>
+
+<h3 id="역방향-조회-영역-파일-작성">역방향 조회 영역 파일 작성</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /var/named/0.0.10.in-addr.arpa.zone
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$TTL 86400
+@   IN  SOA  ns1.kjy.local.  root.kjy.local. (
+            2024010101
+            3600
+            900
+            604800
+            86400 )
+
+@   IN  NS   ns1.kjy.local.
+
+; PTR 레코드
+21  IN  PTR  ns1.kjy.local.
+23  IN  PTR  mx1.kjy.local.
+</code></pre></div></div>
+
+<h3 id="영역-파일-권한-설정-및-bind-재시작">영역 파일 권한 설정 및 BIND 재시작</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chown </span>root:named /var/named/kjy.local.zone
+<span class="nb">chown </span>root:named /var/named/0.0.10.in-addr.arpa.zone
+
+<span class="c"># 설정 문법 확인</span>
+named-checkconf
+named-checkzone kjy.local /var/named/kjy.local.zone
+named-checkzone 0.0.10.in-addr.arpa /var/named/0.0.10.in-addr.arpa.zone
+
+systemctl restart named
+</code></pre></div></div>
+
+<h3 id="dns-레코드-확인">DNS 레코드 확인</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># A 레코드 확인</span>
+nslookup mx1.kjy.local 10.0.0.21
+
+<span class="c"># MX 레코드 확인</span>
+nslookup <span class="nt">-type</span><span class="o">=</span>MX kjy.local 10.0.0.21
+
+<span class="c"># 역방향 확인</span>
+nslookup 10.0.0.23 10.0.0.21
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="2-클라이언트-dns-설정">2. 클라이언트 DNS 설정</h2>
+
+<p>메일 클라이언트(Thunderbird를 사용할 PC)의 DNS를 <code class="language-plaintext highlighter-rouge">10.0.0.21</code>로 지정해야 <code class="language-plaintext highlighter-rouge">mx1.kjy.local</code>로 접속할 수 있다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># /etc/resolv.conf 수정 (Rocky Linux 클라이언트)</span>
+vi /etc/resolv.conf
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nameserver 10.0.0.21
+</code></pre></div></div>
+
+<p>또는 NetworkManager로 설정한다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmcli con mod <span class="s2">"연결이름"</span> ipv4.dns <span class="s2">"10.0.0.21"</span>
+nmcli con up <span class="s2">"연결이름"</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="3-방화벽-포트-열기-mail-서버">3. 방화벽 포트 열기 (Mail 서버)</h2>
+
+<p>메일 서버(<code class="language-plaintext highlighter-rouge">10.0.0.23</code>)에서 아래 포트를 허용한다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>포트</th>
+      <th>프로토콜</th>
+      <th>용도</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>25</td>
+      <td>TCP</td>
+      <td>SMTP (메일 송신)</td>
+    </tr>
+    <tr>
+      <td>110</td>
+      <td>TCP</td>
+      <td>POP3 (메일 수신)</td>
+    </tr>
+    <tr>
+      <td>143</td>
+      <td>TCP</td>
+      <td>IMAP (메일 수신)</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firewall-cmd <span class="nt">--permanent</span> <span class="nt">--add-port</span><span class="o">=</span>25/tcp
+firewall-cmd <span class="nt">--permanent</span> <span class="nt">--add-port</span><span class="o">=</span>110/tcp
+firewall-cmd <span class="nt">--permanent</span> <span class="nt">--add-port</span><span class="o">=</span>143/tcp
+firewall-cmd <span class="nt">--reload</span>
+
+<span class="c"># 확인</span>
+firewall-cmd <span class="nt">--list-ports</span>
+</code></pre></div></div>
+
+<p>DNS 서버(<code class="language-plaintext highlighter-rouge">10.0.0.21</code>)에서도 53번 포트를 허용한다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firewall-cmd <span class="nt">--permanent</span> <span class="nt">--add-service</span><span class="o">=</span>dns
+firewall-cmd <span class="nt">--reload</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="4-postfix-설치-및-설정-smtp">4. Postfix 설치 및 설정 (SMTP)</h2>
+
+<h3 id="설치">설치</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dnf <span class="nb">install</span> <span class="nt">-y</span> postfix
+systemctl <span class="nb">enable</span> <span class="nt">--now</span> postfix
+</code></pre></div></div>
+
+<h3 id="maincf-설정">main.cf 설정</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/postfix/main.cf
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 호스트 이름 (DNS의 A 레코드와 일치해야 함)
+myhostname = mx1.kjy.local
+
+# 메일 도메인 (MX 레코드 도메인과 일치해야 함)
+mydomain = kjy.local
+
+# 발신 도메인
+myorigin = $mydomain
+
+# 모든 인터페이스에서 수신
+inet_interfaces = all
+
+# 수신 허용 도메인
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+
+# Maildir 형식으로 메일박스 생성
+home_mailbox = Maildir/
+</code></pre></div></div>
+
+<h3 id="재시작">재시작</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart postfix
+systemctl status postfix
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="5-dovecot-설치-및-설정-pop3imap">5. Dovecot 설치 및 설정 (POP3/IMAP)</h2>
+
+<h3 id="설치-1">설치</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dnf <span class="nb">install</span> <span class="nt">-y</span> dovecot
+systemctl <span class="nb">enable</span> <span class="nt">--now</span> dovecot
+</code></pre></div></div>
+
+<h3 id="프로토콜-활성화">프로토콜 활성화</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/dovecot/dovecot.conf
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>protocols = imap pop3
+</code></pre></div></div>
+
+<h3 id="메일박스-위치-설정">메일박스 위치 설정</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/dovecot/conf.d/10-mail.conf
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mail_location = maildir:~/Maildir
+</code></pre></div></div>
+
+<h3 id="인증-설정">인증 설정</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/dovecot/conf.d/10-auth.conf
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 평문 인증 허용 (내부 실습 환경)
+disable_plaintext_auth = no
+auth_mechanisms = plain login
+</code></pre></div></div>
+
+<blockquote>
+  <p>⚠️ 운영 환경에서는 SSL/TLS를 적용하고 <code class="language-plaintext highlighter-rouge">disable_plaintext_auth = yes</code>로 설정해야 한다.</p>
+</blockquote>
+
+<h3 id="재시작-1">재시작</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart dovecot
+systemctl status dovecot
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="6-메일-계정-생성">6. 메일 계정 생성</h2>
+
+<p>Rocky Linux에서는 OS 사용자가 곧 메일 계정이다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 사용자 x 생성</span>
+useradd x
+<span class="nb">echo</span> <span class="s2">"It1"</span> | passwd <span class="nt">--stdin</span> x
+
+<span class="c"># 사용자 y 생성</span>
+useradd y
+<span class="nb">echo</span> <span class="s2">"It1"</span> | passwd <span class="nt">--stdin</span> y
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="7-로그-확인">7. 로그 확인</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 실시간 로그 확인</span>
+<span class="nb">tail</span> <span class="nt">-f</span> /var/log/maillog
+
+<span class="c"># journalctl로 확인</span>
+journalctl <span class="nt">-u</span> postfix <span class="nt">-u</span> dovecot <span class="nt">-f</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="8-동작-확인">8. 동작 확인</h2>
+
+<h3 id="포트-리스닝-확인">포트 리스닝 확인</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ss <span class="nt">-tlnp</span> | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s1">'25|110|143'</span>
+</code></pre></div></div>
+
+<h3 id="mx-레코드를-통한-메일-발송-테스트">MX 레코드를 통한 메일 발송 테스트</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"test mail body"</span> | mail <span class="nt">-s</span> <span class="s2">"test subject"</span> x@kjy.local
+</code></pre></div></div>
+
+<p>Postfix는 <code class="language-plaintext highlighter-rouge">kjy.local</code>의 MX 레코드를 DNS에서 조회해 <code class="language-plaintext highlighter-rouge">mx1.kjy.local(10.0.0.23)</code>로 메일을 전달한다.</p>
+
+<h2 id="9-thunderbird에서-계정-연결하기">9. Thunderbird에서 계정 연결하기</h2>
+
+<h3 id="사전-조건">사전 조건</h3>
+
+<p>클라이언트 PC의 DNS가 <code class="language-plaintext highlighter-rouge">10.0.0.21</code>로 설정되어 있어야 <code class="language-plaintext highlighter-rouge">mx1.kjy.local</code>로 접속할 수 있다.</p>
+
+<h3 id="계정-추가">계정 추가</h3>
+
+<p>설정 → 계정 설정 → 새 계정 → 메일 계정 → MANUAL CONFIGURATION</p>
+
+<h3 id="수신-서버-설정">수신 서버 설정</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>항목</th>
+      <th>값</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>호스트명</td>
+      <td><code class="language-plaintext highlighter-rouge">mx1.kjy.local</code></td>
+    </tr>
+    <tr>
+      <td>포트</td>
+      <td><code class="language-plaintext highlighter-rouge">110</code> (POP3) 또는 <code class="language-plaintext highlighter-rouge">143</code> (IMAP)</td>
+    </tr>
+    <tr>
+      <td>보안 연결</td>
+      <td>없음</td>
+    </tr>
+    <tr>
+      <td>인증 방식</td>
+      <td>안전하지 않게 전송되는 비밀번호</td>
+    </tr>
+    <tr>
+      <td>사용자 이름</td>
+      <td><code class="language-plaintext highlighter-rouge">x</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="발신-서버-설정">발신 서버 설정</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>항목</th>
+      <th>값</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>호스트명</td>
+      <td><code class="language-plaintext highlighter-rouge">mx1.kjy.local</code></td>
+    </tr>
+    <tr>
+      <td>포트</td>
+      <td><code class="language-plaintext highlighter-rouge">25</code></td>
+    </tr>
+    <tr>
+      <td>보안 연결</td>
+      <td>없음</td>
+    </tr>
+    <tr>
+      <td>인증 방식</td>
+      <td>안전하지 않게 전송되는 비밀번호</td>
+    </tr>
+    <tr>
+      <td>사용자 이름</td>
+      <td><code class="language-plaintext highlighter-rouge">x</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="발신-서버-편집">발신 서버 편집</h3>
+
+<p>설정 → 계정 설정 → 보내는 서버 편집 → 보안 연결 : 없음 / 인증 방식 : 안전하지 않게 전송되는 비밀번호 → 확인</p>
+
+<h3 id="테스트">테스트</h3>
+
+<p>새 메시지 → 자기 자신(<code class="language-plaintext highlighter-rouge">x@kjy.local</code>)에게 메일 발송 → 받은 편지함, 보낸 편지함에서 모두 확인되면 정상 동작.</p>
+
+<h3 id="계정-삭제">계정 삭제</h3>
+
+<p>설정 → 우측 상단 삭제 → 메시지 데이터 삭제 체크 → 제거</p>
+</section>
+            </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div></div>
+    </div>
+</div>
+
+<!-- introduce mathjax support -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script
+  type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+
+<!-- introduce per-page mermaid support -->
+
+
+<!-- introduce mathjax support -->
+<script>
+    function fixes_chrome_anchors() {
+        let chrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+        if (window.location.hash && chrome) {
+            setTimeout(function () {
+                var hash = window.location.hash;
+                window.location.hash = "";
+                window.location.hash = hash;
+            }, 300);
+        }
+    }
+
+    if (document.readyState === "loading") {
+        // Loading hasn't finished yet
+        document.addEventListener("DOMContentLoaded", fixes_chrome_anchors);
+    } else {
+        // `DOMContentLoaded` has already fired
+        fixes_chrome_anchors();
+    }
+</script>
+
+
+                        <a href="/lab/rocky-dns-web-server/" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Rocky Linux에 DNS+WEB 서버 구성">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                    
+
+                    
+                        <a href="/lab/windows-2022-server-clone/" class="navigation navigation-next navigation-unique" aria-label="Next page: VMware Clone을 이용한 Windows 2022 Server 복제 및 스냅샷 설정">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    
+                </div>
+            </div>
+
+            <script>
+            var gitbook = gitbook || [];
+            gitbook.push(function() {
+                gitbook.page.hasChanged({
+    "page": {
+        "title": "Introduction",
+        "level": "1.1",
+        "depth": 1,
+        
+        "next": {
+            "title": "VMware Clone을 이용한 Windows 2022 Server 복제 및 스냅샷 설정",
+            "level": "1.2",
+            "depth": 1,
+            "path": "_posts/2026-05-26-windows-2022-server-clone.md",
+            "ref": "_posts/2026-05-26-windows-2022-server-clone.md",
+            "articles": []
+        },
+        
+        "dir": "ltr"
+    },    "config": {
+        "plugins": ["fontsettings", "highlight", "livereload", "lunr", "search", "sharing", "theme-default", "livereload"],
+        "styles": {
+            "ebook": "styles/ebook.css",
+            "epub": "styles/epub.css",
+            "mobi": "styles/mobi.css",
+            "pdf": "styles/pdf.css",
+            "print": "styles/print.css",
+            "website": "styles/website.css"
+        },
+        "pluginsConfig": {
+            "expandable-chapter-small2": {
+                "articlesExpand": true,
+            },
+            "fontsettings": {
+                "family": "sans",
+                "size": 2,
+                "theme": "white"
+            },
+            "highlight": {},
+            "livereload": {},
+            "lunr": {
+                "ignoreSpecialCharacters": false,
+                "maxIndexSize": 1000000
+            },
+            "search": {},            "sharing": {
+                "facebook": true,
+
+                "google": false,
+
+                "github": true,
+              
+                "github_link": "https://github.com",
+              
+
+                "telegram": false,
+                "telegram_link": "https://t.me",
+
+                "instapaper": false,
+
+                "twitter": true,
+              
+
+                "vk": false,
+
+                "weibo": false,
+
+                "all": ["facebook", "google", "twitter", "weibo", "instapaper", "github", "telegram"]
+            },
+"theme-default": {
+                "showLevel": false,
+                "styles": {
+                    "ebook": "styles/ebook.css",
+                    "epub": "styles/epub.css",
+                    "mobi": "styles/mobi.css",
+                    "pdf": "styles/pdf.css",
+                    "print": "styles/print.css",
+                    "website": "styles/website.css"
+                }
+            },
+        },
+        "theme": "default",
+        "author": "Tao He",
+        "pdf": {
+            "pageNumbers": true,
+            "fontSize": 12,
+            "fontFamily": "Arial",
+            "paperSize": "a4",
+            "chapterMark": "pagebreak",
+            "pageBreaksBefore": "/",
+            "margin": {
+                "right": 62,
+                "left": 62,
+                "top": 56,
+                "bottom": 56
+            }
+        },
+        "structure": {
+            "langs": "LANGS.md",
+            "readme": "README.md",
+        },
+        "variables": {},
+        "title": "Home",
+        "language": "en",
+        "gitbook": "*"
+    },
+    "file": {
+        "path": "_posts/2026-05-24-rocky-mail-server.md",
+        "mtime": "2026-05-24 00:00:00 +0900",
+        "type": "markdown"
+    },
+    "gitbook": {
+        "version": "",
+        "time": "2026-05-26 20:45:09 +0900"
+    },
+    "basePath": "",
+    "book": {
+        "language": ""
+    }
+});
+            });
+            </script>
+        </div><script src="/assets/gitbook/gitbook.js"></script>
+<script src="/assets/gitbook/theme.js"></script>
+
+<script src="/assets/gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-expandable-chapters-small2/expandable-chapters-small.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-search-pro/search.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-sharing/buttons.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-splitter/splitter.js"></script>
+
+<!--
+<script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+<script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+<script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+<script src="../gitbook/gitbook-plugin-search/search.js"></script>
+-->
+
+<script src="/assets/gitbook/custom.js"></script>
+<script src="/assets/gitbook/custom-local.js"></script>
+
+</body>
+</html>

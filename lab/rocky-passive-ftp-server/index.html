@@ -1,0 +1,696 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    <head><meta charset="UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"><title>Rocky Linux에 Passive mode FTP 서버 구성 · Home</title><meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="Security study notes."><meta name="generator" content="Jekyll (using style of GitBook)"><meta name="author" content="Your Name"><link rel="stylesheet" href="/assets/gitbook/style.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-expandable-chapters-small2/expandable-chapters-small.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-fontsettings/website.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-search-pro/search.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-splitter/splitter.css">
+
+<link rel="stylesheet" href="/assets/gitbook/rouge/colorful.css">
+
+<link rel="stylesheet" href="/assets/gitbook/custom.css">
+<link rel="stylesheet" href="/assets/gitbook/custom-local.css">
+
+<meta name="HandheldFriendly" content="true"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/gitbook/images/apple-touch-icon-precomposed-152.png">
+<link rel="shortcut icon" href="/" type="image/x-icon">
+
+
+
+
+            <link rel="prev" href="/lab/rocky-active-ftp-server/" />
+        
+
+        
+            <link rel="next" href="/lab/rocky-dns-web-server/" />
+        
+    </head>
+    <body>
+        <div class="book"><div class="book-summary">
+    <script type="text/javascript">
+        // Fixes the page links scroll problem on both desktop and mobile browsers
+        function pageScrollToTop(element) {
+            // both mobile and non-mobile
+            $('div.body-inner').animate({scrollTop: 0});
+            $(element).parent().find('li>ul>li').removeClass('active');
+            return true;  // propagate
+        }
+        // Fixes the anchor links scroll problem on mobile browsers
+        function mobilePageScrollToAnchor(element) {
+            $(element).closest('li.chapter').find('ul>li').removeClass('active');
+            $(element).parent().addClass('active');
+            if ($(document).width() <= 1240) {
+                let target = $($(element).attr('href'));
+                if (target.length) {
+                    $('div.body-inner').animate({
+                        scrollTop: target.get(0).offsetTop,
+                    });
+                }
+            }
+            return true;
+        }
+    </script>
+
+    <nav role="navigation">
+        <div id="book-search-input" role="search">
+            <input type="text" placeholder="Type to search" />
+        </div>
+        <div id="book-search-input-link" role="search">
+            <a href="/assets/search.html">Click to Search</a>
+        </div>
+        <ul class="summary">
+            
+            <li class="chapter" data-level="1.1" data-path="">
+            
+                <a href="/" onclick="pageScrollToTop(this)">
+                    Home
+                </a>
+                
+                    
+                
+            </li>
+
+            <li class="divider"></li>
+
+            
+                
+                    
+                    <!-- <p>pages</p> -->
+                    
+                        
+
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/network/">
+                            
+                                <a href="/network/" onclick="pageScrollToTop(this)">
+                                    네트워크
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/">
+                            
+                                <a href="/lab/" onclick="pageScrollToTop(this)">
+                                    실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/project/">
+                            
+                                <a href="/project/" onclick="pageScrollToTop(this)">
+                                    Project
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/vmware/">
+                            
+                                <a href="/lab/vmware/" onclick="pageScrollToTop(this)">
+                                    VMware 구성 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/about/">
+                            
+                                <a href="/about/" onclick="pageScrollToTop(this)">
+                                    About
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/server/">
+                            
+                                <a href="/lab/server/" onclick="pageScrollToTop(this)">
+                                    Rocky 서버 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/windows-server/">
+                            
+                                <a href="/lab/windows-server/" onclick="pageScrollToTop(this)">
+                                    Windows Server 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+
+                        
+                            <li class="divider"></li>
+                        
+                    
+                
+            
+        </ul>
+    </nav>
+</div>
+<div class="book-body">
+                <div class="book-header" role="navigation">
+                    <!-- Title -->
+                    <h1>
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                        
+                            <a href="." >Rocky Linux에 Passive mode FTP 서버 구성</a>
+                        
+                    </h1>
+                </div>
+
+                <div class="body-inner"><div class="page-wrapper" tabindex="-1" role="main">
+    
+
+    <div class="page-inner">
+        <div id="book-search-results">
+            <div class="search-noresults">
+                <section class="normal markdown-section">
+                    
+                        <h1 id="/lab/rocky-passive-ftp-server">Rocky Linux에 Passive mode FTP 서버 구성</h1>
+                    
+
+                    <p>Rocky Linux 9.4에 vsftpd를 설치하고 Passive mode로 FTP 서버를 구성한 뒤, Windows 10 / 11 클라이언트에서 CMD와 FileZilla로 접속하는 과정을 정리하였다.</p>
+
+<hr />
+
+<h3 id="1-vsftpd-설치">1. vsftpd 설치</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dnf <span class="nb">install</span> <span class="nt">-y</span> vsftpd
+</code></pre></div></div>
+
+<p>Rocky Linux에서 FTP 서버 패키지인 vsftpd를 설치한다.</p>
+
+<p><br /></p>
+
+<h3 id="2-ftp-관련-폴더-및-파일-생성">2. FTP 관련 폴더 및 파일 생성</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> /ftp
+vi /ftp/ch       <span class="c"># chroot 설정 파일</span>
+vi /ftp/ba       <span class="c"># 배너 파일</span>
+</code></pre></div></div>
+
+<p>설정 파일들을 한 곳에서 관리하기 위해 <code class="language-plaintext highlighter-rouge">/ftp</code> 디렉터리를 생성한다. <br /></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">/ftp/ch</code> : chroot 적용 계정 목록 파일</li>
+  <li><code class="language-plaintext highlighter-rouge">/ftp/ba</code> : 접속 시 출력할 배너 메시지 파일</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="3-사용자-계정-생성">3. 사용자 계정 생성</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>useradd z
+<span class="nb">echo</span> <span class="s1">'It1'</span> | passwd <span class="nt">--stdin</span> z
+</code></pre></div></div>
+
+<p>FTP 접속에 사용할 계정을 생성하고 비밀번호를 설정한다.</p>
+
+<p><br /></p>
+
+<blockquote>
+  <p>생성된 계정 확인 <br />
+<code class="language-plaintext highlighter-rouge">cat /etc/passwd</code> : 계정 목록 확인 <br />
+<code class="language-plaintext highlighter-rouge">cat /etc/shadow</code> : 비밀번호 해시값 확인 (SHA-256)</p>
+</blockquote>
+
+<p><br /></p>
+
+<h3 id="4-테스트용-파일-생성">4. 테스트용 파일 생성</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/home/z/z.txt <span class="nv">bs</span><span class="o">=</span>100M <span class="nv">count</span><span class="o">=</span>1
+<span class="nb">ls</span> <span class="nt">-alh</span> /home/z
+</code></pre></div></div>
+
+<p>100MB 크기의 테스트 파일을 생성한다. Passive mode에서 데이터 전송이 정상적으로 동작하는지 확인하는 데 사용한다.</p>
+
+<p><br /></p>
+
+<h3 id="5-vsftpd-설정-파일-수정">5. vsftpd 설정 파일 수정</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/vsftpd/vsftpd.conf
+</code></pre></div></div>
+
+<p>아래 항목들을 주석 제거 및 수정한다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>줄 번호</th>
+      <th>설정 내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>42번줄</td>
+      <td><code class="language-plaintext highlighter-rouge">#connect_from_port_20=YES</code> (주석 처리)</td>
+    </tr>
+    <tr>
+      <td>52번줄</td>
+      <td><code class="language-plaintext highlighter-rouge">xferlog_file=/ftp/xferlog</code> (주석 제거 후 경로 변경)</td>
+    </tr>
+    <tr>
+      <td>59번줄</td>
+      <td><code class="language-plaintext highlighter-rouge">idle_session_timeout=300</code> (주석 제거 후 300초로 변경)</td>
+    </tr>
+    <tr>
+      <td>62번줄</td>
+      <td><code class="language-plaintext highlighter-rouge">data_connection_timeout=60</code> (주석 제거 후 60초로 변경)</td>
+    </tr>
+    <tr>
+      <td>86번줄</td>
+      <td><code class="language-plaintext highlighter-rouge">banner_file=/ftp/ba</code> (주석 제거 후 내용 변경)</td>
+    </tr>
+    <tr>
+      <td>101번줄</td>
+      <td><code class="language-plaintext highlighter-rouge">chroot_list_enable=YES</code> (주석 제거)</td>
+    </tr>
+    <tr>
+      <td>103번줄</td>
+      <td><code class="language-plaintext highlighter-rouge">chroot_list_file=/ftp/ch</code> (주석 제거 후 경로 변경)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<blockquote>
+  <p><strong>42번줄 주석 처리 이유</strong> <br />
+<code class="language-plaintext highlighter-rouge">connect_from_port_20=YES</code>는 Active mode 전용 설정이다. Passive mode에서는 서버가 데이터 포트를 직접 열기 때문에 이 옵션이 불필요하며, 주석 처리하지 않아도 동작은 하지만 명확하게 구분하기 위해 비활성화한다.</p>
+</blockquote>
+
+<p><br /></p>
+
+<p>마지막 줄에 아래 내용을 추가한 후 저장한다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>allow_writeable_chroot=YES
+pasv_enable=YES
+pasv_min_port=65000
+pasv_max_port=65010
+deny_file={*.exe}
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pasv_enable=YES</code> : Passive mode 활성화</li>
+  <li><code class="language-plaintext highlighter-rouge">pasv_min_port</code> / <code class="language-plaintext highlighter-rouge">pasv_max_port</code> : 데이터 전송에 사용할 포트 범위 지정 (방화벽에서 동일하게 개방 필요)</li>
+  <li><code class="language-plaintext highlighter-rouge">deny_file={*.exe}</code> : <code class="language-plaintext highlighter-rouge">.exe</code> 확장자 파일 전송 차단 (선택 사항)</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="6-chroot-설정-파일-작성">6. chroot 설정 파일 작성</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /ftp/ch
+</code></pre></div></div>
+
+<p>상위 디렉터리로 이동을 제한할 계정을 등록한다. 여기서는 <code class="language-plaintext highlighter-rouge">z</code> 계정을 등록한다. <br /></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">/ftp/ch</code>에 등록된 계정은 자신의 홈 디렉터리 밖으로 나갈 수 없다.</li>
+  <li>등록되지 않은 계정은 <code class="language-plaintext highlighter-rouge">cd ..</code> 명령어로 상위 디렉터리 이동이 가능하다.</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="7-vsftpd-서비스-시작">7. vsftpd 서비스 시작</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl <span class="nb">enable</span> <span class="nt">--now</span> vsftpd
+ss <span class="nt">-nat</span>
+</code></pre></div></div>
+
+<p>FTP 서버를 시작하고 부팅 시 자동으로 실행되도록 등록한다. 21번 포트가 LISTEN 상태인지 확인한다.</p>
+
+<p><br /></p>
+
+<h3 id="8-방화벽-설정">8. 방화벽 설정</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firewall-cmd <span class="nt">--permanent</span> <span class="nt">--add-port</span><span class="o">={</span>21,65000-65010<span class="o">}</span>/tcp
+firewall-cmd <span class="nt">--reload</span>
+firewall-cmd <span class="nt">--list-all</span>
+</code></pre></div></div>
+
+<p>Passive mode에서는 제어 포트(21번)와 데이터 포트 범위(65000~65010)를 모두 열어야 한다. <br /></p>
+
+<p><br /></p>
+
+<h3 id="9-로그-확인">9. 로그 확인</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /ftp/xferlog
+</code></pre></div></div>
+
+<p>FTP 전송 로그를 확인할 수 있다. <br /></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">o</code> : 다운로드 (outbound)</li>
+  <li><code class="language-plaintext highlighter-rouge">i</code> : 업로드 (inbound)</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="10-windows-cmd에서-ftp-접속하기">10. Windows CMD에서 FTP 접속하기</h3>
+
+<ul>
+  <li><strong>CMD에서 접속하는 방법</strong> <br />
+<img src="/assets/images/passiveftp/passiveftp1.png" alt="이미지" /> <br /></li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>계정별 동작 차이 확인</strong> <br />
+<img src="/assets/images/passiveftp/passiveftp2.png" alt="이미지" /> <br />
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">z</code> 계정 (<code class="language-plaintext highlighter-rouge">/ftp/ch</code> 등록됨): <code class="language-plaintext highlighter-rouge">cd ..</code> 해도 홈 디렉터리 밖으로 나가지지 않음 <br /></li>
+      <li>미등록 계정: <code class="language-plaintext highlighter-rouge">cd ..</code> 하면 상위 디렉터리로 이동 가능 <br /></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>Active mode vs Passive mode 동작 차이</strong> <br />
+Passive mode에서는 클라이언트가 서버에 데이터 포트를 요청하고, 서버가 지정한 포트(65000~65010)로 연결되는 방식이다. <br /></li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="11-windows에서-filezilla를-통해-접속하는-방법">11. Windows에서 FileZilla를 통해 접속하는 방법</h3>
+
+<ul>
+  <li>
+    <p><strong>사이트 등록</strong> <br /></p>
+
+    <p><img src="/assets/images/passiveftp/passiveftp3.png" alt="이미지" /> <br />
+<img src="/assets/images/passiveftp/passiveftp4.png" alt="이미지" /> <br />
+<img src="/assets/images/passiveftp/passiveftp5.png" alt="이미지" /> <br /></p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p><strong>접속</strong> <br /></p>
+
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; align-items: start;">
+  <img src="/assets/images/passiveftp/passiveftp6.png" alt="이미지" style="width: 100%; height: auto; display: block;" />
+  <img src="/assets/images/passiveftp/passiveftp7.png" alt="이미지" style="width: 100%; height: auto; display: block;" />
+</div>
+    <p><br />
+<img src="/assets/images/passiveftp/passiveftp8.png" alt="이미지" /> <br /></p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="알아두면-좋은-것들">알아두면 좋은 것들</h3>
+
+<ul>
+  <li>
+    <p><strong>Active mode와 Passive mode 비교</strong> <br /></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>구분</th>
+          <th>Active mode</th>
+          <th>Passive mode</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>데이터 연결 주체</td>
+          <td>서버 → 클라이언트</td>
+          <td>클라이언트 → 서버</td>
+        </tr>
+        <tr>
+          <td>서버 개방 포트</td>
+          <td>20, 21</td>
+          <td>21, pasv 포트 범위</td>
+        </tr>
+        <tr>
+          <td>방화벽 친화성</td>
+          <td>낮음 (클라이언트 인바운드 필요)</td>
+          <td>높음 (클라이언트 아웃바운드만 필요)</td>
+        </tr>
+        <tr>
+          <td>주요 설정</td>
+          <td><code class="language-plaintext highlighter-rouge">connect_from_port_20=YES</code></td>
+          <td><code class="language-plaintext highlighter-rouge">pasv_enable=YES</code>, <code class="language-plaintext highlighter-rouge">pasv_min/max_port</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p><strong>방화벽 XML 파일 수정으로 포트를 추가하는 방법</strong> <br /></p>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/firewalld/zones/public.xml
+</code></pre></div>    </div>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;port</span> <span class="na">port=</span><span class="s">"65000-65010"</span> <span class="na">protocol=</span><span class="s">"tcp"</span><span class="nt">/&gt;</span>
+</code></pre></div>    </div>
+    <ul>
+      <li>수정 후 <code class="language-plaintext highlighter-rouge">firewall-cmd --reload</code>를 실행해야 적용된다.</li>
+    </ul>
+  </li>
+</ul>
+</section>
+            </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div></div>
+    </div>
+</div>
+
+<!-- introduce mathjax support -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script
+  type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+
+<!-- introduce per-page mermaid support -->
+
+
+<!-- introduce mathjax support -->
+<script>
+    function fixes_chrome_anchors() {
+        let chrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+        if (window.location.hash && chrome) {
+            setTimeout(function () {
+                var hash = window.location.hash;
+                window.location.hash = "";
+                window.location.hash = hash;
+            }, 300);
+        }
+    }
+
+    if (document.readyState === "loading") {
+        // Loading hasn't finished yet
+        document.addEventListener("DOMContentLoaded", fixes_chrome_anchors);
+    } else {
+        // `DOMContentLoaded` has already fired
+        fixes_chrome_anchors();
+    }
+</script>
+
+
+                        <a href="/lab/rocky-active-ftp-server/" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Rocky Linux에 Active mode FTP 서버 구성">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                    
+
+                    
+                        <a href="/lab/rocky-dns-web-server/" class="navigation navigation-next navigation-unique" aria-label="Next page: Rocky Linux에 DNS+WEB 서버 구성">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    
+                </div>
+            </div>
+
+            <script>
+            var gitbook = gitbook || [];
+            gitbook.push(function() {
+                gitbook.page.hasChanged({
+    "page": {
+        "title": "Introduction",
+        "level": "1.1",
+        "depth": 1,
+        
+        "next": {
+            "title": "Rocky Linux에 DNS+WEB 서버 구성",
+            "level": "1.2",
+            "depth": 1,
+            "path": "_posts/2026-05-22-rocky-dns-web-server.md",
+            "ref": "_posts/2026-05-22-rocky-dns-web-server.md",
+            "articles": []
+        },
+        
+        "dir": "ltr"
+    },    "config": {
+        "plugins": ["fontsettings", "highlight", "livereload", "lunr", "search", "sharing", "theme-default", "livereload"],
+        "styles": {
+            "ebook": "styles/ebook.css",
+            "epub": "styles/epub.css",
+            "mobi": "styles/mobi.css",
+            "pdf": "styles/pdf.css",
+            "print": "styles/print.css",
+            "website": "styles/website.css"
+        },
+        "pluginsConfig": {
+            "expandable-chapter-small2": {
+                "articlesExpand": true,
+            },
+            "fontsettings": {
+                "family": "sans",
+                "size": 2,
+                "theme": "white"
+            },
+            "highlight": {},
+            "livereload": {},
+            "lunr": {
+                "ignoreSpecialCharacters": false,
+                "maxIndexSize": 1000000
+            },
+            "search": {},            "sharing": {
+                "facebook": true,
+
+                "google": false,
+
+                "github": true,
+              
+                "github_link": "https://github.com",
+              
+
+                "telegram": false,
+                "telegram_link": "https://t.me",
+
+                "instapaper": false,
+
+                "twitter": true,
+              
+
+                "vk": false,
+
+                "weibo": false,
+
+                "all": ["facebook", "google", "twitter", "weibo", "instapaper", "github", "telegram"]
+            },
+"theme-default": {
+                "showLevel": false,
+                "styles": {
+                    "ebook": "styles/ebook.css",
+                    "epub": "styles/epub.css",
+                    "mobi": "styles/mobi.css",
+                    "pdf": "styles/pdf.css",
+                    "print": "styles/print.css",
+                    "website": "styles/website.css"
+                }
+            },
+        },
+        "theme": "default",
+        "author": "Tao He",
+        "pdf": {
+            "pageNumbers": true,
+            "fontSize": 12,
+            "fontFamily": "Arial",
+            "paperSize": "a4",
+            "chapterMark": "pagebreak",
+            "pageBreaksBefore": "/",
+            "margin": {
+                "right": 62,
+                "left": 62,
+                "top": 56,
+                "bottom": 56
+            }
+        },
+        "structure": {
+            "langs": "LANGS.md",
+            "readme": "README.md",
+        },
+        "variables": {},
+        "title": "Home",
+        "language": "en",
+        "gitbook": "*"
+    },
+    "file": {
+        "path": "_posts/2026-05-20-rocky-passive-ftp-server.md",
+        "mtime": "2026-05-19 00:00:00 +0900",
+        "type": "markdown"
+    },
+    "gitbook": {
+        "version": "",
+        "time": "2026-05-26 20:45:09 +0900"
+    },
+    "basePath": "",
+    "book": {
+        "language": ""
+    }
+});
+            });
+            </script>
+        </div><script src="/assets/gitbook/gitbook.js"></script>
+<script src="/assets/gitbook/theme.js"></script>
+
+<script src="/assets/gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-expandable-chapters-small2/expandable-chapters-small.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-search-pro/search.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-sharing/buttons.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-splitter/splitter.js"></script>
+
+<!--
+<script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+<script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+<script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+<script src="../gitbook/gitbook-plugin-search/search.js"></script>
+-->
+
+<script src="/assets/gitbook/custom.js"></script>
+<script src="/assets/gitbook/custom-local.js"></script>
+
+</body>
+</html>

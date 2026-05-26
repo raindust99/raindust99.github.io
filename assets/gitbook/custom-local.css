@@ -1,0 +1,352 @@
+.book-summary li.is-hidden-by-empty-content,
+.markdown-section li.is-hidden-by-empty-content {
+    display: none !important;
+}
+.markdown-section li:has(a[href="/network/osi-7-layer/"]),
+.markdown-section li:has(a[href="/lab/vmware/"]),
+.markdown-section li:has(a[href="/lab/server/"]),
+.markdown-section li:has(a[href="/lab/vmware-nat/"]),
+.markdown-section li:has(a[href="/lab/rocky-9-7-vm/"]),
+.markdown-section li:has(a[href="/lab/windows-10/"]),
+.markdown-section li:has(a[href="/lab/windows-11/"]),
+.markdown-section li:has(a[href="/lab/vmware-clone/"]),
+.markdown-section li:has(a[href="/lab/rocky-dhcp-server/"]),
+.markdown-section li:has(a[href="/lab/rocky-active-ftp-server/"]),
+.markdown-section li:has(a[href="/lab/rocky-passive-ftp-server/"]),
+.markdown-section li:has(a[href="/lab/rocky-dns-web-server/"]),
+.markdown-section li:has(a[href="/lab/rocky-mail-server/"]),
+.markdown-section li:has(a[href="/lab/windows-server/"]),
+.markdown-section li:has(a[href="/lab/windows-2022-server-vm/"]),
+.markdown-section li:has(a[href="/lab/windows-2022-server-clone/"]),
+.markdown-section li:has(a[href="/lab/wordpress-mysql-haproxy/"]),
+.markdown-section li:has(a[href="/project/pentest/"]) {
+    display: none;
+}
+.markdown-section li.is-visible-by-content {
+    display: list-item !important;
+}
+.back-to-top {
+    right: 300px !important;
+    bottom: 22px !important;
+    width: 44px !important;
+    height: 44px !important;
+    text-align: center;
+    z-index: 25;
+}
+
+.back-to-top i {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    display: block;
+    width: 44px;
+    height: 44px;
+    margin: 0 !important;
+    font-size: 20px !important;
+    line-height: 44px !important;
+}
+
+.book .book-body .page-wrapper .page-inner {
+    padding-bottom: 96px;
+}
+
+@media (max-width: 1240px) {
+    .back-to-top {
+        right: 22px !important;
+    }
+}
+
+@media (max-width: 760px) {
+    .back-to-top {
+        right: 12px !important;
+        bottom: 12px !important;
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    .back-to-top i {
+        width: 38px;
+        height: 38px;
+        font-size: 18px !important;
+        line-height: 38px !important;
+    }
+}
+.book-header .btn[aria-label="Facebook"],
+.book-header .btn[aria-label="Twitter"],
+.book-header .btn[aria-label="Share"],
+.book-header .font-settings {
+    display: none !important;
+}
+
+.search-results-item .search-result-line {
+    display: block;
+}
+
+.navigation.navigation-prev,
+.navigation.navigation-next {
+    display: none !important;
+}
+
+.markdown-section hr {
+    height: 0;
+    margin: 18px 0;
+    border: 0;
+    border-top: 1px solid #e1e1e1;
+    background: transparent;
+}
+
+.markdown-section img {
+    border: 1px solid #000000;
+    box-sizing: border-box;
+}
+
+.markdown-section .post-image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 12px 0 24px;
+}
+
+.markdown-section .post-image-grid img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+@media (max-width: 640px) {
+    .markdown-section .post-image-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.markdown-section pre {
+    background: #eeeeee;
+}
+
+.markdown-section pre,
+.markdown-section pre code,
+.markdown-section pre code span {
+    color: #111111 !important;
+}
+
+.markdown-section :not(pre) > code {
+    color: #111111;
+    background: #eeeeee;
+}
+
+.markdown-section table thead tr,
+.markdown-section table thead th {
+    background: #dddddd;
+}
+
+.markdown-section table,
+.markdown-section table th,
+.markdown-section table td {
+    border-color: #000000;
+}
+
+.markdown-section table tbody tr,
+.markdown-section table tbody tr:nth-child(2n),
+.markdown-section table tbody tr:nth-child(odd),
+.markdown-section table tbody td {
+    background: #ffffff;
+}
+
+.book .book-summary ul.summary li.has-custom-children > a,
+.book .book-summary ul.summary li.has-custom-children > span {
+    min-height: 40px;
+    padding-left: 44px;
+}
+
+.book .book-summary ul.summary li.has-custom-children > span {
+    cursor: pointer;
+}
+
+.book .book-summary .exc-trigger {
+    left: 0;
+    top: 0;
+    width: 38px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #364149;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.book .book-summary .exc-trigger:hover {
+    color: #008cff;
+    background: rgba(0, 140, 255, 0.08);
+}
+
+.book .book-summary .has-custom-children.expanded > a > .exc-trigger,
+.book .book-summary .has-custom-children.expanded > span > .exc-trigger {
+    color: #008cff;
+}
+.page-toc {
+    position: fixed;
+    top: 170px;
+    right: 34px;
+    width: 220px;
+    max-height: calc(100vh - 220px);
+    overflow: auto;
+    padding-left: 16px;
+    border-left: 2px solid #e6e6e6;
+    color: #555;
+    z-index: 10;
+}
+
+.page-toc-title {
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+}
+
+.page-toc ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.page-toc li {
+    margin: 0 0 8px;
+    line-height: 1.35;
+}
+
+.page-toc a {
+    color: #555;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.page-toc a:hover {
+    color: #008cff;
+}
+
+.page-toc-h3 {
+    padding-left: 12px;
+}
+
+.page-toc-toggle {
+    display: none;
+}
+
+
+@media (max-width: 1700px) {
+    .book .book-body .page-wrapper .page-inner {
+        padding-right: 88px;
+    }
+
+    .page-toc-toggle {
+        display: flex;
+        position: fixed;
+        top: 118px;
+        right: 26px;
+        width: 42px;
+        min-height: 54px;
+        z-index: 30;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border: 0;
+        background: rgba(255, 255, 255, 0.86);
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .page-toc-toggle span {
+        width: 17px;
+        height: 2px;
+        border-radius: 999px;
+        background: #c7c7c7;
+    }
+
+    .page-toc {
+        display: none;
+        top: 134px;
+        right: 24px;
+        width: 232px;
+        max-height: calc(100vh - 180px);
+        padding: 20px 22px;
+        border: 1px solid #e9e9e9;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
+        backdrop-filter: blur(8px);
+    }
+
+    .page-toc-toggle:hover + .page-toc,
+    .page-toc-toggle:focus + .page-toc,
+    .page-toc:hover,
+    .page-toc:focus-within {
+        display: block;
+    }
+
+    .page-toc-toggle:hover span.active,
+    .page-toc-toggle:focus span.active {
+        background: #008cff;
+    }
+
+    .page-toc-title {
+        color: #008cff;
+    }
+
+    .page-toc a {
+        font-size: 13px;
+        color: #777;
+    }
+}
+
+@media (max-width: 760px) {
+    .book .book-body .page-wrapper .page-inner {
+        padding-right: 58px;
+    }
+
+    .page-toc-toggle {
+        top: 96px;
+        right: 14px;
+    }
+
+    .page-toc {
+        top: 112px;
+        right: 14px;
+        width: min(232px, calc(100vw - 44px));
+    }
+}
+
+
+
+.page-toc a.active {
+    color: #008cff;
+}
+
+.page-toc-toggle span.active {
+    width: 17px;
+    background: #222;
+}
+/* Final sidebar spacing overrides */
+.book .book-summary ul.summary li a,
+.book .book-summary ul.summary li span {
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+}
+
+.book .book-summary ul.summary li.has-custom-children > a,
+.book .book-summary ul.summary li.has-custom-children > span {
+    min-height: 32px !important;
+    padding-left: 38px !important;
+}
+
+.book .book-summary .exc-trigger {
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.book-summary .sidebar-count {
+    display: inline !important;
+    margin-left: 2px !important;
+    white-space: nowrap !important;
+}

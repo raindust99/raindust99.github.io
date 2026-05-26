@@ -1,0 +1,623 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    <head><meta charset="UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"><title>Rocky Linux에 DHCP 서버 구성하기 · Home</title><meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="Security study notes."><meta name="generator" content="Jekyll (using style of GitBook)"><meta name="author" content="Your Name"><link rel="stylesheet" href="/assets/gitbook/style.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-expandable-chapters-small2/expandable-chapters-small.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-fontsettings/website.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-search-pro/search.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-splitter/splitter.css">
+
+<link rel="stylesheet" href="/assets/gitbook/rouge/colorful.css">
+
+<link rel="stylesheet" href="/assets/gitbook/custom.css">
+<link rel="stylesheet" href="/assets/gitbook/custom-local.css">
+
+<meta name="HandheldFriendly" content="true"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/gitbook/images/apple-touch-icon-precomposed-152.png">
+<link rel="shortcut icon" href="/" type="image/x-icon">
+
+
+
+
+            <link rel="prev" href="/lab/windows-11/" />
+        
+
+        
+            <link rel="next" href="/project/pentest/" />
+        
+    </head>
+    <body>
+        <div class="book"><div class="book-summary">
+    <script type="text/javascript">
+        // Fixes the page links scroll problem on both desktop and mobile browsers
+        function pageScrollToTop(element) {
+            // both mobile and non-mobile
+            $('div.body-inner').animate({scrollTop: 0});
+            $(element).parent().find('li>ul>li').removeClass('active');
+            return true;  // propagate
+        }
+        // Fixes the anchor links scroll problem on mobile browsers
+        function mobilePageScrollToAnchor(element) {
+            $(element).closest('li.chapter').find('ul>li').removeClass('active');
+            $(element).parent().addClass('active');
+            if ($(document).width() <= 1240) {
+                let target = $($(element).attr('href'));
+                if (target.length) {
+                    $('div.body-inner').animate({
+                        scrollTop: target.get(0).offsetTop,
+                    });
+                }
+            }
+            return true;
+        }
+    </script>
+
+    <nav role="navigation">
+        <div id="book-search-input" role="search">
+            <input type="text" placeholder="Type to search" />
+        </div>
+        <div id="book-search-input-link" role="search">
+            <a href="/assets/search.html">Click to Search</a>
+        </div>
+        <ul class="summary">
+            
+            <li class="chapter" data-level="1.1" data-path="">
+            
+                <a href="/" onclick="pageScrollToTop(this)">
+                    Home
+                </a>
+                
+                    
+                
+            </li>
+
+            <li class="divider"></li>
+
+            
+                
+                    
+                    <!-- <p>pages</p> -->
+                    
+                        
+
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/network/">
+                            
+                                <a href="/network/" onclick="pageScrollToTop(this)">
+                                    네트워크
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/">
+                            
+                                <a href="/lab/" onclick="pageScrollToTop(this)">
+                                    실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/project/">
+                            
+                                <a href="/project/" onclick="pageScrollToTop(this)">
+                                    Project
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/vmware/">
+                            
+                                <a href="/lab/vmware/" onclick="pageScrollToTop(this)">
+                                    VMware 구성 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/about/">
+                            
+                                <a href="/about/" onclick="pageScrollToTop(this)">
+                                    About
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/server/">
+                            
+                                <a href="/lab/server/" onclick="pageScrollToTop(this)">
+                                    Rocky 서버 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/windows-server/">
+                            
+                                <a href="/lab/windows-server/" onclick="pageScrollToTop(this)">
+                                    Windows Server 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+
+                        
+                            <li class="divider"></li>
+                        
+                    
+                
+            
+        </ul>
+    </nav>
+</div>
+<div class="book-body">
+                <div class="book-header" role="navigation">
+                    <!-- Title -->
+                    <h1>
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                        
+                            <a href="." >Rocky Linux에 DHCP 서버 구성하기</a>
+                        
+                    </h1>
+                </div>
+
+                <div class="body-inner"><div class="page-wrapper" tabindex="-1" role="main">
+    
+
+    <div class="page-inner">
+        <div id="book-search-results">
+            <div class="search-noresults">
+                <section class="normal markdown-section">
+                    
+                        <h1 id="/lab/rocky-dhcp-server">Rocky Linux에 DHCP 서버 구성하기</h1>
+                    
+
+                    <p>Rocky Linux에 DHCP 서버를 설치하고 설정 파일을 구성한 뒤, Windows 10 / 11 클라이언트에서 IP를 자동으로 할당받는 과정을 정리하였다.</p>
+
+<hr />
+
+<h3 id="1-dhcp-서버-설치">1. DHCP 서버 설치</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  dnf <span class="nb">install</span> <span class="nt">-y</span> dhcp-server
+</code></pre></div></div>
+
+<p>Rocky Linux에서 DHCP 서버 패키지를 설치한다.</p>
+
+<p><br /></p>
+
+<h3 id="2-dhcp-설정-파일-수정">2. DHCP 설정 파일 수정</h3>
+
+<ul>
+  <li>
+    <p>DHCP 서버의 설정 파일 <br /></p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/dhcp/dhcpd.conf
+</code></pre></div>    </div>
+
+    <p>DHCP 서버의 설정 파일은 <code class="language-plaintext highlighter-rouge">/etc/dhcp/dhcpd.conf</code>이다. <br />
+기본적으로 내용이 비어 있기 때문에, 예제 파일에서 내용을 가져와 수정한다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>vi 편집기 명령어 모드 <br /></p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>:$r /usr/share/doc/dhcp-server/dhcpd.conf.example
+</code></pre></div>    </div>
+
+    <p>vi 편집기가 열리면 명령어 모드에서 아래 명령어로 예제 설정 파일을 불러온다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>vi 편집기 편집 모드 <br /></p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>:1,51d      ← 1번 줄부터 51번 줄까지 삭제
+:10,28d     ← 10번 줄부터 28번 줄까지 삭제
+:14,$d      ← 14번 줄부터 끝까지 삭제
+:10,13co$   ← 10~13번 줄을 복사하여 파일 끝에 붙여넣기
+</code></pre></div>    </div>
+
+    <p>예제 파일을 불러오면 주석과 예제 설정이 많이 추가된다. <br />
+명령어 모드에서 불필요한 줄들을 아래 순서대로 삭제해 깔끔하게 정리한다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>수정된 DHCP 서버의 설정 파일 <br />
+<img src="/assets/images/rockydhcp/dhcp1.png" alt="이미지" /> <br />
+최종적으로 위와 같이 설정 파일을 완성한다.</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>주요 항목 설명 <br /></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>항목</th>
+          <th>설명</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">subnet</code></td>
+          <td>DHCP를 제공할 네트워크 대역</td>
+        </tr>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">range</code></td>
+          <td>동적으로 할당할 IP 주소 범위</td>
+        </tr>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">option domain-name-servers</code></td>
+          <td>클라이언트에게 제공할 DNS 서버</td>
+        </tr>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">option routers</code></td>
+          <td>기본 게이트웨이 주소</td>
+        </tr>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">default-lease-time</code></td>
+          <td>기본 IP 임대 시간 (초 단위, 3600 = 1시간)</td>
+        </tr>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">max-lease-time</code></td>
+          <td>최대 IP 임대 시간 (초 단위, 7200 = 2시간)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>DHCP 예약 기능 (IP 고정 할당) <br /></p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>host w10 {
+  hardware ethernet 00:00:00:00:00:01;  ← 클라이언트의 MAC 주소
+  fixed-address 10.0.0.101;             ← 고정으로 할당할 IP 주소
+}
+</code></pre></div>    </div>
+
+    <p><code class="language-plaintext highlighter-rouge">host</code> 블록을 사용하면 특정 MAC 주소를 가진 장치에 항상 동일한 IP를 할당할 수 있다.
+  이를 IP 예약(Reservation) 또는 고정 할당(Static Assignment) 이라고 한다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="3-dhcp-서비스-시작">3. DHCP 서비스 시작</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  systemctl <span class="nb">enable</span> <span class="nt">--now</span> dhcp
+</code></pre></div></div>
+<p>설정이 완료되면 DHCP 서버를 시작하고, 부팅 시 자동으로 실행되도록 등록한다.</p>
+
+<p><br /></p>
+
+<h3 id="4-windows-10--11에서-dhcp-사용하기">4. Windows 10 / 11에서 DHCP 사용하기</h3>
+
+<ul>
+  <li>
+    <p>MAC 주소 변경 (DHCP 예약 맞추기) <br />
+DHCP 서버에서 MAC 주소 기반으로 IP를 예약했다면, Windows에서 MAC 주소를 맞춰줘야 한다. Windows 10은 <code class="language-plaintext highlighter-rouge">000000000001</code>로 Windows 11은 <code class="language-plaintext highlighter-rouge">000000000002</code>로 설정해주었다.</p>
+
+    <p><img src="/assets/images/rockydhcp/dhcp2.png" alt="이미지" /> <br />
+<img src="/assets/images/rockydhcp/dhcp3.png" alt="이미지" /> <br />
+<img src="/assets/images/rockydhcp/dhcp5.png" alt="이미지" /> <br /></p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>IP 주소 자동 받기 설정 <br />
+<img src="/assets/images/rockydhcp/dhcp4.png" alt="이미지" /> <br /></li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>CMD에서 IP 갱신 확인 <br />
+<img src="/assets/images/rockydhcp/dhcp6.png" alt="이미지" /> <br />
+<img src="/assets/images/rockydhcp/dhcp7.png" alt="이미지" /> <br />
+<img src="/assets/images/rockydhcp/dhcp8.png" alt="이미지" /> <br />
+    <pre><code class="language-cmd">ipconfig /release    ← 현재 할당된 IP 반납
+ipconfig /renew      ← DHCP 서버에서 새로운 IP 요청
+ipconfig /all        ← 현재 IP 정보 상세 확인
+</code></pre>
+    <p>설정 후 CMD를 열고 아래 명령어로 IP를 갱신하고 확인한다.
+<code class="language-plaintext highlighter-rouge">ipconfig /all</code> 결과에서 <code class="language-plaintext highlighter-rouge">DHCP Enabled: Yes</code>와 할당된 IP를 확인할 수 있다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="5-알아두면-좋은-것들">5. 알아두면 좋은 것들</h3>
+
+<ul>
+  <li>오류 확인
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>journalctl <span class="nt">-xe</span>
+</code></pre></div>    </div>
+    <p>DHCP 서비스에 문제가 생겼을 때는 아래 명령어로 로그를 확인한다. 설정 파일의 문법 오류나 서비스 실패 원인을 자세히 확인할 수 있다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>DHCP 임대 현황 확인
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /var/lib/dhcpd/dhcpd.leases
+</code></pre></div>    </div>
+    <p>DHCP 서버에서 현재 어떤 클라이언트가 IP를 할당받아 사용 중인지 확인할 수 있다.
+dhcpd.leases 파일에는 동적으로 할당된 IP의 임대 정보가 기록된다.
+다만, <code class="language-plaintext highlighter-rouge">host</code> 블록으로 설정한 예약 IP(fixed-address)는 이 파일에 기록되지 않는다.
+예약 IP는 항상 고정으로 할당되기 때문에 lease 추적 대상이 아니다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>DHCP 서버 삭제
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dnf autoremove <span class="nt">-y</span> dhcp-server
+<span class="nb">rm</span> <span class="nt">-rf</span> /etc/dhcp /var/lib/dhcp
+</code></pre></div>    </div>
+    <p>DHCP 서버가 더 이상 필요 없을 때는 아래와 같이 제거한다.
+단, 이 명령어만으로는 설정 파일과 임대 데이터가 남아 있다.
+완전히 삭제하려면 관련 디렉토리도 함께 제거한다.</p>
+    <blockquote>
+      <p><code class="language-plaintext highlighter-rouge">/etc/dhcp</code> : DHCP 설정 파일 디렉토리<br />
+<code class="language-plaintext highlighter-rouge">/var/lib/dhcp</code> : IP 임대 정보 파일 디렉토리</p>
+    </blockquote>
+  </li>
+</ul>
+</section>
+            </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div></div>
+    </div>
+</div>
+
+<!-- introduce mathjax support -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script
+  type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+
+<!-- introduce per-page mermaid support -->
+
+
+<!-- introduce mathjax support -->
+<script>
+    function fixes_chrome_anchors() {
+        let chrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+        if (window.location.hash && chrome) {
+            setTimeout(function () {
+                var hash = window.location.hash;
+                window.location.hash = "";
+                window.location.hash = hash;
+            }, 300);
+        }
+    }
+
+    if (document.readyState === "loading") {
+        // Loading hasn't finished yet
+        document.addEventListener("DOMContentLoaded", fixes_chrome_anchors);
+    } else {
+        // `DOMContentLoaded` has already fired
+        fixes_chrome_anchors();
+    }
+</script>
+
+
+                        <a href="/lab/windows-11/" class="navigation navigation-prev navigation-unique" aria-label="Previous page: VMware에 Windows 11 설치 및 설정">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                    
+
+                    
+                        <a href="/project/pentest/" class="navigation navigation-next navigation-unique" aria-label="Next page: 모의해킹">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    
+                </div>
+            </div>
+
+            <script>
+            var gitbook = gitbook || [];
+            gitbook.push(function() {
+                gitbook.page.hasChanged({
+    "page": {
+        "title": "Introduction",
+        "level": "1.1",
+        "depth": 1,
+        
+        "next": {
+            "title": "모의해킹",
+            "level": "1.2",
+            "depth": 1,
+            "path": "_posts/2026-06-30-pentest.md",
+            "ref": "_posts/2026-06-30-pentest.md",
+            "articles": []
+        },
+        
+        "dir": "ltr"
+    },    "config": {
+        "plugins": ["fontsettings", "highlight", "livereload", "lunr", "search", "sharing", "theme-default", "livereload"],
+        "styles": {
+            "ebook": "styles/ebook.css",
+            "epub": "styles/epub.css",
+            "mobi": "styles/mobi.css",
+            "pdf": "styles/pdf.css",
+            "print": "styles/print.css",
+            "website": "styles/website.css"
+        },
+        "pluginsConfig": {
+            "expandable-chapter-small2": {
+                "articlesExpand": true,
+            },
+            "fontsettings": {
+                "family": "sans",
+                "size": 2,
+                "theme": "white"
+            },
+            "highlight": {},
+            "livereload": {},
+            "lunr": {
+                "ignoreSpecialCharacters": false,
+                "maxIndexSize": 1000000
+            },
+            "search": {},            "sharing": {
+                "facebook": true,
+
+                "google": false,
+
+                "github": true,
+              
+                "github_link": "https://github.com",
+              
+
+                "telegram": false,
+                "telegram_link": "https://t.me",
+
+                "instapaper": false,
+
+                "twitter": true,
+              
+
+                "vk": false,
+
+                "weibo": false,
+
+                "all": ["facebook", "google", "twitter", "weibo", "instapaper", "github", "telegram"]
+            },
+"theme-default": {
+                "showLevel": false,
+                "styles": {
+                    "ebook": "styles/ebook.css",
+                    "epub": "styles/epub.css",
+                    "mobi": "styles/mobi.css",
+                    "pdf": "styles/pdf.css",
+                    "print": "styles/print.css",
+                    "website": "styles/website.css"
+                }
+            },
+        },
+        "theme": "default",
+        "author": "Tao He",
+        "pdf": {
+            "pageNumbers": true,
+            "fontSize": 12,
+            "fontFamily": "Arial",
+            "paperSize": "a4",
+            "chapterMark": "pagebreak",
+            "pageBreaksBefore": "/",
+            "margin": {
+                "right": 62,
+                "left": 62,
+                "top": 56,
+                "bottom": 56
+            }
+        },
+        "structure": {
+            "langs": "LANGS.md",
+            "readme": "README.md",
+        },
+        "variables": {},
+        "title": "Home",
+        "language": "en",
+        "gitbook": "*"
+    },
+    "file": {
+        "path": "_posts/2026-05-13-rocky-dhcp-server.md",
+        "mtime": "2026-05-13 00:00:00 +0900",
+        "type": "markdown"
+    },
+    "gitbook": {
+        "version": "",
+        "time": "2026-05-26 20:45:09 +0900"
+    },
+    "basePath": "",
+    "book": {
+        "language": ""
+    }
+});
+            });
+            </script>
+        </div><script src="/assets/gitbook/gitbook.js"></script>
+<script src="/assets/gitbook/theme.js"></script>
+
+<script src="/assets/gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-expandable-chapters-small2/expandable-chapters-small.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-search-pro/search.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-sharing/buttons.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-splitter/splitter.js"></script>
+
+<!--
+<script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+<script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+<script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+<script src="../gitbook/gitbook-plugin-search/search.js"></script>
+-->
+
+<script src="/assets/gitbook/custom.js"></script>
+<script src="/assets/gitbook/custom-local.js"></script>
+
+</body>
+</html>

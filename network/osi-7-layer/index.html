@@ -1,0 +1,519 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    <head><meta charset="UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"><title>OSI 7계층 · Home</title><meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="Security study notes."><meta name="generator" content="Jekyll (using style of GitBook)"><meta name="author" content="Your Name"><link rel="stylesheet" href="/assets/gitbook/style.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-expandable-chapters-small2/expandable-chapters-small.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-fontsettings/website.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-search-pro/search.css">
+<link rel="stylesheet" href="/assets/gitbook/gitbook-plugin-splitter/splitter.css">
+
+<link rel="stylesheet" href="/assets/gitbook/rouge/colorful.css">
+
+<link rel="stylesheet" href="/assets/gitbook/custom.css">
+<link rel="stylesheet" href="/assets/gitbook/custom-local.css">
+
+<meta name="HandheldFriendly" content="true"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/gitbook/images/apple-touch-icon-precomposed-152.png">
+<link rel="shortcut icon" href="/" type="image/x-icon">
+
+
+
+
+            <link rel="prev" href="/" />
+        
+
+        
+            <link rel="next" href="/lab/vmware-nat/" />
+        
+    </head>
+    <body>
+        <div class="book"><div class="book-summary">
+    <script type="text/javascript">
+        // Fixes the page links scroll problem on both desktop and mobile browsers
+        function pageScrollToTop(element) {
+            // both mobile and non-mobile
+            $('div.body-inner').animate({scrollTop: 0});
+            $(element).parent().find('li>ul>li').removeClass('active');
+            return true;  // propagate
+        }
+        // Fixes the anchor links scroll problem on mobile browsers
+        function mobilePageScrollToAnchor(element) {
+            $(element).closest('li.chapter').find('ul>li').removeClass('active');
+            $(element).parent().addClass('active');
+            if ($(document).width() <= 1240) {
+                let target = $($(element).attr('href'));
+                if (target.length) {
+                    $('div.body-inner').animate({
+                        scrollTop: target.get(0).offsetTop,
+                    });
+                }
+            }
+            return true;
+        }
+    </script>
+
+    <nav role="navigation">
+        <div id="book-search-input" role="search">
+            <input type="text" placeholder="Type to search" />
+        </div>
+        <div id="book-search-input-link" role="search">
+            <a href="/assets/search.html">Click to Search</a>
+        </div>
+        <ul class="summary">
+            
+            <li class="chapter" data-level="1.1" data-path="">
+            
+                <a href="/" onclick="pageScrollToTop(this)">
+                    Home
+                </a>
+                
+                    
+                
+            </li>
+
+            <li class="divider"></li>
+
+            
+                
+                    
+                    <!-- <p>pages</p> -->
+                    
+                        
+
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/network/">
+                            
+                                <a href="/network/" onclick="pageScrollToTop(this)">
+                                    네트워크
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/">
+                            
+                                <a href="/lab/" onclick="pageScrollToTop(this)">
+                                    실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/project/">
+                            
+                                <a href="/project/" onclick="pageScrollToTop(this)">
+                                    Project
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/vmware/">
+                            
+                                <a href="/lab/vmware/" onclick="pageScrollToTop(this)">
+                                    VMware 구성 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/about/">
+                            
+                                <a href="/about/" onclick="pageScrollToTop(this)">
+                                    About
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/server/">
+                            
+                                <a href="/lab/server/" onclick="pageScrollToTop(this)">
+                                    Rocky 서버 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+                            
+                            <li class="chapter" data-level="1.1" data-path="/lab/windows-server/">
+                            
+                                <a href="/lab/windows-server/" onclick="pageScrollToTop(this)">
+                                    Windows Server 실습
+                                </a>
+                                
+                                    
+                                
+                            </li>
+                        
+
+                        
+                            <li class="divider"></li>
+                        
+                    
+                
+            
+        </ul>
+    </nav>
+</div>
+<div class="book-body">
+                <div class="book-header" role="navigation">
+                    <!-- Title -->
+                    <h1>
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                        
+                            <a href="." >OSI 7계층</a>
+                        
+                    </h1>
+                </div>
+
+                <div class="body-inner"><div class="page-wrapper" tabindex="-1" role="main">
+    
+
+    <div class="page-inner">
+        <div id="book-search-results">
+            <div class="search-noresults">
+                <section class="normal markdown-section">
+                    
+                        <h1 id="/network/osi-7-layer">OSI 7계층</h1>
+                    
+
+                    <h3 id="osi-7계층-정의">OSI 7계층 정의</h3>
+<p>OSI 7계층(Open Systems Interconnection)은 네트워크 통신을 7단계로 나눈 표준 모델이다.</p>
+
+<hr />
+
+<h3 id="계층-구조">계층 구조</h3>
+<p>(아래→위)<br />
+물리 → 데이터링크 → 네트워크 → 전송 → 세션 → 표현 → 응용</p>
+
+<hr />
+
+<h3 id="1-물리-계층-physical-layer">1. 물리 계층 (Physical Layer)</h3>
+<ul>
+  <li>실제 데이터 전송 (전기/광 신호)</li>
+  <li>케이블, 허브 등 물리적 요소</li>
+</ul>
+
+<p><strong>단위:</strong> 비트(Bit)</p>
+
+<hr />
+
+<h3 id="2-데이터링크-계층-data-link-layer">2. 데이터링크 계층 (Data Link Layer)</h3>
+<ul>
+  <li>MAC 주소 기반으로 인접 노드 간 전달</li>
+  <li>오류 검출 및 수정</li>
+</ul>
+
+<p><strong>단위:</strong> 프레임(Frame)<br />
+<strong>장비:</strong> 스위치</p>
+
+<hr />
+
+<h3 id="3-네트워크-계층-network-layer">3. 네트워크 계층 (Network Layer)</h3>
+<ul>
+  <li>IP 기반으로 최종 목적지까지 전달</li>
+  <li>경로 선택 (라우팅)</li>
+  <li>IP 주소 관리</li>
+</ul>
+
+<p><strong>단위:</strong> 패킷(Packet)<br />
+<strong>장비:</strong> 라우터<br />
+<strong>프로토콜:</strong> IP, ICMP</p>
+
+<hr />
+
+<h3 id="4-전송-계층-transport-layer">4. 전송 계층 (Transport Layer)</h3>
+<ul>
+  <li>데이터 신뢰성 보장</li>
+  <li>오류 제어, 흐름 제어</li>
+  <li>세그먼트 단위로 데이터 분할/재조립</li>
+</ul>
+
+<p><strong>단위:</strong> 세그먼트(Segment)<br />
+<strong>프로토콜:</strong> TCP, UDP</p>
+
+<hr />
+
+<h3 id="5-세션-계층-session-layer">5. 세션 계층 (Session Layer)</h3>
+<ul>
+  <li>연결(세션) 생성, 유지, 종료</li>
+  <li>통신 동기화</li>
+  <li>동기화 체크포인트 설정 (중간부터 재전송 가능)</li>
+</ul>
+
+<p><strong>단위:</strong> 데이터(Data)<br />
+<strong>예시:</strong> 로그인 세션 유지</p>
+
+<hr />
+
+<h3 id="6-표현-계층-presentation-layer">6. 표현 계층 (Presentation Layer)</h3>
+<ul>
+  <li>데이터 형식 변환</li>
+  <li>암호화 / 복호화</li>
+  <li>압축 / 해제</li>
+</ul>
+
+<p><strong>단위:</strong> 데이터(Data)<br />
+<strong>예시:</strong> HTTPS 암호화 처리</p>
+
+<hr />
+
+<h3 id="7-응용-계층-application-layer">7. 응용 계층 (Application Layer)</h3>
+<ul>
+  <li>사용자와 직접 상호작용</li>
+  <li>네트워크 서비스 제공</li>
+</ul>
+
+<p><strong>단위:</strong> 데이터(Data)<br />
+<strong>프로토콜:</strong> HTTP, HTTPS, FTP, SMTP, DNS<br />
+<strong>예시:</strong> 웹 브라우저에서 사이트 접속</p>
+
+<hr />
+
+<h3 id="핵심-요약">핵심 요약</h3>
+<ul>
+  <li>하위 계층(1~3계층): 실제 데이터 전송 담당 (물리, MAC, IP 기반 통신)</li>
+  <li>중간 계층(4계층): 종단 간 통신 제어 핵심 계층
+    <ul>
+      <li>신뢰성 보장 (TCP)</li>
+      <li>비연결 통신 (UDP)</li>
+      <li>포트 번호 기반 프로세스 간 통신</li>
+      <li>흐름 제어 / 오류 제어 수행</li>
+    </ul>
+  </li>
+  <li>상위 계층(5~7계층): 사용자 서비스 및 데이터 처리 담당</li>
+</ul>
+
+<hr />
+</section>
+            </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div></div>
+    </div>
+</div>
+
+<!-- introduce mathjax support -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script
+  type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+
+<!-- introduce per-page mermaid support -->
+
+
+<!-- introduce mathjax support -->
+<script>
+    function fixes_chrome_anchors() {
+        let chrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+        if (window.location.hash && chrome) {
+            setTimeout(function () {
+                var hash = window.location.hash;
+                window.location.hash = "";
+                window.location.hash = hash;
+            }, 300);
+        }
+    }
+
+    if (document.readyState === "loading") {
+        // Loading hasn't finished yet
+        document.addEventListener("DOMContentLoaded", fixes_chrome_anchors);
+    } else {
+        // `DOMContentLoaded` has already fired
+        fixes_chrome_anchors();
+    }
+</script>
+
+
+                        <a href="/" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Home">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                    
+
+                    
+                        <a href="/lab/vmware-nat/" class="navigation navigation-next navigation-unique" aria-label="Next page: VMware NAT 설정">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    
+                </div>
+            </div>
+
+            <script>
+            var gitbook = gitbook || [];
+            gitbook.push(function() {
+                gitbook.page.hasChanged({
+    "page": {
+        "title": "Introduction",
+        "level": "1.1",
+        "depth": 1,
+        
+        "next": {
+            "title": "VMware NAT 설정",
+            "level": "1.2",
+            "depth": 1,
+            "path": "_posts/2026-05-04-vmware-nat.md",
+            "ref": "_posts/2026-05-04-vmware-nat.md",
+            "articles": []
+        },
+        
+        "dir": "ltr"
+    },    "config": {
+        "plugins": ["fontsettings", "highlight", "livereload", "lunr", "search", "sharing", "theme-default", "livereload"],
+        "styles": {
+            "ebook": "styles/ebook.css",
+            "epub": "styles/epub.css",
+            "mobi": "styles/mobi.css",
+            "pdf": "styles/pdf.css",
+            "print": "styles/print.css",
+            "website": "styles/website.css"
+        },
+        "pluginsConfig": {
+            "expandable-chapter-small2": {
+                "articlesExpand": true,
+            },
+            "fontsettings": {
+                "family": "sans",
+                "size": 2,
+                "theme": "white"
+            },
+            "highlight": {},
+            "livereload": {},
+            "lunr": {
+                "ignoreSpecialCharacters": false,
+                "maxIndexSize": 1000000
+            },
+            "search": {},            "sharing": {
+                "facebook": true,
+
+                "google": false,
+
+                "github": true,
+              
+                "github_link": "https://github.com",
+              
+
+                "telegram": false,
+                "telegram_link": "https://t.me",
+
+                "instapaper": false,
+
+                "twitter": true,
+              
+
+                "vk": false,
+
+                "weibo": false,
+
+                "all": ["facebook", "google", "twitter", "weibo", "instapaper", "github", "telegram"]
+            },
+"theme-default": {
+                "showLevel": false,
+                "styles": {
+                    "ebook": "styles/ebook.css",
+                    "epub": "styles/epub.css",
+                    "mobi": "styles/mobi.css",
+                    "pdf": "styles/pdf.css",
+                    "print": "styles/print.css",
+                    "website": "styles/website.css"
+                }
+            },
+        },
+        "theme": "default",
+        "author": "Tao He",
+        "pdf": {
+            "pageNumbers": true,
+            "fontSize": 12,
+            "fontFamily": "Arial",
+            "paperSize": "a4",
+            "chapterMark": "pagebreak",
+            "pageBreaksBefore": "/",
+            "margin": {
+                "right": 62,
+                "left": 62,
+                "top": 56,
+                "bottom": 56
+            }
+        },
+        "structure": {
+            "langs": "LANGS.md",
+            "readme": "README.md",
+        },
+        "variables": {},
+        "title": "Home",
+        "language": "en",
+        "gitbook": "*"
+    },
+    "file": {
+        "path": "_posts/2026-05-03-osi-7-layer.md",
+        "mtime": "2026-05-03 00:00:00 +0900",
+        "type": "markdown"
+    },
+    "gitbook": {
+        "version": "",
+        "time": "2026-05-26 20:45:09 +0900"
+    },
+    "basePath": "",
+    "book": {
+        "language": ""
+    }
+});
+            });
+            </script>
+        </div><script src="/assets/gitbook/gitbook.js"></script>
+<script src="/assets/gitbook/theme.js"></script>
+
+<script src="/assets/gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-expandable-chapters-small2/expandable-chapters-small.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-search-pro/search.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-sharing/buttons.js"></script>
+<script src="/assets/gitbook/gitbook-plugin-splitter/splitter.js"></script>
+
+<!--
+<script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+<script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+<script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+<script src="../gitbook/gitbook-plugin-search/search.js"></script>
+-->
+
+<script src="/assets/gitbook/custom.js"></script>
+<script src="/assets/gitbook/custom-local.js"></script>
+
+</body>
+</html>
