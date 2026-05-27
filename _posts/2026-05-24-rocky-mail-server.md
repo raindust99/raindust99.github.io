@@ -159,6 +159,7 @@ Rocky Linux 9 환경에서 **BIND**(DNS), **Postfix**(SMTP), **Dovecot**(POP3/IM
     nslookup 10.0.0.23 10.0.0.21
     ```
 
+<br>
 
 ### 2. 클라이언트 DNS 설정
 
@@ -180,7 +181,7 @@ nmcli con mod "연결이름" ipv4.dns "10.0.0.21"
 nmcli con up "연결이름"
 ```
 
----
+<br>
 
 ### 3. 방화벽 포트 열기 (Mail 서버)
 
@@ -209,7 +210,7 @@ firewall-cmd --permanent --add-service=dns
 firewall-cmd --reload
 ```
 
----
+<br>
 
 ### 4. Postfix 설치 및 설정 (SMTP)
 
@@ -226,86 +227,86 @@ firewall-cmd --reload
     vi /etc/postfix/main.cf
     ```
 
-```
-# 호스트 이름 (DNS의 A 레코드와 일치해야 함)
-myhostname = mx1.kjy.local
+    ```
+    # 호스트 이름 (DNS의 A 레코드와 일치해야 함)
+    myhostname = mx1.kjy.local
 
-# 메일 도메인 (MX 레코드 도메인과 일치해야 함)
-mydomain = kjy.local
+    # 메일 도메인 (MX 레코드 도메인과 일치해야 함)
+    mydomain = kjy.local
 
-# 발신 도메인
-myorigin = $mydomain
+    # 발신 도메인
+    myorigin = $mydomain
 
-# 모든 인터페이스에서 수신
-inet_interfaces = all
+    # 모든 인터페이스에서 수신
+    inet_interfaces = all
 
-# 수신 허용 도메인
-mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+    # 수신 허용 도메인
+    mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 
-# Maildir 형식으로 메일박스 생성
-home_mailbox = Maildir/
-```
+    # Maildir 형식으로 메일박스 생성
+    home_mailbox = Maildir/
+    ```
 
 - 재시작
 
-```bash
-systemctl restart postfix
-systemctl status postfix
-```
+    ```bash
+    systemctl restart postfix
+    systemctl status postfix
+    ```
 
----
+<br>
 
 ### 5. Dovecot 설치 및 설정 (POP3/IMAP)
 
 - 설치
 
-```bash
-dnf install -y dovecot
-systemctl enable --now dovecot
-```
+    ```bash
+    dnf install -y dovecot
+    systemctl enable --now dovecot
+    ```
 
 - 프로토콜 활성화
 
-```bash
-vi /etc/dovecot/dovecot.conf
-```
+    ```bash
+    vi /etc/dovecot/dovecot.conf
+    ```
 
-```
-protocols = imap pop3
-```
+    ```
+    protocols = imap pop3
+    ```
 
 - 메일박스 위치 설정
 
-```bash
-vi /etc/dovecot/conf.d/10-mail.conf
-```
+    ```bash
+    vi /etc/dovecot/conf.d/10-mail.conf
+    ```
 
-```
-mail_location = maildir:~/Maildir
-```
+    ```
+    mail_location = maildir:~/Maildir
+    ```
 
 - 인증 설정
 
-```bash
-vi /etc/dovecot/conf.d/10-auth.conf
-```
+    ```bash
+    vi /etc/dovecot/conf.d/10-auth.conf
+    ```
 
-```
-# 평문 인증 허용 (내부 실습 환경)
-disable_plaintext_auth = no
-auth_mechanisms = plain login
-```
+    ```
+    # 평문 인증 허용 (내부 실습 환경)
+    disable_plaintext_auth = no
+    auth_mechanisms = plain login
+    ```
 
-> ⚠️ 운영 환경에서는 SSL/TLS를 적용하고 `disable_plaintext_auth = yes`로 설정해야 한다.
+    > ⚠️ 운영 환경에서는 SSL/TLS를 적용하고 `disable_plaintext_auth = yes`로 설정해야 한다.
 
 - 재시작
 
-```bash
-systemctl restart dovecot
-systemctl status dovecot
-```
+    ```bash
+    systemctl restart dovecot
+    systemctl status dovecot
+    ```
 
----
+<br>
 
 ### 6. 메일 계정 생성
 
@@ -321,7 +322,7 @@ useradd y
 echo "It1" | passwd --stdin y
 ```
 
----
+<br>
 
 ### 7. 로그 확인
 
@@ -333,63 +334,64 @@ tail -f /var/log/maillog
 journalctl -u postfix -u dovecot -f
 ```
 
----
+<br>
 
 ### 8. 동작 확인
 
 - 포트 리스닝 확인
 
-```bash
-ss -tlnp | grep -E '25|110|143'
-```
+    ```bash
+    ss -tlnp | grep -E '25|110|143'
+    ```
 
 - MX 레코드를 통한 메일 발송 테스트
 
-```bash
-echo "test mail body" | mail -s "test subject" x@kjy.local
-```
+    ```bash
+    echo "test mail body" | mail -s "test subject" x@kjy.local
+    ```
 
-Postfix는 `kjy.local`의 MX 레코드를 DNS에서 조회해 `mx1.kjy.local(10.0.0.23)`로 메일을 전달한다.
+    Postfix는 `kjy.local`의 MX 레코드를 DNS에서 조회해 `mx1.kjy.local(10.0.0.23)`로 메일을 전달한다.
 
+<br>
 
 ### 9. Thunderbird에서 계정 연결하기
 
 - 사전 조건
 
-클라이언트 PC의 DNS가 `10.0.0.21`로 설정되어 있어야 `mx1.kjy.local`로 접속할 수 있다.
+    클라이언트 PC의 DNS가 `10.0.0.21`로 설정되어 있어야 `mx1.kjy.local`로 접속할 수 있다.
 
 - 계정 추가
 
-설정 → 계정 설정 → 새 계정 → 메일 계정 → MANUAL CONFIGURATION
+    설정 → 계정 설정 → 새 계정 → 메일 계정 → MANUAL CONFIGURATION
 
 - 수신 서버 설정
 
-| 항목 | 값 |
-|------|-----|
-| 호스트명 | `mx1.kjy.local` |
-| 포트 | `110` (POP3) 또는 `143` (IMAP) |
-| 보안 연결 | 없음 |
-| 인증 방식 | 안전하지 않게 전송되는 비밀번호 |
-| 사용자 이름 | `x` |
+    | 항목 | 값 |
+    |------|-----|
+    | 호스트명 | `mx1.kjy.local` |
+    | 포트 | `110` (POP3) 또는 `143` (IMAP) |
+    | 보안 연결 | 없음 |
+    | 인증 방식 | 안전하지 않게 전송되는 비밀번호 |
+    | 사용자 이름 | `x` |
 
 - 발신 서버 설정
 
-| 항목 | 값 |
-|------|-----|
-| 호스트명 | `mx1.kjy.local` |
-| 포트 | `25` |
-| 보안 연결 | 없음 |
-| 인증 방식 | 안전하지 않게 전송되는 비밀번호 |
-| 사용자 이름 | `x` |
+    | 항목 | 값 |
+    |------|-----|
+    | 호스트명 | `mx1.kjy.local` |
+    | 포트 | `25` |
+    | 보안 연결 | 없음 |
+    | 인증 방식 | 안전하지 않게 전송되는 비밀번호 |
+    | 사용자 이름 | `x` |
 
 - 발신 서버 편집
 
-설정 → 계정 설정 → 보내는 서버 편집 → 보안 연결 : 없음 / 인증 방식 : 안전하지 않게 전송되는 비밀번호 → 확인
+    설정 → 계정 설정 → 보내는 서버 편집 → 보안 연결 : 없음 / 인증 방식 : 안전하지 않게 전송되는 비밀번호 → 확인
 
 - 테스트
 
-새 메시지 → 자기 자신(`x@kjy.local`)에게 메일 발송 → 받은 편지함, 보낸 편지함에서 모두 확인되면 정상 동작.
+    새 메시지 → 자기 자신(`x@kjy.local`)에게 메일 발송 → 받은 편지함, 보낸 편지함에서 모두 확인되면 정상 동작.
 
 - 계정 삭제
 
-설정 → 우측 상단 삭제 → 메시지 데이터 삭제 체크 → 제거
+    설정 → 우측 상단 삭제 → 메시지 데이터 삭제 체크 → 제거

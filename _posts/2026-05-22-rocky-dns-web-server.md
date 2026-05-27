@@ -41,43 +41,43 @@ vi /etc/httpd/conf/httpd.conf
 
 - 91번 줄 — 서버 관리자 이메일 수정
 
-```
-# 변경 전
-ServerAdmin root@localhost
+    ```
+    # 변경 전
+    ServerAdmin root@localhost
 
-# 변경 후
-ServerAdmin web@이니셜.local
-```
+    # 변경 후
+    ServerAdmin web@이니셜.local
+    ```
 
 - 149번 줄 — 디렉토리 리스팅(Indexes) 제거
 
-```
-# 변경 전
-Options Indexes FollowSymLinks
+    ```
+    # 변경 전
+    Options Indexes FollowSymLinks
 
-# 변경 후
-Options FollowSymLinks
-```
+    # 변경 후
+    Options FollowSymLinks
+    ```
 
-> `Indexes` 옵션을 제거하면 `index.html`이 없는 디렉토리에 접근할 때 파일 목록 대신 **403 Forbidden**이 반환된다. 의도된 보안 동작이다.
+    > `Indexes` 옵션을 제거하면 `index.html`이 없는 디렉토리에 접근할 때 파일 목록 대신 **403 Forbidden**이 반환된다. 의도된 보안 동작이다.
 
 - 메인 페이지 작성
 
-```bash
-vi /var/www/html/index.html
-```
+    ```bash
+    vi /var/www/html/index.html
+    ```
 
-```html
-<html>
-<body>
-  <h1>MAIN-KJY-WEB-1</h1>
-</body>
-</html>
-```
+    ```html
+    <html>
+    <body>
+    <h1>MAIN-KJY-WEB-1</h1>
+    </body>
+    </html>
+    ```
 
-```bash
-systemctl restart httpd
-```
+    ```bash
+    systemctl restart httpd
+    ```
 
 
 <br>
@@ -89,43 +89,43 @@ systemctl restart httpd
 
 - 서브 도메인용 디렉토리 및 페이지 생성
 
-```bash
-mkdir /var/www/blog
-vi /var/www/blog/index.html
-```
+    ```bash
+    mkdir /var/www/blog
+    vi /var/www/blog/index.html
+    ```
 
-```html
-<html>
-<body>
-  <h1>BLOG-KJY-WEB-1</h1>
-</body>
-</html>
-```
+    ```html
+    <html>
+    <body>
+    <h1>BLOG-KJY-WEB-1</h1>
+    </body>
+    </html>
+    ```
 
 - 가상 호스트 설정 파일 작성
 
-```bash
-vi /etc/httpd/conf.d/vir.conf
-```
+    ```bash
+    vi /etc/httpd/conf.d/vir.conf
+    ```
 
-```apache
-NameVirtualHost *:80
+    ```apache
+    NameVirtualHost *:80
 
-# 메인 도메인 — ServerAlias로 이니셜.local도 함께 처리
-<VirtualHost *:80>
-    ServerName   www.kjy.local
-    ServerAlias  kjy.local
-    DocumentRoot /var/www/html
-</VirtualHost>
+    # 메인 도메인 — ServerAlias로 이니셜.local도 함께 처리
+    <VirtualHost *:80>
+        ServerName   www.kjy.local
+        ServerAlias  kjy.local
+        DocumentRoot /var/www/html
+    </VirtualHost>
 
-# 서브 도메인 — 블로그
-<VirtualHost *:80>
-    ServerName   blog.kjy.local
-    DocumentRoot /var/www/blog
-</VirtualHost>
-```
+    # 서브 도메인 — 블로그
+    <VirtualHost *:80>
+        ServerName   blog.kjy.local
+        DocumentRoot /var/www/blog
+    </VirtualHost>
+    ```
 
-> **주의:** 첫 번째 `<VirtualHost>` 블록을 명시하지 않으면 도메인에 따라 엉뚱한 페이지가 응답될 수 있다. 기본(main) 가상 호스트는 반드시 첫 번째로 선언한다.
+    > **주의:** 첫 번째 `<VirtualHost>` 블록을 명시하지 않으면 도메인에 따라 엉뚱한 페이지가 응답될 수 있다. 기본(main) 가상 호스트는 반드시 첫 번째로 선언한다.
 
 <br>
 
@@ -134,54 +134,54 @@ NameVirtualHost *:80
 
 - IP 기반 접근 제한
 
-특정 IP에서만 접근을 허용하려면 `Directory` 블록을 사용한다.
+    특정 IP에서만 접근을 허용하려면 `Directory` 블록을 사용한다.
 
-```apache
-<Directory "/var/www/blog">
-    Order   deny,allow
-    Allow from 10.0.0.101
-    Deny from all
-</Directory>
-```
+    ```apache
+    <Directory "/var/www/blog">
+        Order   deny,allow
+        Allow from 10.0.0.101
+        Deny from all
+    </Directory>
+    ```
 
-> `Order deny,allow`는 **Allow → Deny** 순서로 평가된다. Order의 마지막에 쓴 지시자가 기본값이 되므로, 위 설정은 "기본 Deny, 10.0.0.101만 Allow"가 된다.
+    > `Order deny,allow`는 **Allow → Deny** 순서로 평가된다. Order의 마지막에 쓴 지시자가 기본값이 되므로, 위 설정은 "기본 Deny, 10.0.0.101만 Allow"가 된다.
 
 - 사용자 인증 (.htaccess)
 
-인증이 필요한 디렉토리에 `.htaccess`를 사용하려면 먼저 `httpd.conf` 또는 `vir.conf`에서 `AllowOverride`를 허용해야 한다.
+    인증이 필요한 디렉토리에 `.htaccess`를 사용하려면 먼저 `httpd.conf` 또는 `vir.conf`에서 `AllowOverride`를 허용해야 한다.
 
-```apache
-<Directory "/var/www/intra">
-    AllowOverride AuthConfig
-</Directory>
-```
+    ```apache
+    <Directory "/var/www/intra">
+        AllowOverride AuthConfig
+    </Directory>
+    ```
 
-`.htaccess` 파일 작성:
+    `.htaccess` 파일 작성:
 
-```bash
-vi /var/www/intra/.htaccess
-```
+    ```bash
+    vi /var/www/intra/.htaccess
+    ```
 
-```
-AuthName     "Auth Test"
-AuthType     Basic
-AuthUserFile /web/.user
-Require user a b
-```
+    ```
+    AuthName     "Auth Test"
+    AuthType     Basic
+    AuthUserFile /web/.user
+    Require user a b
+    ```
 
 - 사용자 계정 생성:
 
-```bash
-mkdir /web
-htpasswd -c /web/.user a   # -c 옵션: 파일 신규 생성 (최초 1회만 사용)
-htpasswd /web/.user b      # 이후 계정 추가 시 -c 없이
-```
+    ```bash
+    mkdir /web
+    htpasswd -c /web/.user a   # -c 옵션: 파일 신규 생성 (최초 1회만 사용)
+    htpasswd /web/.user b      # 이후 계정 추가 시 -c 없이
+    ```
 
-> **주의:** `-c` 옵션은 파일을 새로 생성한다. 두 번째 계정 추가 시 `-c`를 사용하면 기존 계정이 전부 삭제된다.
+    > **주의:** `-c` 옵션은 파일을 새로 생성한다. 두 번째 계정 추가 시 `-c`를 사용하면 기존 계정이 전부 삭제된다.
 
-```bash
-systemctl restart httpd
-```
+    ```bash
+    systemctl restart httpd
+    ```
 
 <br>
 
@@ -387,41 +387,41 @@ firewall-cmd --reload
 
 - DNS 서버 주소 설정
 
-`Win+R` → `ncpa.cpl` → Ethernet0 → 속성 → 인터넷 프로토콜 버전 4(TCP/IPv4) → DNS 서버: `10.0.0.11`
+    `Win+R` → `ncpa.cpl` → Ethernet0 → 속성 → 인터넷 프로토콜 버전 4(TCP/IPv4) → DNS 서버: `10.0.0.11`
 
 - nslookup으로 확인
 
-```
-Win+R → cmd
-nslookup
-> 이니셜.local
-> www.이니셜.local
-> babo.이니셜.local
-> ftp.이니셜.local
-```
+    ```
+    Win+R → cmd
+    nslookup
+    > 이니셜.local
+    > www.이니셜.local
+    > babo.이니셜.local
+    > ftp.이니셜.local
+    ```
 
-각 도메인에 대한 IP 주소가 반환되면 정상이다.
+    각 도메인에 대한 IP 주소가 반환되면 정상이다.
 
 - FTP 접속 확인
 
-```
-ftp ftp.이니셜.local
-ftp babo.이니셜.local
-```
+    ```
+    ftp ftp.이니셜.local
+    ftp babo.이니셜.local
+    ```
 
 - 웹 브라우저 접속 확인
 
-브라우저 주소창에 아래를 입력해 HTTP 페이지가 정상 출력되는지 확인한다.
+    브라우저 주소창에 아래를 입력해 HTTP 페이지가 정상 출력되는지 확인한다.
 
-```
-http://이니셜.local
-http://www.이니셜.local
-http://blog.이니셜.local
-```
+    ```
+    http://이니셜.local
+    http://www.이니셜.local
+    http://blog.이니셜.local
+    ```
 
 <br>
 
-### 12. 알아두면 좋은 것
+### 12. 알아두면 좋은 것들
 
 - 삭제 방법 <br>
 
