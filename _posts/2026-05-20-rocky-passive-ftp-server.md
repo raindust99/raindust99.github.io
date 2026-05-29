@@ -205,6 +205,8 @@ FTP 전송 로그를 확인할 수 있다. <br>
   | 방화벽 친화성 | 낮음 (클라이언트 인바운드 필요) | 높음 (클라이언트 아웃바운드만 필요) |
   | 주요 설정 | `connect_from_port_20=YES` | `pasv_enable=YES`, `pasv_min/max_port` |
 
+<br>
+
 - **방화벽 XML 파일 수정으로 포트를 추가하는 방법** <br>
   ```bash
   vi /etc/firewalld/zones/public.xml
