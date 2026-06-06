@@ -442,3 +442,6 @@ firewall-cmd --reload
   dnf autoremove -y bind bind-utils bind-libs
   rm -rf /etc/named.conf.rpmsave /etc/named.rfc1912.zones.rpmsave /var/named
   ```
+
+
+<br>
