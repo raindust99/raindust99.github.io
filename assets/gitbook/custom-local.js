@@ -39,7 +39,11 @@
             }
         ],
         '/project/': [
-            { title: '\ubaa8\uc758\ud574\ud0b9', url: '/project/pentest/' }
+            { title: '시스템 모의해킹', url: '/project/system-pentest/' },
+            { title: '하이브리드 클라우드 보안구축', url: '/project/hybrid-cloud-security/' },
+            { title: 'Azure 클라우드 인프라 및 M365 Defender 보안구축', url: '/project/azure-infra-m365-defender-security/' },
+            { title: 'Azure 클라우드 데이터 및 App 보안', url: '/project/azure-data-app-security/' },
+            { title: 'Azure 클라우드 행위기반 보안탐지 및 대응', url: '/project/azure-behavior-detection-response/' }
         ]
     };
     function normalizePath(path) {
@@ -571,7 +575,11 @@
             'Wordpress + MySQL + HAProxy 구성',
             'Rocky Linux에 DNS+Mail 서버 구성',
             'OSI 7\uacc4\uce35',
-            '\ubaa8\uc758\ud574\ud0b9'
+            '시스템 모의해킹',
+            '하이브리드 클라우드 보안구축',
+            'Azure 클라우드 인프라 및 M365 Defender 보안구축',
+            'Azure 클라우드 데이터 및 App 보안',
+            'Azure 클라우드 행위기반 보안탐지 및 대응'
         ];
         var queryElement = document.querySelector('.search-query');
         var query = queryElement ? queryElement.textContent : '';

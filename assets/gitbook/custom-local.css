@@ -19,7 +19,11 @@
 .markdown-section li:has(a[href="/lab/windows-2022-server-vm/"]),
 .markdown-section li:has(a[href="/lab/windows-2022-server-clone/"]),
 .markdown-section li:has(a[href="/lab/wordpress-mysql-haproxy/"]),
-.markdown-section li:has(a[href="/project/pentest/"]) {
+.markdown-section li:has(a[href="/project/system-pentest/"]),
+.markdown-section li:has(a[href="/project/hybrid-cloud-security/"]),
+.markdown-section li:has(a[href="/project/azure-infra-m365-defender-security/"]),
+.markdown-section li:has(a[href="/project/azure-data-app-security/"]),
+.markdown-section li:has(a[href="/project/azure-behavior-detection-response/"]) {
     display: none;
 }
 .markdown-section li.is-visible-by-content {

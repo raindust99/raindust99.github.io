@@ -297,7 +297,7 @@ firewall-cmd --reload
     auth_mechanisms = plain login
     ```
 
-    > ⚠️ 운영 환경에서는 SSL/TLS를 적용하고 `disable_plaintext_auth = yes`로 설정해야 한다.
+    > 운영 환경에서는 SSL/TLS를 적용하고 `disable_plaintext_auth = yes`로 설정해야 한다.
 
 - 재시작
 
