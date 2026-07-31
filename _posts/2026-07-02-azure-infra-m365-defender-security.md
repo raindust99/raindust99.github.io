@@ -7,8 +7,6 @@ permalink: /project/azure-infra-m365-defender-security/
 ---
 온프레미스에서 운영하던 워드프레스 쇼핑몰을 Azure 퍼블릭 클라우드로 확장하면서, Hub-Spoke 네트워크·다중 리전 재해복구·Zero-Trust 보안·온프레미스 하이브리드 연동까지 갖춘 인프라를 Terraform으로 구축한 과정을 정리하였다.
 
-이번 글에서는 그중 **인프라 구축** 파트를 다룬다.
-
 ---
 
 ### 1. 프로젝트 개요
@@ -17,6 +15,8 @@ permalink: /project/azure-infra-m365-defender-security/
 
 애플리케이션 계층은 WordPress 7.0(ko_KR) 기반 WooCommerce 쇼핑몰로 구성했고, 데이터베이스는 보안 정책상 온프레미스에 남겨둔 채 Site-to-Site IPsec VPN으로 Azure와 연동하는 하이브리드 구조를 적용했다.
 
+<br>
+
 **핵심 목표**
 
 - **고가용성(HA)** : VMSS + Application Gateway 자동 확장, 가용 영역(Zone) 분산 배치로 단일 장애 지점(SPOF) 제거
@@ -24,6 +24,8 @@ permalink: /project/azure-infra-m365-defender-security/
 - **제로 트러스트 보안** : Hub-Spoke 망 분리, Azure Firewall 중앙 집중 제어, Application Gateway WAF, Private Endpoint 기반 PaaS 격리
 - **하이브리드 연동** : 온프레미스 MySQL을 IPsec VPN 터널로 안전하게 연동해 데이터 주권 유지
 - **인프라 자동화(IaC)** : Terraform으로 전체 인프라를 코드화해 일관성·재현성·신속한 복제 확보
+
+<br>
 
 **사용 기술**
 
@@ -40,23 +42,18 @@ permalink: /project/azure-infra-m365-defender-security/
 
 > Korea South는 가용 영역(Availability Zone)을 제공하지 않아 Zone 분산 HA 구성이 불가능하다. 그래서 가용 영역을 지원하는 Japan East를 DR 리전으로 선택해서, 두 리전 모두 Zone-redundant 구성을 동일하게 적용했다.
 
+<br>
+
 ---
 
-### 2. 아키텍처 설계 — 5단계로 확장하기
+### 2. 아키텍처 설계
 
-인프라는 두 국면으로 나눠 구축했다. 1~3단계(구축기)에서는 Korea Central 단일 리전 안에서 기본 웹 서비스부터 Hub-Spoke 망 분리, 보안 계층까지 완성했고, 4~5단계(확장기)에서는 Japan East를 추가해 재해복구·하이브리드 연동·성능 최적화를 구현했다.
-
-| 단계 | 핵심 추가 구성 | 목표 |
-|---|---|---|
-| 1단계 | 단일 리전 기본 인프라 (VNet, AppGW, VM, Bastion, NAT, PE, 스토리지) | 단일 리전 기본 웹 서비스 |
-| 2단계 | Hub-Spoke 망 분리 · Peering | 네트워크 격리·확장성 |
-| 3단계 | VMSS 자동 확장, WAF, Redis 캐시, Private Endpoint, Azure Monitor·Log Analytics | 단일 리전 서비스 계층 강화 |
-| 4단계 | Japan East 추가, Azure Firewall·UDR, VPN Gateway·Local Network Gateway(IPsec), 양 리전 대칭 | 다중 리전 DR·하이브리드 연동 |
-| 5단계 | Traffic Manager(우선순위 라우팅), Azure Files 공유, 통합 모니터링 | 자동 절체·성능·운영 최적화 |
-
-최종 형상은 두 리전 각각에 Hub VNet과 Spoke VNet을 두고 리전 내부에서 Peering으로 연결하는 Hub-Spoke 구조다. Hub에는 Azure Firewall·Application Gateway·VPN Gateway 같은 공유·경계 서비스를, Spoke에는 워크로드(VMSS)와 Private Endpoint를 배치했다.
+인프라는 기본 웹 서비스부터 Hub-Spoke 망 분리, 보안, 재해복구·하이브리드 연동·성능 최적화를 구현했다.
+두 리전 각각에 Hub VNet과 Spoke VNet을 두고 리전 내부에서 Peering으로 연결하는 Hub-Spoke 구조다. Hub에는 Azure Firewall·Application Gateway·VPN Gateway 같은 공유·경계 서비스를, Spoke에는 워크로드(VMSS)와 Private Endpoint를 배치했다.
 
 ![Azure 하이브리드 클라우드 전체 아키텍처 구성도](/assets/images/azure-infra-m365-defender/01-architecture-overview.png)
+
+<br>
 
 **VNet · 서브넷 대역**
 
@@ -70,12 +67,16 @@ permalink: /project/azure-infra-m365-defender-security/
 
 네 개 VNet 대역과 온프레미스 대역이 서로 겹치지 않도록 설계했고, GatewaySubnet·AzureBastionSubnet은 Azure가 강제하는 고정 이름과 최소 `/26` 크기 요건을 맞췄다.
 
+<br>
+
 **Zero-Trust를 만드는 4가지 장치**
 
 - **Azure Firewall + UDR 중앙 집중 제어** : Hub의 AzureFirewallSubnet에 Firewall(Standard)을 두고, Spoke의 Web-Subnet·PE-Subnet에 UDR을 적용해서 모든 아웃바운드가 강제로 Firewall을 경유하게 했다. 정책은 웹 서버(10.1.1.0/24, 10.3.1.0/24) → 온프레미스 MySQL(10.10.34.119:3306) 통신과 Spoke 대역의 80/443 아웃바운드만 허용한다. Application Gateway는 v2 SKU 특성상 공인 IP로 직접 인바운드를 받아야 해서 AppGW-Subnet에는 UDR을 적용하지 않았고, PE-Subnet에는 온프레미스 경로를 두지 않아 Private Endpoint 응답이 불필요하게 VPN 게이트웨이로 향하지 않게 했다.
 - **Application Gateway WAF** : WAF_v2 SKU + OWASP 3.2 룰셋을 Prevention 모드로 적용해서 SQL Injection 등 L7 공격을 실시간 차단한다.
 - **Private Endpoint 기반 PaaS 격리** : Storage(File)와 Redis는 공인 네트워크 접근을 막고 Spoke의 PE-Subnet에 Private Endpoint로 연결했다. 여기서 한 가지 삽질했던 부분 — 신형 Azure Managed Redis는 `privatelink.redis.azure.net` 영역을 써야 한다. 구형 Azure Cache for Redis용 `privatelink.redis.cache.windows.net`을 쓰면 PE 격리가 동작하지 않고 공인 IP가 그대로 반환된다.
 - **온프레미스 하이브리드 VPN** : 양 리전의 VPN Gateway(VpnGw1AZ, RouteBased)와 온프레미스 Bluemax NGF 100 방화벽 간에 Site-to-Site IPsec 터널을 수립했다. VpnGw1은 deprecated라 가용 영역을 지원하는 VpnGw1AZ를 선택했다.
+
+<br>
 
 **다중 리전 DR — Traffic Manager**
 
@@ -86,11 +87,15 @@ permalink: /project/azure-infra-m365-defender-security/
 
 접속 도메인은 `team601shop2.trafficmanager.net`이며 TTL 30초로 HTTP 상태를 체크한다. Central이 장애가 나면 프로브 실패를 감지해서 Japan East 엔드포인트로 DNS를 전환한다.
 
+<br>
+
 **성능·운영 계층**
 
 - Azure Managed Redis(Balanced_B1)를 양 리전에 배치하고 AllKeysLRU 제거 정책 적용, TLS·포트 10000으로 WordPress Redis Object Cache와 연동
 - `wp-content/uploads`를 Azure Files(SMB)로 마운트해서 VMSS 인스턴스 간 업로드 파일 공유. Central은 GRS(team601storage2), Japan은 비용 효율적인 LRS 전용 계정(team601storage2jp)으로 분리
 - 리전별 Log Analytics Workspace로 VMSS·Application Gateway·Firewall의 메트릭·로그 수집
+
+<br>
 
 ---
 
@@ -112,8 +117,6 @@ permalink: /project/azure-infra-m365-defender-security/
 | 09_peering.tf | VNet Peering | 20_trafficmanager.tf | Traffic Manager |
 | 10_firewall.tf | Azure Firewall·정책 | 100_var.tf / install.sh.tpl | 변수 · 부팅 스크립트 |
 
-구성하면서 기록해 둔 포인트 몇 가지:
-
 - **Provider 초기화** : `resource_provider_registrations = "none"`으로 불필요한 리소스 공급자 자동 등록을 껐다.
 - **변수 관리** : 리소스 그룹명·리전·관리자 계정·VM 규격·VPN PSK를 변수로 모듈화했고, `vpn_psk`는 `sensitive = true`로 지정해 로그에 노출되지 않게 했다.
 - **서브넷** : Web·PE 서브넷은 `default_outbound_access_enabled = false`로 불필요한 인터넷 노출을 막았다.
@@ -121,7 +124,9 @@ permalink: /project/azure-infra-m365-defender-security/
 - **오토스케일** : CPU 평균 사용률 70% 초과 시 인스턴스 1대 증가(최대 5대), 20% 미만 시 1대 감소.
 - **모니터링** : azurerm 4.x부터 진단 메트릭 블록이 `enabled_metric`으로 이름이 바뀌었다.
 
-![Korea Central 리전 Azure 리소스 그룹 구성 완료 화면](/assets/images/azure-infra-m365-defender/02-korea-central-resources.png)
+    ![Korea Central 리전 Azure 리소스 그룹 구성 완료 화면](/assets/images/azure-infra-m365-defender/02-korea-central-resources.png)
+
+<br>
 
 ---
 
@@ -152,11 +157,15 @@ Azure 측 사용자 지정 IPsec/IKE 정책과 Bluemax 보안 정책을 정확�
 
 Bluemax 방화벽 보안 정책은 화이트리스트 방식으로 구성해서, 명시한 트래픽만 허용하고 마지막에 전체 차단(Deny-All) 규칙을 뒀다. VPN 터널 구간(10.1.0.0/16 ↔ 10.10.34.0/24)에는 NAT를 적용하지 않았는데, 이 구간은 IPsec이 처리하기 때문에 SNAT/DNAT가 끼어들면 응답 패킷이 디폴트 게이트웨이로 새어 나가 터널이 끊어지기 때문이다.
 
+<br>
+
 ---
 
-### 5. 검증 결과 — 실제로 잘 동작하는지 확인하기
+### 5. 검증 결과
 
 배포한 인프라가 설계 의도대로 동작하는지 8개 영역으로 나눠서 검증했다.
+
+<br>
 
 **보안 (Zero-Trust · Firewall · WAF)**
 
@@ -170,17 +179,27 @@ VMSS에는 공인 IP를 아예 할당하지 않고 Application Gateway 뒤에만
 |---|---|
 | ![WAF 정상 요청 200 OK](/assets/images/azure-infra-m365-defender/04-waf-normal-200.png) | ![WAF SQL Injection 차단 403 Forbidden](/assets/images/azure-infra-m365-defender/05-waf-sqli-block-403.png) |
 
+<br>
+
 **네트워크 아키텍처 (Hub-Spoke)** — 두 리전 모두 Hub-Spoke VNet Peering이 정상 연결되어 통신하는 것을 확인했다.
+
+<br>
 
 **고가용성(HA) 및 Auto Scaling** — VMSS 인스턴스 2대 중 1대를 중지(할당 취소)한 상태에서도 쇼핑몰이 정상 접속되어 단일 인스턴스 장애에 대한 서비스 연속성을 검증했다. 이어서 `yes` 명령으로 CPU 부하를 ~99%까지 올려 threshold 70%를 초과시키자, 오토스케일이 트리거되어 인스턴스가 2대에서 5대로 자동 확장되었다.
 
 ![CPU 임계치 초과로 VMSS 인스턴스 2대에서 5대로 자동 확장](/assets/images/azure-infra-m365-defender/06-autoscale-2to5.png)
 
+<br>
+
 **하이브리드 클라우드 (VPN · 온프레미스 DB)** — Site-to-Site VPN을 통해 Azure VMSS(10.1.1.x)와 온프레미스 MySQL(10.10.34.119:3306)이 정상 연동되는 것을 확인했다. 같은 포트로 외부 인터넷에서 접근하면 방화벽에서 차단된다.
+
+<br>
 
 **캐시 계층 (Redis)** — VMSS에서 nslookup 시 Redis가 `privatelink.redis.azure.net`으로 CNAME 풀이되고 사설 IP(10.1.2.5)를 반환해서 Private Endpoint 격리가 정상 동작함을 확인했다. WordPress에서도 `wp redis status` 실행 시 `Status: Connected`로 정상 연동을 확인했다.
 
 ![WordPress Redis Object Cache 연동 상태 Connected 확인](/assets/images/azure-infra-m365-defender/09-redis-objectcache-connected.png)
+
+<br>
 
 **재해복구 — Traffic Manager Failover** — 정상 상태에서 `team601shop2.trafficmanager.net`을 조회하면 Central App Gateway IP(20.214.152.240)가 반환된다. central-endpoint를 비활성화하자 japan-endpoint가 Online으로 전환되고, DNS 조회 결과도 Japan App Gateway IP(52.140.213.49)로 바뀌는 것을 확인했다.
 
@@ -190,9 +209,15 @@ VMSS에는 공인 IP를 아예 할당하지 않고 Application Gateway 뒤에만
 
 Central에서 회원가입(test01)을 한 뒤 온프레미스 MySQL의 `shop_users` 테이블에서 해당 레코드를 바로 확인할 수 있었다. DB가 온프레미스 단일 인스턴스에 있기 때문에, 어느 리전으로 접속하든 같은 데이터를 보게 되고 리전 페일오버가 데이터 정합성에 영향을 주지 않는다.
 
+<br>
+
 **공유 스토리지 (Azure Files)** — 인스턴스 A에서 Azure Files(team601storage2/wp-media, 100G)를 마운트하고 파일을 업로드한 뒤, 인스턴스 B에서 동일 파일이 그대로 조회되어 인스턴스 간 공유가 정상 동작함을 검증했다. 스케일아웃으로 새로 생기는 인스턴스도 같은 공유 볼륨을 마운트한다.
 
+<br>
+
 **운영 및 모니터링 (Log Analytics)** — Log Analytics Workspace에서 VMSS·Application Gateway·Firewall의 메트릭과 로그가 정상 수집되는 것을 확인했다.
+
+<br>
 
 **검증 종합**
 
@@ -207,6 +232,8 @@ Central에서 회원가입(test01)을 한 뒤 온프레미스 MySQL의 `shop_use
 | 공유 스토리지 | Azure Files 마운트 | 완료 |
 | 모니터링 | Log Analytics 로그 수집 | 완료 |
 
+<br>
+
 ---
 
 ### 6. 회고 — 성과, 한계, 다음 단계
@@ -219,6 +246,8 @@ Central에서 회원가입(test01)을 한 뒤 온프레미스 MySQL의 `shop_use
 - **자동 확장 · 고가용성** : VMSS Auto Scaling과 가용 영역 분산으로 트래픽 변동 대응 및 SPOF 제거
 - **IaC 자동화** : 22개 Terraform 파일로 전체 인프라를 코드화해 재현성·일관성·신속한 복제 확보 (수동 구축 대비 배포 시간 단축, Auto Scaling·DR 리전 LRS 분리·캐시 계층으로 운영 비용도 절감)
 
+<br>
+
 **한계점 및 개선 방향**
 
 | 항목 | 현황 | 개선 방향 |
@@ -230,6 +259,8 @@ Central에서 회원가입(test01)을 한 뒤 온프레미스 MySQL의 `shop_use
 | 스토리지 Access Key 인증 | 키 유출 위험 | Entra ID 인증·SAS 적용, 키 정기 회전 |
 | Traffic Manager 절체 지연 | DNS TTL(30초)만큼 지연 | Front Door(L7) 도입으로 즉시 절체 |
 | CI/CD 부재 | Terraform 수동 apply | 파이프라인 구축으로 코드 변경 자동 배포 |
+
+<br>
 
 **앞으로 넓혀보고 싶은 방향**
 
