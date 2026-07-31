@@ -60,7 +60,8 @@
         '/lab/rocky-active-ftp-server/': true,
         '/lab/rocky-passive-ftp-server/': true,
         '/lab/rocky-dns-web-server/': true,
-        '/lab/rocky-mail-server/': true
+        '/lab/rocky-mail-server/': true,
+        '/project/azure-infra-m365-defender-security/': true
     };
     var contentStatusCache = {};
 
