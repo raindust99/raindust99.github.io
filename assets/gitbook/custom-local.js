@@ -40,8 +40,8 @@
         ],
         '/project/': [
             { title: '시스템 모의해킹', url: '/project/system-pentest/' },
-            { title: '하이브리드 클라우드 보안구축', url: '/project/hybrid-cloud-security/' },
             { title: 'Azure 클라우드 인프라 및 M365 Defender 보안구축', url: '/project/azure-infra-m365-defender-security/' },
+            { title: '하이브리드 클라우드 보안구축', url: '/project/hybrid-cloud-security/' },
             { title: 'Azure 클라우드 데이터 및 App 보안', url: '/project/azure-data-app-security/' },
             { title: 'Azure 클라우드 행위기반 보안탐지 및 대응', url: '/project/azure-behavior-detection-response/' }
         ]
@@ -61,6 +61,7 @@
         '/lab/rocky-passive-ftp-server/': true,
         '/lab/rocky-dns-web-server/': true,
         '/lab/rocky-mail-server/': true,
+        '/project/hybrid-cloud-security/': true,
         '/project/azure-infra-m365-defender-security/': true
     };
     var contentStatusCache = {};
@@ -577,8 +578,8 @@
             'Rocky Linux에 DNS+Mail 서버 구성',
             'OSI 7\uacc4\uce35',
             '시스템 모의해킹',
-            '하이브리드 클라우드 보안구축',
             'Azure 클라우드 인프라 및 M365 Defender 보안구축',
+            '하이브리드 클라우드 보안구축',
             'Azure 클라우드 데이터 및 App 보안',
             'Azure 클라우드 행위기반 보안탐지 및 대응'
         ];

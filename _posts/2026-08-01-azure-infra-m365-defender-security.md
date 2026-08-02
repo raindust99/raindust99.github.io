@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Azure 클라우드 인프라 및 M365 Defender 보안구축"
-date: 2026-07-02 00:00:00 +0900
+date: 2026-08-01 00:00:00 +0900
 category: project
 permalink: /project/azure-infra-m365-defender-security/
 ---
@@ -236,7 +236,7 @@ Central에서 회원가입(test01)을 한 뒤 온프레미스 MySQL의 `shop_use
 
 ---
 
-### 6. 회고 — 성과, 한계, 다음 단계
+### 6. 성과, 한계, 다음 단계
 
 **이번 프로젝트로 얻은 것**
 
