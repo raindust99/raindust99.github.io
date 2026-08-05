@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Azure 클라우드 행위기반 보안탐지 및 대응"
-date: 2026-07-04 00:00:00 +0900
+date: 2026-08-04 00:00:00 +0900
 category: project
 permalink: /project/azure-behavior-detection-response/
 ---
@@ -186,7 +186,7 @@ MDE의 Playbook 자동화는 Sentinel 인시던트 발생 시 공격 IP를 자�
 
 ---
 
-### 7. 회고 — 성과, 한계, 다음 단계
+### 7. 성과, 한계, 다음 단계
 
 **이번 프로젝트로 배운 것**
 

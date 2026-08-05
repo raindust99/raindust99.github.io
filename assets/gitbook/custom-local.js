@@ -63,7 +63,8 @@
         '/lab/rocky-mail-server/': true,
         '/project/hybrid-cloud-security/': true,
         '/project/azure-infra-m365-defender-security/': true,
-        '/project/azure-data-app-security/': true
+        '/project/azure-data-app-security/': true,
+        '/project/azure-behavior-detection-response/': true
     };
     var contentStatusCache = {};
 
