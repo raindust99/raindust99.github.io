@@ -212,7 +212,7 @@ mysqldump -h $DB_IP -u <db_admin_user> -p company personal_info > dump.sql
 
 ---
 
-### 7. 성과, 다음 단계
+### 7. 성과, 한계, 다음 단계
 
 **이번 프로젝트로 얻은 것**
 
