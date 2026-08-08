@@ -231,3 +231,5 @@ mysqldump -h $DB_IP -u <db_admin_user> -p company personal_info > dump.sql
 | 탐지 룰 정밀도 튜닝 | mysql-dump-exfil의 'SELECT' 패턴은 정상 트래픽도 매칭될 수 있어 오탐 저감 필요 |
 | 확장 웹 시나리오 | 정찰·XSS·Path Traversal/LFI는 코드·전용 탐지 규칙 미구현 — Terraform 코드 추가가 선행돼야 함 |
 | 보안 태세·자동 대응 고도화 | Defender for Cloud·Azure Policy 권장 사항 조치율 개선, Sentinel Playbook을 데이터·App 인시던트에 연계 |
+
+<br>
