@@ -205,5 +205,3 @@ MDE의 Playbook 자동화는 Sentinel 인시던트 발생 시 공격 IP를 자�
 |---|---|
 | Playbook 자동 대응 확장 | MDE Playbook 기반 자동 IP 차단·VM 격리를 세 시나리오 전체로 확장 적용 |
 | 과도한 권한 부여 시 영향 검증 | Key Vault 시나리오에서 Web VM Managed Identity에 의도적으로 과도한 권한을 부여했을 때의 실제 노출 영향을 통제된 환경에서 추가 검증 |
-
-<br>
