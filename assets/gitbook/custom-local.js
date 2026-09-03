@@ -437,17 +437,54 @@
         }
     }
 
+    function renderSidebarFooter() {
+        var summary = document.querySelector('.book-summary');
+        if (!summary) return;
+
+        var footer = summary.querySelector(':scope > .sidebar-footer');
+        if (footer) return;
+
+        footer = document.createElement('div');
+        footer.className = 'sidebar-footer';
+
+        var links = [
+            { href: 'mailto:raindust99@gmail.com', icon: 'fa-envelope', label: 'Email' },
+            { href: 'https://github.com/raindust99', icon: 'fa-github', label: 'GitHub', external: true }
+        ];
+
+        links.forEach(function(item) {
+            var a = document.createElement('a');
+            a.href = item.href;
+            a.setAttribute('aria-label', item.label);
+            a.setAttribute('title', item.label);
+            if (item.external) {
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+            }
+
+            var icon = document.createElement('i');
+            icon.className = 'fa ' + item.icon;
+            a.appendChild(icon);
+
+            footer.appendChild(a);
+        });
+
+        summary.appendChild(footer);
+    }
+
     function scheduleRender() {
         removeStandaloneLabPages();
         renderSectionLinks();
         formatSearchResults();
         renderPageToc();
+        renderSidebarFooter();
         refreshSidebarContentStatus();
         window.setTimeout(removeStandaloneLabPages, 0);
         window.setTimeout(renderSectionLinks, 0);
         window.setTimeout(refreshSidebarContentStatus, 10);
         window.setTimeout(formatSearchResults, 0);
         window.setTimeout(renderPageToc, 0);
+        window.setTimeout(renderSidebarFooter, 0);
         window.setTimeout(removeStandaloneLabPages, 100);
         window.setTimeout(renderSectionLinks, 100);
         window.setTimeout(refreshSidebarContentStatus, 130);

@@ -17,45 +17,6 @@ Rocky Linux 기반 서버 구축과 VMware 가상화 환경, 네트워크 및 �
 
 현재는 시스템 엔지니어를 중심으로 Linux 서버 운영과 네트워크 트러블슈팅 역량을 강화하고 있습니다.
 
-## PROJECTS
-
-**Azure 클라우드 인프라 및 M365 Defender 보안구축**
-
-온프레미스 서비스를 Azure로 확장하여 고가용성, 재해복구, 네트워크 보안, 하이브리드 연결을 고려한 클라우드 인프라를 구축했습니다.
-
-- Terraform으로 전체 인프라를 코드화
-- Hub-Spoke 네트워크와 VMSS 기반 Auto Scaling, Application Gateway/WAF, Azure Firewall 구성
-- Korea Central과 Japan East 다중 리전 환경 구축
-- Traffic Manager를 이용한 장애 조치 구조 구성
-- 온프레미스 MySQL과 Azure Site-to-Site IPsec VPN으로 연결
-- Private Endpoint와 중앙 집중식 네트워크 정책 적용
-- Terraform 기반 Infrastructure as Code
-- Hub-Spoke 네트워크 설계
-- VMSS Auto Scaling 및 고가용성 구성
-- Multi-Region DR 및 Traffic Manager Failover
-- Application Gateway / WAF / Azure Firewall
-- Site-to-Site IPsec VPN
-- Private Endpoint
-- Log Analytics 기반 모니터링
-
-<div class="project-subsection-gap"></div>
-
-**Azure 클라우드 데이터 및 App 보안**
-
-의도적으로 취약한 웹 데이터 환경을 구축한 뒤 공격 -> 탐지 -> 방어 -> 재검증 과정을 통해 클라우드 보안 구성이 실제로 동작하는지 검증했습니다.
-
-- Terraform 변수 하나로 취약 환경과 강화 환경을 전환할 수 있도록 구성
-- Application Gateway WAF와 NSG, DB 접근제어 정책을 코드로 관리
-- WordPress Credential Attack, SQL Injection, 데이터 유출 시나리오 수행
-- 수집된 로그를 Microsoft Sentinel에서 탐지
-- 보안 정책을 강화하여 동일 공격이 차단되는지 재검증
-- Terraform 기반 취약/강화 환경 자동 전환
-- Application Gateway WAF
-- NSG 기반 네트워크 접근제어
-- Log Analytics / Microsoft Sentinel
-- 공격 시나리오 기반 탐지 및 대응 검증
-- 보안 정책 적용 전후 비교
-
 ## TECHNICAL SKILLS
 
 **System:** Linux, Rocky Linux, Windows Server, VMware
@@ -70,25 +31,82 @@ Rocky Linux 기반 서버 구축과 VMware 가상화 환경, 네트워크 및 �
 
 **Security:** WAF, Network Access Control, Log Analysis, Microsoft Sentinel, Microsoft Defender
 
-## INFRASTRUCTURE & SERVER LABS
+## PROJECTS
+
+보안 부트캠프와 개인 실습을 통해 진행한 프로젝트입니다. ([전체 프로젝트 보기](/project/))
+
+<div class="project-block" markdown="1">
+
+**Azure 클라우드 인프라 및 M365 Defender 보안구축**
+
+온프레미스 서비스를 Azure로 확장하여 고가용성, 재해복구, 네트워크 보안, 하이브리드 연결을 고려한 클라우드 인프라를 구축했습니다.
+
+<div class="chip-row"><span class="chip">Terraform</span><span class="chip">Azure</span><span class="chip">Hub-Spoke</span><span class="chip">WAF</span></div>
+
+- Hub-Spoke 네트워크와 VMSS 기반 Auto Scaling, Application Gateway/WAF, Azure Firewall 구성
+- Korea Central·Japan East 다중 리전 구축 + Traffic Manager 기반 장애 조치
+- 온프레미스 MySQL을 Azure Site-to-Site IPsec VPN으로 연결, Private Endpoint로 PaaS 격리
+
+[자세히 보기 →](/project/azure-infra-m365-defender-security/)
+
+</div>
+
+<div class="project-block" markdown="1">
+
+**하이브리드 클라우드 보안구축**
+
+온프레미스 네트워크·서버·방화벽을 직접 구축하고, 핵심 서비스를 Azure로 이전해 IPsec VPN으로 연계하는 하이브리드 클라우드 체계를 만들었습니다.
+
+<div class="chip-row"><span class="chip">Hybrid Cloud</span><span class="chip">IPsec VPN</span><span class="chip">Azure</span></div>
+
+- 온프레미스 서버·네트워크·방화벽을 직접 구축
+- Azure Site-to-Site IPsec VPN으로 온프레미스-클라우드 연동
+- 하이브리드 환경 전반의 트래픽·로그 분석으로 연결 상태 검증
+
+[자세히 보기 →](/project/hybrid-cloud-security/)
+
+</div>
+
+<div class="project-block" markdown="1">
+
+**Azure 클라우드 데이터 및 App 보안**
+
+의도적으로 취약한 웹·데이터 환경을 구축한 뒤 공격 → 탐지 → 방어 → 재검증 과정을 통해 클라우드 보안 구성이 실제로 동작하는지 검증했습니다.
+
+<div class="chip-row"><span class="chip">Azure</span><span class="chip">WAF</span><span class="chip">Sentinel</span></div>
+
+- Terraform 변수 하나로 취약 환경과 강화 환경을 전환할 수 있도록 구성
+- WordPress Credential Attack, SQL Injection, 데이터 유출 시나리오를 직접 수행
+- Microsoft Sentinel로 탐지 후 보안 정책 강화, 동일 공격 재검증으로 효과 확인
+
+[자세히 보기 →](/project/azure-data-app-security/)
+
+</div>
+
+<div class="project-block" markdown="1">
+
+**Azure 클라우드 행위기반 보안탐지 및 대응**
+
+Bastion 호스트를 대상으로 SSH Brute Force·Reverse Shell·토큰 탈취 시나리오를 공격 → 탐지 → 방어 순서로 검증했습니다.
+
+<div class="chip-row"><span class="chip">Azure</span><span class="chip">Defender</span><span class="chip">Sentinel</span></div>
+
+- SSH Brute Force, Reverse Shell, Key Vault Managed Identity 토큰 탈취 3개 시나리오 수행
+- Microsoft Defender·Sentinel로 각 공격을 탐지하고 MITRE ATT&CK에 매핑
+- 탐지 로그를 근거로 NSG·Key Vault 정책을 강화해 재공격 차단 확인
+
+[자세히 보기 →](/project/azure-behavior-detection-response/)
+
+</div>
+
+## LEARNING & LABS
 
 클라우드 서비스를 사용하는 것에 그치지 않고 기반이 되는 서버와 네트워크 기술을 직접 구성하며 학습했습니다.
 
-다음 실습을 기록합니다: Linux 서버 구축 및 운영, DHCP / DNS / WEB / FTP / Mail Server, WordPress / MySQL 환경 구성, HAProxy 기반 Load Balancing, VMware 기반 가상화 환경, 네트워크 및 시스템 실습.
+Linux 서버 구축 및 운영, DHCP / DNS / WEB / FTP / Mail Server, VMware 기반 가상화 환경, TCP/IP·Routing·DNS 등 네트워크 기본기를 지속적으로 정리하고 있습니다.
 
-[Infrastructure & Server Labs 보기](/lab/)
-
-## NETWORK STUDY
-
-시스템과 인프라가 동작하는 방식을 이해하기 위해 TCP/IP, Routing, DNS를 비롯한 네트워크 기본기를 지속적으로 정리하고 있습니다.
-
-[Network 정리 보기](/network/)
-
-## PROJECT ARCHIVE
-
-보안 부트캠프와 개인 실습을 통해 진행한 전체 프로젝트입니다.
-
-[전체 프로젝트 보기](/project/)
+- [Infrastructure & Server Labs 보기](/lab/) — 실습 10건
+- [Network 정리 보기](/network/) — 네트워크 기본기 정리
 
 ## CURRENT FOCUS
 
