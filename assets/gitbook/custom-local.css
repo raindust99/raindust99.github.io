@@ -588,6 +588,20 @@
     border-radius: 6px;
 }
 
+/* neutralize the rouge "colorful" theme's light string/error backgrounds
+   so they don't show up as pale boxes on the dark code background */
+.markdown-section .highlight .s,
+.markdown-section .highlight .s1,
+.markdown-section .highlight .s2,
+.markdown-section .highlight .sb,
+.markdown-section .highlight .sh,
+.markdown-section .highlight .dl,
+.markdown-section .highlight .sr,
+.markdown-section .highlight .si,
+.markdown-section .highlight .err {
+    background: transparent !important;
+}
+
 .markdown-section :not(pre) > code {
     color: #b3261e;
     background: #f1f3f6;
