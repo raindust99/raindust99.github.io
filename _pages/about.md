@@ -1,7 +1,7 @@
 ---
 layout: post
-title: About
-date: 2026-05-01 03:00:00 +0900
+title: About Me
+date: 2026-05-01 04:00:00 +0900
 permalink: /about/
 ---
 
