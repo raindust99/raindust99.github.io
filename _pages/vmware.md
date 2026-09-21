@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "VMware 구성 실습"
-date: 2026-05-01 02:00:00 +0900
+title: "VMware 가상화"
+date: 2026-05-01 02:20:00 +0900
 permalink: /lab/vmware/
 ---
 
