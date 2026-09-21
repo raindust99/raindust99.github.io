@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Rocky 서버 실습"
-date: 2026-05-01 03:00:00 +0900
+title: "Linux 서버"
+date: 2026-05-01 02:10:00 +0900
 permalink: /lab/server/
 ---
 
