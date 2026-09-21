@@ -1,25 +1,11 @@
 (function() {
     var sections = {
         '/network/': [
-            { title: 'OSI 7\uacc4\uce35', url: '/network/osi-7-layer/' }
+            { title: 'OSI 7계층', url: '/network/osi-7-layer/' }
         ],
         '/lab/': [
             {
-                title: 'VMware \uad6c\uc131 \uc2e4\uc2b5',
-                url: '/lab/vmware/',
-                key: 'vmware',
-                children: [
-                    { title: 'VMware NAT \uc124\uc815', url: '/lab/vmware-nat/' },
-                    { title: 'VMware\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815', url: '/lab/rocky-9-7-vm/' },
-                    { title: 'VMware Clone을 이용한 rocky9.4 복제 및 스냅샷 설정', url: '/lab/vmware-clone/' },
-                    { title: 'VMware에 Windows 10 설치 및 설정', url: '/lab/windows-10/' },
-                    { title: 'VMware에 Windows 11 설치 및 설정', url: '/lab/windows-11/' },
-                    { title: 'VMware에 Windows 2022 Server VM 설치 및 설정', url: '/lab/windows-2022-server-vm/' },
-                    { title: 'VMware Clone을 이용한 Windows 2022 Server 복제 및 스냅샷 설정', url: '/lab/windows-2022-server-clone/' }
-                ]
-            },
-            {
-                title: 'Rocky 서버 실습',
+                title: 'Linux 서버',
                 url: '/lab/server/',
                 key: 'server',
                 children: [
@@ -32,6 +18,20 @@
                 ]
             },
             {
+                title: 'VMware 가상화',
+                url: '/lab/vmware/',
+                key: 'vmware',
+                children: [
+                    { title: 'VMware NAT 설정', url: '/lab/vmware-nat/' },
+                    { title: 'VMware에 Rocky 9.4 설치 및 설정', url: '/lab/rocky-9-7-vm/' },
+                    { title: 'VMware Clone을 이용한 rocky9.4 복제 및 스냅샷 설정', url: '/lab/vmware-clone/' },
+                    { title: 'VMware에 Windows 10 설치 및 설정', url: '/lab/windows-10/' },
+                    { title: 'VMware에 Windows 11 설치 및 설정', url: '/lab/windows-11/' },
+                    { title: 'VMware에 Windows 2022 Server VM 설치 및 설정', url: '/lab/windows-2022-server-vm/' },
+                    { title: 'VMware Clone을 이용한 Windows 2022 Server 복제 및 스냅샷 설정', url: '/lab/windows-2022-server-clone/' }
+                ]
+            },
+            {
                 title: 'Windows Server 실습',
                 url: '/lab/windows-server/',
                 key: 'windows-server',
@@ -40,10 +40,10 @@
         ],
         '/project/': [
             { title: '시스템 모의해킹', url: '/project/system-pentest/' },
-            { title: 'Azure 클라우드 인프라 및 M365 Defender 보안구축', url: '/project/azure-infra-m365-defender-security/' },
-            { title: '하이브리드 클라우드 보안구축', url: '/project/hybrid-cloud-security/' },
-            { title: 'Azure 클라우드 데이터 및 App 보안', url: '/project/azure-data-app-security/' },
-            { title: 'Azure 클라우드 행위기반 보안탐지 및 대응', url: '/project/azure-behavior-detection-response/' }
+            { title: 'Terraform 기반 Azure 고가용성·DR 인프라', url: '/project/azure-infra-m365-defender-security/' },
+            { title: '온프레미스-Azure 하이브리드 인프라', url: '/project/hybrid-cloud-security/' },
+            { title: 'Azure 웹·데이터 계층 보안 검증', url: '/project/azure-data-app-security/' },
+            { title: 'Azure 공격 탐지·대응 환경 검증', url: '/project/azure-behavior-detection-response/' }
         ]
     };
     function normalizePath(path) {
@@ -502,7 +502,7 @@
             .trim()
             .toLowerCase()
             .replace(/\s+/g, '-')
-            .replace(/[^\w\-\uAC00-\uD7A3]/g, '');
+            .replace(/[^\w\-가-힣]/g, '');
     }
 
     function renderPageToc() {
@@ -523,7 +523,7 @@
 
         var title = document.createElement('div');
         title.className = 'page-toc-title';
-        title.textContent = '\ubaa9\ucc28';
+        title.textContent = '목차';
         toc.appendChild(title);
 
         var list = document.createElement('ul');
@@ -557,7 +557,7 @@
         var toggle = document.createElement('button');
         toggle.className = 'page-toc-toggle';
         toggle.type = 'button';
-        toggle.setAttribute('aria-label', '\ubaa9\ucc28 \uc5f4\uae30');
+        toggle.setAttribute('aria-label', '목차 열기');
 
         headings.forEach(function(heading, index) {
             var line = document.createElement('span');
@@ -606,8 +606,8 @@
     }
     function formatSearchResults() {
         var labels = [
-            'VMware NAT \uc124\uc815',
-            'VMware\uc5d0 Rocky 9.4 \uc124\uce58 \ubc0f \uc124\uc815',
+            'VMware NAT 설정',
+            'VMware에 Rocky 9.4 설치 및 설정',
             'VMware Clone을 이용한 rocky9.4 복제 및 스냅샷 설정',
             'VMware에 Windows 10 설치 및 설정',
             'VMware에 Windows 11 설치 및 설정',
@@ -615,7 +615,7 @@
             'VMware Clone을 이용한 Windows 2022 Server 복제 및 스냅샷 설정',
             'Wordpress + MySQL + HAProxy 구성',
             'Rocky Linux에 DNS+Mail 서버 구성',
-            'OSI 7\uacc4\uce35',
+            'OSI 7계층',
             '시스템 모의해킹',
             'Azure 클라우드 인프라 및 M365 Defender 보안구축',
             '하이브리드 클라우드 보안구축',
@@ -692,5 +692,3 @@
         bindGitbookEvents(window.gitbook);
     }
 })();
-
-
