@@ -1,7 +1,13 @@
 (function() {
     var sections = {
         '/network/': [
-            { title: 'OSI 7계층', url: '/network/osi-7-layer/' }
+            {
+                title: '네트워크',
+                key: 'network',
+                children: [
+                    { title: 'OSI 7계층', url: '/network/osi-7-layer/' }
+                ]
+            }
         ],
         '/lab/': [
             {
@@ -39,11 +45,22 @@
             }
         ],
         '/project/': [
-            { title: '시스템 모의해킹', url: '/project/system-pentest/' },
-            { title: 'Terraform 기반 Azure 고가용성·DR 인프라', url: '/project/azure-infra-m365-defender-security/' },
-            { title: '온프레미스-Azure 하이브리드 인프라', url: '/project/hybrid-cloud-security/' },
-            { title: 'Azure 웹·데이터 계층 보안 검증', url: '/project/azure-data-app-security/' },
-            { title: 'Azure 공격 탐지·대응 환경 검증', url: '/project/azure-behavior-detection-response/' }
+            {
+                title: '대표 프로젝트',
+                key: 'featured-projects',
+                children: [
+                    { title: 'Terraform 기반 Azure 고가용성·DR 인프라', url: '/project/azure-infra-m365-defender-security/' },
+                    { title: '온프레미스-Azure 하이브리드 인프라', url: '/project/hybrid-cloud-security/' }
+                ]
+            },
+            {
+                title: '추가 프로젝트',
+                key: 'additional-projects',
+                children: [
+                    { title: 'Azure 웹·데이터 계층 보안 검증', url: '/project/azure-data-app-security/' },
+                    { title: 'Azure 공격 탐지·대응 환경 검증', url: '/project/azure-behavior-detection-response/' }
+                ]
+            }
         ]
     };
     function normalizePath(path) {
