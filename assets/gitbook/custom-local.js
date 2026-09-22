@@ -3,6 +3,7 @@
         '/network/': [
             {
                 title: '네트워크',
+                url: '/network/network/',
                 key: 'network',
                 children: [
                     { title: 'OSI 7계층', url: '/network/osi-7-layer/' }
@@ -47,6 +48,7 @@
         '/project/': [
             {
                 title: '대표 프로젝트',
+                url: '/project/featured/',
                 key: 'featured-projects',
                 children: [
                     { title: 'Terraform 기반 Azure 고가용성·DR 인프라', url: '/project/azure-infra-m365-defender-security/' },
@@ -55,6 +57,7 @@
             },
             {
                 title: '추가 프로젝트',
+                url: '/project/additional/',
                 key: 'additional-projects',
                 children: [
                     { title: 'Azure 웹·데이터 계층 보안 검증', url: '/project/azure-data-app-security/' },
@@ -65,6 +68,7 @@
         '/troubleshooting/': [
             {
                 title: '네트워크·VPN',
+                url: '/troubleshooting/network-vpn/',
                 key: 'network-vpn-troubleshooting',
                 children: [
                     { title: 'Azure-온프레미스 Site-to-Site VPN 연결 실패 원인 분석', url: '/troubleshooting/azure-onprem-vpn-connection-failure/' }
@@ -295,8 +299,16 @@
             refreshPageCategoryLinks(categoryCounts);
         });
     }
-    function removeStandaloneLabPages() {
-        ['/lab/vmware/', '/lab/server/', '/lab/windows-server/'].forEach(function(url) {
+    function removeStandaloneCategoryPages() {
+        [
+            '/lab/vmware/',
+            '/lab/server/',
+            '/lab/windows-server/',
+            '/project/featured/',
+            '/project/additional/',
+            '/network/network/',
+            '/troubleshooting/network-vpn/'
+        ].forEach(function(url) {
             document.querySelectorAll('.book-summary li.chapter[data-path="' + url + '"]').forEach(function(chapter) {
                 chapter.remove();
             });
@@ -500,26 +512,26 @@
     }
 
     function scheduleRender() {
-        removeStandaloneLabPages();
+        removeStandaloneCategoryPages();
         renderSectionLinks();
         formatSearchResults();
         renderPageToc();
         renderSidebarFooter();
         refreshSidebarContentStatus();
-        window.setTimeout(removeStandaloneLabPages, 0);
+        window.setTimeout(removeStandaloneCategoryPages, 0);
         window.setTimeout(renderSectionLinks, 0);
         window.setTimeout(refreshSidebarContentStatus, 10);
         window.setTimeout(formatSearchResults, 0);
         window.setTimeout(renderPageToc, 0);
         window.setTimeout(renderSidebarFooter, 0);
-        window.setTimeout(removeStandaloneLabPages, 100);
+        window.setTimeout(removeStandaloneCategoryPages, 100);
         window.setTimeout(renderSectionLinks, 100);
         window.setTimeout(refreshSidebarContentStatus, 130);
         window.setTimeout(formatSearchResults, 100);
         window.setTimeout(renderPageToc, 100);
-        window.setTimeout(removeStandaloneLabPages, 300);
+        window.setTimeout(removeStandaloneCategoryPages, 300);
         window.setTimeout(renderSectionLinks, 300);
-        window.setTimeout(removeStandaloneLabPages, 800);
+        window.setTimeout(removeStandaloneCategoryPages, 800);
         window.setTimeout(renderSectionLinks, 800);
         window.setTimeout(refreshSidebarContentStatus, 850);
     }
