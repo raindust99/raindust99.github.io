@@ -61,6 +61,15 @@
                     { title: 'Azure 공격 탐지·대응 환경 검증', url: '/project/azure-behavior-detection-response/' }
                 ]
             }
+        ],
+        '/troubleshooting/': [
+            {
+                title: '네트워크·VPN',
+                key: 'network-vpn-troubleshooting',
+                children: [
+                    { title: 'Azure-온프레미스 Site-to-Site VPN 연결 실패 원인 분석', url: '/troubleshooting/azure-onprem-vpn-connection-failure/' }
+                ]
+            }
         ]
     };
     function normalizePath(path) {
@@ -81,7 +90,8 @@
         '/project/hybrid-cloud-security/': true,
         '/project/azure-infra-m365-defender-security/': true,
         '/project/azure-data-app-security/': true,
-        '/project/azure-behavior-detection-response/': true
+        '/project/azure-behavior-detection-response/': true,
+        '/troubleshooting/azure-onprem-vpn-connection-failure/': true
     };
     var contentStatusCache = {};
 
