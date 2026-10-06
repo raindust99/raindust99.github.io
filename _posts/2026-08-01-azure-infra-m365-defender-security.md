@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Terraform 기반 Azure 고가용성·DR 인프라"
+title: "Azure 클라우드 인프라 및 M365 Defender 보안구축"
 date: 2026-08-01 00:00:00 +0900
 category: project
 permalink: /project/azure-infra-m365-defender-security/
@@ -16,7 +16,6 @@ permalink: /project/azure-infra-m365-defender-security/
 | 팀 프로젝트 범위 | Terraform 기반 Azure 인프라, 두 리전 Hub-Spoke, VMSS, WAF, IPsec VPN, 공유 스토리지 및 모니터링 |
 | 핵심 검증 | VMSS 2대 → 5대 확장, 인스턴스 1대 중지 후 웹 접속, Central 엔드포인트 비활성화 후 Japan DNS 응답·웹 접속 확인 |
 
-**수행 기간과 게시일:** 위 기간은 프로젝트 수행 기간이며, 페이지의 8월 날짜는 글 게시일이다.
 
 ### 내가 담당한 작업
 
