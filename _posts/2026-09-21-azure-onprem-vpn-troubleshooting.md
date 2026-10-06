@@ -132,18 +132,18 @@ Mode               : ESP Tunnel
 
 향후 Site-to-Site VPN 구성 시에는 다음 항목을 양쪽 장비 기준으로 표로 만들어 비교한다.
 
-- [ ] 공인 IP와 Local Network Gateway 정보
-- [ ] 로컬·원격 사설 네트워크 대역
-- [ ] IKE 버전
-- [ ] IKE 암호화·무결성 알고리즘
-- [ ] IPsec 암호화·무결성 알고리즘
-- [ ] DH Group과 PFS Group
-- [ ] SA Lifetime
-- [ ] PSK
-- [ ] 정적·동적 라우팅 경로
-- [ ] 방화벽 허용 정책
-- [ ] VPN 트래픽 NAT 예외
-- [ ] 반환 경로
+- 공인 IP와 Local Network Gateway 정보
+- 로컬·원격 사설 네트워크 대역
+- IKE 버전
+- IKE 암호화·무결성 알고리즘
+- IPsec 암호화·무결성 알고리즘
+- DH Group과 PFS Group
+- SA Lifetime
+- PSK
+- 정적·동적 라우팅 경로
+- 방화벽 허용 정책
+- VPN 트래픽 NAT 예외
+- 반환 경로
 
 설정 변경 후에는 터널의 `Connected` 상태만 보는 것이 아니라 실제 서비스 포트 연결과 애플리케이션 동작까지 확인해야 한다.
 
