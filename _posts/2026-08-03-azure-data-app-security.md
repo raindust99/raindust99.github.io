@@ -16,7 +16,6 @@ permalink: /project/azure-data-app-security/
 | 팀 프로젝트 범위 | 웹·DB 공격 재현, WAF·Sentinel 로그 확인, 접근 통제 강화 후 재검증 |
 | 핵심 결과 | WordPress 관리자 권한 확인, SQL Injection 데이터 추출, 방어 적용 후 웹 요청·DB 연결 거부 결과 기록 |
 
-**수행 기간과 게시일:** 위 기간은 프로젝트 수행 기간이며, 페이지의 8월 날짜는 글 게시일이다.
 
 ### 내가 담당한 작업
 
