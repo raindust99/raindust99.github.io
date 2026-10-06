@@ -9,8 +9,8 @@ permalink: /project/
 
 ## 대표 프로젝트
 
-- [온프레미스–Azure 하이브리드 인프라](/project/hybrid-cloud-security/) — MySQL 이중화·VIP, SECUI NGF 정책·정적 라우팅 담당
-- [Terraform 기반 Azure 고가용성·DR 인프라](/project/azure-infra-m365-defender-security/) — 팀장·구축 검증 담당, 두 리전 인프라의 웹 계층 장애 대응·DR 전환 확인
+- [하이브리드 클라우드 보안 구축](/project/hybrid-cloud-security/) — 팀장·MySQL 이중화·VIP, SECUI NGF 정책·정적 라우팅 담당
+- [Azure 클라우드 인프라 및 M365 Defender 보안구축](/project/azure-infra-m365-defender-security/) — 팀장·구축 검증 담당, 두 리전 인프라의 웹 계층 장애 대응·DR 전환 확인
 
 ## 추가 프로젝트
 
@@ -21,12 +21,12 @@ permalink: /project/
 
 | 수행 기간 | 프로젝트 | 팀 규모 | 나의 역할 |
 |---|---|---|---|
-| 2026.05.13 ~ 05.19 | Azure 클라우드 인프라 | 5명 | 팀장·구축 검증 |
+| 2026.05.13 ~ 05.19 | Azure 클라우드 인프라 및 M365 Defender 보안구축 | 5명 | 팀장·구축 검증 |
 | 2026.05.20 ~ 06.08 | Azure 웹·데이터 보안 | 5명 | WEB 서버·웹 공격 실습·Kali 환경 |
 | 2026.06.09 ~ 07.01 | Azure 행위 기반 보안 | 5명 | 공격 실습·Kali 환경·결과 보고서 |
-| 2026.07.02 ~ 07.20 | 하이브리드 인프라 | 5명 | 팀장·DB 이중화·NGF 정책·정적 라우팅 |
+| 2026.07.02 ~ 07.20 | 하이브리드 클라우드 보안 구축 | 5명 | 팀장·DB 이중화·NGF 정책·정적 라우팅 |
 
-수행 기간은 프로젝트 보고서 기준입니다. 각 글의 게시일과 프로젝트 수행 기간은 다릅니다.
+
 
 ## 검증을 읽는 기준
 
