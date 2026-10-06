@@ -4,65 +4,51 @@ title: Home
 permalink: /
 ---
 
-# System & Infrastructure Engineer Portfolio
+# 김지율 | 시스템·인프라 엔지니어 포트폴리오
 {:.portfolio-title}
 
-`Linux · Network · Server · Virtualization · Cloud`
+`Linux · Network · MySQL · Virtualization · Azure`
 
-## SUMMARY
+Linux 서버와 네트워크 구축·장애 대응을 중심으로 시스템·인프라 엔지니어를 준비하고 있습니다. 팀 프로젝트에서 DB 이중화와 방화벽·정적 라우팅, 웹 서버 구성, 공격 재현과 결과 문서화를 담당했습니다.
 
-Linux 서버와 네트워크에 대한 기본기를 바탕으로 시스템 구축, 운영 및 장애 대응 역량을 학습하고 있습니다.
-
-Rocky Linux 기반 서버 구축과 VMware 가상화 환경, 네트워크 및 각종 서버 서비스 구성 경험이 있으며, Azure와 Terraform을 활용한 클라우드 인프라 구축 프로젝트도 수행했습니다.
-
-현재는 시스템 엔지니어를 중심으로 Linux 서버 운영과 네트워크 트러블슈팅 역량을 강화하고 있습니다.
-
-## TECHNICAL SKILLS
-
-**System:** Linux, Rocky Linux, Windows Server, VMware
-
-**Network:** TCP/IP, Subnetting, Routing, DNS, DHCP, NAT, Firewall, VPN, Load Balancing
-
-**Server:** Web, FTP, Mail, WordPress, MySQL, HAProxy
-
-**Cloud:** Azure Virtual Network, VM / VMSS, Application Gateway, Azure Firewall, VPN Gateway, Private Endpoint, Traffic Manager, Log Analytics
-
-**Infrastructure as Code:** Terraform
-
-**Security:** WAF, Network Access Control, Log Analysis, Microsoft Sentinel, Microsoft Defender
+[프로젝트와 담당 역할 보기](/project/) · [About Me](/about/) · [GitHub](https://github.com/raindust99)
 
 ## 대표 프로젝트
 
-시스템·클라우드 인프라 직무와 가장 밀접한 두 프로젝트입니다. ([핵심 프로젝트 전체 보기](/project/))
+시스템·인프라 직무와 연결되는 두 프로젝트입니다. 각 글에서 나의 담당 범위와 팀 전체 결과를 구분해 소개합니다.
 
 <div class="project-grid">
-
-<div class="project-card" markdown="1">
-<span class="project-card-tag">FEATURED · CLOUD</span>
-
-### Terraform 기반 Azure 고가용성·DR 인프라
-
-온프레미스 서비스를 Azure로 확장하고 Hub-Spoke, VMSS, Application Gateway, 다중 리전 DR 환경을 Terraform으로 구축했습니다.
-
-<div class="chip-row"><span class="chip">Terraform</span><span class="chip">Azure</span><span class="chip">Hub-Spoke</span><span class="chip">HA/DR</span></div>
-
-**핵심 검증:** Auto Scaling과 Traffic Manager 기반 리전 Failover 및 서비스 연결을 확인했습니다.
-
-[자세히 보기 →](/project/azure-infra-m365-defender-security/)
-</div>
 
 <div class="project-card" markdown="1">
 <span class="project-card-tag">FEATURED · HYBRID</span>
 
 ### 온프레미스–Azure 하이브리드 인프라
 
-온프레미스 네트워크·서버·방화벽을 구축하고 Site-to-Site IPsec VPN으로 Azure 워크로드와 연결했습니다.
+**2026.07.02 ~ 07.20 · 5명 · 팀장**
 
-<div class="chip-row"><span class="chip">Hybrid Cloud</span><span class="chip">IPsec VPN</span><span class="chip">MySQL HA</span></div>
+**나의 담당:** MySQL Master-Master + keepalived VIP, SECUI NGF 방화벽 정책, 정적 라우팅.
 
-**핵심 검증:** VPN 터널, DB 통신, Failover 및 웹 서비스 정상 동작을 확인했습니다.
+<div class="chip-row"><span class="chip">MySQL HA</span><span class="chip">keepalived</span><span class="chip">Firewall</span><span class="chip">Routing</span></div>
 
-[자세히 보기 →](/project/hybrid-cloud-security/)
+**검증:** 양방향 복제와 DB 장애 시 VIP 승계·서비스 동작을 확인했습니다. 팀에서는 VLAN·서버·로그 환경과 Azure VPN 연동을 구성했습니다.
+
+[담당 작업과 검증 결과 보기 →](/project/hybrid-cloud-security/)
+</div>
+
+<div class="project-card" markdown="1">
+<span class="project-card-tag">FEATURED · CLOUD</span>
+
+### Terraform 기반 Azure 고가용성·DR 인프라
+
+**2026.05.13 ~ 05.19 · 5명 · 팀장·구축 검증**
+
+**나의 담당:** 구축된 Azure 인프라의 검증. 팀에서 Terraform 기반 Hub-Spoke, VMSS, Application Gateway와 두 리전 DR 환경을 구성했습니다.
+
+<div class="chip-row"><span class="chip">Terraform</span><span class="chip">Azure</span><span class="chip">Hub-Spoke</span><span class="chip">HA/DR</span></div>
+
+**검증:** CPU 부하에 따른 VMSS 2대 → 5대 확장과 Central 엔드포인트 비활성화 후 Japan DNS 응답·웹 접속을 확인했습니다.
+
+[아키텍처와 검증 범위 보기 →](/project/azure-infra-m365-defender-security/)
 </div>
 
 </div>
@@ -75,38 +61,53 @@ Rocky Linux 기반 서버 구축과 VMware 가상화 환경, 네트워크 및 �
 
 ### Azure 웹·데이터 계층 보안 검증
 
-취약한 웹·데이터 환경에서 공격 → 탐지 → 방어 → 재검증 과정을 수행했습니다.
+**2026.05.20 ~ 06.08 · 5명**
 
-<div class="chip-row"><span class="chip">Azure</span><span class="chip">WAF</span><span class="chip">Sentinel</span></div>
+**나의 담당:** WordPress·Apache WEB 서버, lab-sqli.php, Kali 환경, Hydra·sqlmap 웹 공격 실습.
 
-[자세히 보기 →](/project/azure-data-app-security/)
+<div class="chip-row"><span class="chip">Apache</span><span class="chip">WordPress</span><span class="chip">WAF</span></div>
+
+웹 공격을 재현하고 방어 적용 후 결과를 확인했습니다. 팀의 WAF·DB·Sentinel 검증과 연결해 정리했습니다.
+
+[웹 서버 구성과 공격·방어 검증 보기 →](/project/azure-data-app-security/)
 </div>
 
 <div class="secondary-project-card" markdown="1">
 
 ### Azure 공격 탐지·대응 환경 검증
 
-SSH Brute Force·Reverse Shell·토큰 탈취 시나리오를 Defender와 Sentinel로 탐지하고 정책 강화 효과를 확인했습니다.
+**2026.06.09 ~ 07.01 · 5명**
 
-<div class="chip-row"><span class="chip">Azure</span><span class="chip">Defender</span><span class="chip">Sentinel</span></div>
+**나의 담당:** Kali 환경, SSH Brute Force·Reverse Shell 공격 실습, 결과 보고서.
 
-[자세히 보기 →](/project/azure-behavior-detection-response/)
+<div class="chip-row"><span class="chip">Linux</span><span class="chip">SSH</span><span class="chip">Log Analysis</span></div>
+
+공격 재현과 강화 후 재시도 결과를 기록했습니다. Key Vault·MDE·JIT 확장은 팀 검증으로 구분했습니다.
+
+[공격 재현과 결과 기록 보기 →](/project/azure-behavior-detection-response/)
 </div>
 
 </div>
 
-## LEARNING & LABS
+## 기술 역량과 경험
 
-클라우드 서비스를 사용하는 것에 그치지 않고 기반이 되는 서버와 네트워크 기술을 직접 구성하며 학습했습니다.
+| 영역 | 경험 |
+|---|---|
+| Linux·가상화 | Rocky Linux 서버 서비스, VMware 실습 환경 구성 |
+| DB 가용성 | MySQL 양방향 복제, keepalived VIP 및 장애 시 승계 검증 |
+| 네트워크·방화벽 | TCP/IP·DNS·DHCP 실습, SECUI NGF 정책·정적 라우팅 |
+| 웹 서비스 | Apache·WordPress 구성, 웹·DB 통신 및 공격 재현 |
+| 클라우드·IaC | 팀의 Terraform 기반 Azure 인프라에서 VMSS·DR·서비스 연결 검증 |
+| 로그·보안 | 공격 재현 결과를 팀의 WAF·Sentinel·호스트 로그와 연결해 정리 |
 
-Linux 서버 구축 및 운영, DHCP / DNS / WEB / FTP / Mail Server, VMware 기반 가상화 환경, TCP/IP·Routing·DNS 등 네트워크 기본기를 지속적으로 정리하고 있습니다.
+## 학습과 장애 해결 기록
 
-- [인프라 실습 보기](/lab/) — Linux 서버·VMware 가상화 구축 기록
-- [기술 노트 보기](/network/) — 네트워크 기본기 정리
-- [장애 해결 기록 보기](/troubleshooting/) — 증상·원인·조치·검증 중심 기록
+서버 서비스를 직접 구성하고, 연결이 실패했을 때 증상·설정·로그를 나누어 확인하는 과정을 기록합니다.
 
-## CURRENT FOCUS
+- [인프라 실습](/lab/) — Linux 서버·VMware 환경 구축
+- [기술 노트](/network/) — 네트워크 기본기
+- [VPN 장애 해결 사례](/troubleshooting/azure-onprem-vpn-connection-failure/) — 양측 정책 비교와 복구 검증
 
-현재는 기존 Linux, Network, Azure, Terraform 경험을 기반으로 시스템 운영, 네트워크 트러블슈팅, 클라우드 인프라 구축 역량을 함께 확장하고 있습니다.
+## 현재 학습 방향
 
-학습 과정에서는 단순히 서비스를 생성하는 것보다 왜 이런 구조를 선택했는지, 문제가 발생했을 때 어디부터 확인할지, 어떻게 재현하고 검증할지를 설명할 수 있는 엔지니어가 되는 것을 목표로 하고 있습니다.
+기존 구축 경험을 바탕으로 서버 운영과 네트워크 트러블슈팅 역량을 강화하고 있습니다. 다음 실습에서는 DB 백업·복원, 복제 지연과 장애 시 요청 실패 측정, 반복 점검 자동화를 통해 운영 관점의 검증을 넓히려 합니다.
