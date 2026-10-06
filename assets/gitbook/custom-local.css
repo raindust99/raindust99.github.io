@@ -645,17 +645,25 @@
     font-weight: 600;
 }
 
-/* leave room at the bottom of the sidebar for the contact icon row */
-.book-summary nav {
-    padding-bottom: 56px;
+/* Scroll only the navigation; keep the contact row at the sidebar bottom. */
+.book .book-summary {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.book .book-summary > nav {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     box-sizing: border-box;
 }
 
-/* fixed contact icon row docked to the bottom-left of the sidebar */
+/* Contact row stays outside the scrolling navigation. */
 .book-summary .sidebar-footer {
-    position: absolute;
-    left: 0;
-    bottom: 0;
+    position: relative;
+    flex: 0 0 auto;
     width: 100%;
     box-sizing: border-box;
     display: flex;
@@ -688,8 +696,3 @@
     line-height: 1;
 }
 
-@media (max-width: 600px) {
-    .book-summary .sidebar-footer {
-        width: calc(100% - 60px);
-    }
-}
