@@ -22,7 +22,7 @@ Linux 서버와 네트워크 구축·장애 대응을 중심으로 시스템·�
 <div class="project-card" markdown="1">
 <span class="project-card-tag">FEATURED · HYBRID</span>
 
-### 온프레미스–Azure 하이브리드 인프라
+### 하이브리드 클라우드 보안 구축
 
 **2026.07.02 ~ 07.20 · 5명 · 팀장**
 
@@ -38,7 +38,7 @@ Linux 서버와 네트워크 구축·장애 대응을 중심으로 시스템·�
 <div class="project-card" markdown="1">
 <span class="project-card-tag">FEATURED · CLOUD</span>
 
-### Terraform 기반 Azure 고가용성·DR 인프라
+### Azure 클라우드 인프라 및 M365 Defender 보안구축
 
 **2026.05.13 ~ 05.19 · 5명 · 팀장·구축 검증**
 
