@@ -51,8 +51,8 @@
                 url: '/project/featured/',
                 key: 'featured-projects',
                 children: [
-                    { title: 'Terraform 기반 Azure 고가용성·DR 인프라', url: '/project/azure-infra-m365-defender-security/' },
-                    { title: '온프레미스-Azure 하이브리드 인프라', url: '/project/hybrid-cloud-security/' }
+                    { title: 'Azure 클라우드 인프라 및 M365 Defender 보안구축', url: '/project/azure-infra-m365-defender-security/' },
+                    { title: '하이브리드 클라우드 보안 구축', url: '/project/hybrid-cloud-security/' }
                 ]
             },
             {
