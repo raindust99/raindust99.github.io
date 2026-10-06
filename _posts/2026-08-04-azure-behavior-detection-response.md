@@ -16,7 +16,6 @@ permalink: /project/azure-behavior-detection-response/
 | 팀 프로젝트 범위 | SSH·프로세스 실행 로그 수집, Sentinel 탐지, 호스트·네트워크 방어, Key Vault 접근 검증 |
 | 핵심 결과 | 공격 재현 후 SSH 강화·4444 포트 차단 재검증, 팀의 로그·인시던트 및 Key Vault 403 결과 정리 |
 
-**수행 기간과 게시일:** 위 기간은 프로젝트 수행 기간이며, 페이지의 8월 날짜는 글 게시일이다.
 
 ### 내가 담당한 작업
 
