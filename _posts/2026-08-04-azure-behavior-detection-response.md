@@ -5,6 +5,30 @@ date: 2026-08-04 00:00:00 +0900
 category: project
 permalink: /project/azure-behavior-detection-response/
 ---
+
+## 프로젝트 요약
+
+| 항목 | 내용 |
+|---|---|
+| 수행 기간 | 2026.06.09 ~ 2026.07.01 |
+| 팀 구성 | 5명 |
+| 나의 역할 | Hydra SSH Brute Force·msfvenom Reverse Shell 공격 실습, Kali 공격 환경, 결과 보고서 |
+| 팀 프로젝트 범위 | SSH·프로세스 실행 로그 수집, Sentinel 탐지, 호스트·네트워크 방어, Key Vault 접근 검증 |
+| 핵심 결과 | 공격 재현 후 SSH 강화·4444 포트 차단 재검증, 팀의 로그·인시던트 및 Key Vault 403 결과 정리 |
+
+
+### 내가 담당한 작업
+
+- Kali 공격 환경을 구성하고 Hydra SSH Brute Force를 재현했다.
+- msfvenom Reverse Shell 페이로드를 준비해 실습 대상 호스트에서 연결 결과를 확인했다.
+- 공격·탐지·방어 과정과 결과를 보고서로 정리했다.
+
+**팀 협업 범위:** Terraform·네트워크, Key Vault·Managed Identity 시나리오, Sentinel·Log Analytics 및 개인 계정 MDE/JIT 확장 검증은 역할을 나누어 진행했다. 해당 결과는 팀 전체 검증으로 구분한다.
+
+**실험 조건:** Reverse Shell은 실습 대상 호스트에 접속해 페이로드를 실행한 뒤 연결·탐지·차단을 확인한 실험이다. 외부에서 최초 침투까지 자동으로 수행한 실험은 아니다.
+
+---
+
 Azure 클라우드 실습 환경에서 Bastion 호스트를 대상으로 SSH Brute Force·Reverse Shell·Key Vault Managed Identity 토큰 탈취 3개 시나리오를 공격 → 탐지 → 방어 순서로 검증한 과정을 정리하였다.
 
 ---
@@ -173,14 +197,14 @@ curl -s "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-
 
 ### 6. 계정 권한 제약과 개인 계정 확장 검증
 
-실습 계정에는 구독 소유자·테넌트 보안 관리자 권한이 없어서 Microsoft Defender for Endpoint(MDE), Just-In-Time(JIT) VM 접근 제어 같은 호스트·엔드포인트 중심의 고급 기능을 켤 수 없었다. 그래서 개인 계정으로 확장해서 아래 항목을 추가로 검증했다.
+실습 계정에는 구독 소유자·테넌트 보안 관리자 권한이 없어서 Microsoft Defender for Endpoint(MDE), Just-In-Time(JIT) VM 접근 제어 같은 호스트·엔드포인트 중심의 고급 기능을 켤 수 없었다. 팀의 담당자가 별도 개인 계정에서 아래 항목을 확장 검증했다. 이 절은 팀 산출물이며 나의 단독 구축 결과로 제시하지 않는다.
 
 - **Microsoft Defender for Endpoint** : Bastion을 디바이스 인벤토리에 등록하고, SSH Brute Force·Reverse Shell 행위가 엔드포인트 관점에서도 인시던트·MITRE ATT&CK 매핑으로 식별되는지, Advanced Hunting·사용자 지정 탐지 규칙·Playbook 자동화·이메일 알림까지 이어지는지 확인
 - **Just-In-Time(JIT) VM 접근** : Bastion SSH 포트를 상시 개방하지 않고 승인된 시간·IP에만 임시로 열어주는 접근 제어 검증
 
 ![MITRE ATT&CK 매핑 — 탐지된 행위의 공격 기법 분류](/assets/images/azure-behavior-detection-response/10-mde-mitre-attack-mapping.png)
 
-MDE의 Playbook 자동화는 Sentinel 인시던트 발생 시 공격 IP를 자동 차단하는 SOAR 대응이라, 수동 강화(hardening_enabled)를 자동화로 잇는 연장선이다. JIT는 SSH 포트 상시 노출 자체를 줄이는 예방적 접근 제어로, hardening_enabled 토글(호스트 내부 강화)과 상호 보완적이다.
+Sentinel Playbook 연계는 인시던트 발생 시 공격 IP 차단을 자동화하는 SOAR 대응이라, 수동 강화(hardening_enabled)를 자동화로 잇는 연장선이다. JIT는 SSH 포트 상시 노출 자체를 줄이는 예방적 접근 제어로, hardening_enabled 토글(호스트 내부 강화)과 상호 보완적이다.
 
 <br>
 
@@ -195,7 +219,7 @@ MDE의 Playbook 자동화는 Sentinel 인시던트 발생 시 공격 IP를 자�
 - 인증과 인가의 구분 : 토큰 탈취에 성공해도(인증 성공) 권한이 없으면(인가 실패, 403) 실제 피해로 이어지지 않는다는 것을 Key Vault 시나리오로 확인 — 최소 권한 원칙의 실효성
 - 엔드포인트 탐지(MDE)와 예방적 접근 제어(JIT)를 결합한 다층 방어 개념
 
-이번에 구축한 Syslog/auditd/Key Vault 감사 로그 → Log Analytics → Sentinel 구조와 개인 계정의 MDE·JIT 조합은, 실제 기업의 Jump Host/Bastion과 클라우드 아이덴티티 보안 관제에도 그대로 적용 가능한 표준 패턴이라고 생각한다. 정상 포트를 통한 반복 인증 시도나 침투 후 행위, 탈취한 토큰의 오남용은 NSG만으로는 막을 수 없고, 호스트·엔드포인트 레벨 에이전트 기반 탐지와 최소 권한 원칙, 사전 접근 제어(JIT)가 함께 필요하다는 걸 실무적으로 확인했다.
+이번 실습에서는 공격 재현 결과를 로그·인시던트·접근 거부 결과와 연결해 정리했다. 운영 환경에 적용하려면 정상 트래픽 기준, 탐지 오탐, 차단 영향과 격리 승인 절차를 추가 검증해야 한다. 공격 실습과 보고서를 담당하면서 네트워크 연결 여부만으로 공격 실행이나 차단을 판단하지 않고, 호스트 로그와 실제 결과를 함께 확인하는 습관을 배웠다.
 
 <br>
 
@@ -203,5 +227,5 @@ MDE의 Playbook 자동화는 Sentinel 인시던트 발생 시 공격 IP를 자�
 
 | 항목 | 내용 |
 |---|---|
-| Playbook 자동 대응 확장 | MDE Playbook 기반 자동 IP 차단·VM 격리를 세 시나리오 전체로 확장 적용 |
+| Playbook 자동 대응 확장 | Sentinel Playbook 연계를 확대하고 IP 차단·VM 격리의 실제 실행 결과와 정상 사용자 영향을 검증 |
 | 과도한 권한 부여 시 영향 검증 | Key Vault 시나리오에서 Web VM Managed Identity에 의도적으로 과도한 권한을 부여했을 때의 실제 노출 영향을 통제된 환경에서 추가 검증 |
