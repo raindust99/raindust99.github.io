@@ -1,10 +1,33 @@
 ---
 layout: post
-title: "Azure 클라우드 인프라 및 M365 Defender 보안구축"
+title: "Terraform 기반 Azure 고가용성·DR 인프라"
 date: 2026-08-01 00:00:00 +0900
 category: project
 permalink: /project/azure-infra-m365-defender-security/
 ---
+
+## 프로젝트 요약
+
+| 항목 | 내용 |
+|---|---|
+| 수행 기간 | 2026.05.13 ~ 2026.05.19 |
+| 팀 구성 | 5명 |
+| 나의 역할 | 팀장, 구축 검증 |
+| 팀 프로젝트 범위 | Terraform 기반 Azure 인프라, 두 리전 Hub-Spoke, VMSS, WAF, IPsec VPN, 공유 스토리지 및 모니터링 |
+| 핵심 검증 | VMSS 2대 → 5대 확장, 인스턴스 1대 중지 후 웹 접속, Central 엔드포인트 비활성화 후 Japan DNS 응답·웹 접속 확인 |
+
+**수행 기간과 게시일:** 위 기간은 프로젝트 수행 기간이며, 페이지의 8월 날짜는 글 게시일이다.
+
+### 내가 담당한 작업
+
+팀장으로 참여해 구축된 인프라의 검증을 담당했다. 검증 항목은 VMSS 인스턴스 장애·CPU 기반 확장, 리전 전환, VPN·DB 통신, WAF·접근 통제, Redis·공유 스토리지, 로그 수집이다. 아래 검증 결과에서 확인한 조건과 남아 있는 한계를 함께 설명한다.
+
+**팀 협업 범위:** Terraform 코드와 각 리소스 구축은 팀 전체 산출물이다. 나의 기여는 구축 검증을 중심으로 구분해 소개한다.
+
+**검증 범위:** 웹 계층의 인스턴스 장애 대응과 DR 리전 전환을 확인했다. 전체 리전 장애, 온프레미스 DB 장애, VPN 회선 장애를 모두 재현한 검증은 아니며, 실제 절체 시간과 실패 요청 수는 별도로 측정하지 않았다.
+
+---
+
 온프레미스에서 운영하던 워드프레스 쇼핑몰을 Azure 퍼블릭 클라우드로 확장하면서, Hub-Spoke 네트워크·다중 리전 재해복구·Zero-Trust 보안·온프레미스 하이브리드 연동까지 갖춘 인프라를 Terraform으로 구축한 과정을 정리하였다.
 
 ---
@@ -19,7 +42,7 @@ permalink: /project/azure-infra-m365-defender-security/
 
 **핵심 목표**
 
-- **고가용성(HA)** : VMSS + Application Gateway 자동 확장, 가용 영역(Zone) 분산 배치로 단일 장애 지점(SPOF) 제거
+- **고가용성(HA)** : VMSS + Application Gateway 자동 확장, 가용 영역(Zone) 분산 배치로 웹 계층의 단일 인스턴스 장애 영향 완화
 - **재해복구(DR)** : Korea Central · Japan East 두 리전에 동일 스택을 배포하고 Traffic Manager 우선순위 라우팅으로 리전 장애 시 자동 페일오버
 - **제로 트러스트 보안** : Hub-Spoke 망 분리, Azure Firewall 중앙 집중 제어, Application Gateway WAF, Private Endpoint 기반 PaaS 격리
 - **하이브리드 연동** : 온프레미스 MySQL을 IPsec VPN 터널로 안전하게 연동해 데이터 주권 유지
@@ -101,7 +124,7 @@ permalink: /project/azure-infra-m365-defender-security/
 
 ### 3. Terraform으로 인프라 코드화하기
 
-전체 인프라는 azurerm 4.74.0 Provider로 22개 파일로 모듈화했다. 파일명에 번호를 붙여서 의존 순서와 가독성을 같이 잡았다.
+전체 인프라의 Terraform 구성을 역할별 22개 파일로 분리했다. 파일명의 번호는 사람이 읽기 위한 정리 기준이며, 리소스 생성 순서는 파일명이 아니라 참조 관계와 명시적 의존성으로 결정된다. 역할별 파일 분리와 재사용 가능한 별도 모듈 구성은 구분한다.
 
 | 파일 | 역할 | 파일 | 역할 |
 |---|---|---|---|
@@ -118,7 +141,7 @@ permalink: /project/azure-infra-m365-defender-security/
 | 10_firewall.tf | Azure Firewall·정책 | 100_var.tf / install.sh.tpl | 변수 · 부팅 스크립트 |
 
 - **Provider 초기화** : `resource_provider_registrations = "none"`으로 불필요한 리소스 공급자 자동 등록을 껐다.
-- **변수 관리** : 리소스 그룹명·리전·관리자 계정·VM 규격·VPN PSK를 변수로 모듈화했고, `vpn_psk`는 `sensitive = true`로 지정해 로그에 노출되지 않게 했다.
+- **변수 관리** : 리소스 그룹명·리전·관리자 계정·VM 규격·VPN PSK를 변수로 관리했고, `vpn_psk`는 `sensitive = true`로 지정해 일반적인 CLI 출력에서 값을 숨겼다. 이 설정만으로 상태 파일에 저장되는 값까지 보호되는 것은 아니므로, 상태 저장소 접근 제어와 별도 시크릿 관리가 필요하다.
 - **서브넷** : Web·PE 서브넷은 `default_outbound_access_enabled = false`로 불필요한 인터넷 노출을 막았다.
 - **VMSS + cloud-init** : Central은 2대(가용 영역 1·2 분산, zone_balance), Japan은 1대 대기로 구성했다. 표준 Rocky Linux 9 마켓플레이스 이미지에 `custom_data`로 `install.sh.tpl`을 주입해서, 별도 골든 이미지 없이 부팅 시점에 httpd·php·mysql client 설치 → WordPress 배치 및 온프레미스 DB 연결 → Azure Files 마운트 → VPN 터널 연결 대기 → WP-CLI 설치 → Redis Object Cache 연동까지 전 과정을 자동화했다. WooCommerce·Storefront 테마는 설치하지만, 실제 화면은 GitHub 저장소의 커스텀 쇼핑 페이지(로그인·회원가입·마이페이지, auth.php 기반)로 제공한다.
 - **오토스케일** : CPU 평균 사용률 70% 초과 시 인스턴스 1대 증가(최대 5대), 20% 미만 시 1대 감소.
@@ -207,7 +230,7 @@ VMSS에는 공인 IP를 아예 할당하지 않고 Application Gateway 뒤에만
 
 ![페일오버 이후 Japan 리전에서 쇼핑몰 정상 접속 화면](/assets/images/azure-infra-m365-defender/08-japan-shop-after-failover.png)
 
-Central에서 회원가입(test01)을 한 뒤 온프레미스 MySQL의 `shop_users` 테이블에서 해당 레코드를 바로 확인할 수 있었다. DB가 온프레미스 단일 인스턴스에 있기 때문에, 어느 리전으로 접속하든 같은 데이터를 보게 되고 리전 페일오버가 데이터 정합성에 영향을 주지 않는다.
+Central에서 회원가입(test01)을 한 뒤 온프레미스 MySQL의 `shop_users` 테이블에서 해당 레코드를 바로 확인할 수 있었다. 두 리전의 웹 서버는 같은 온프레미스 DB를 사용한다. 회원가입 데이터 저장은 확인했지만, 장애 중 동시 쓰기나 세션 유지까지 검증한 것은 아니다. 단일 DB와 온프레미스 연결 경로는 여전히 서비스 의존 지점이다.
 
 <br>
 
@@ -240,11 +263,11 @@ Central에서 회원가입(test01)을 한 뒤 온프레미스 MySQL의 `shop_use
 
 **이번 프로젝트로 얻은 것**
 
-- **다중 리전 DR 체계** : Korea Central·Japan East 이중화 + Traffic Manager 자동 페일오버로 리전 단위 장애에도 무중단 서비스
+- **DR 전환 검증** : Central 엔드포인트를 비활성화한 뒤 Japan East IP로 DNS 응답이 전환되고 쇼핑몰에 접속되는 것을 확인했다. 장애 감지에 따른 자동 절체 시간과 요청 손실은 측정하지 않았다.
 - **제로 트러스트 보안** : Hub-Spoke 망 분리, Firewall 중앙 제어, WAF, Private Endpoint 격리로 다계층 방어
 - **하이브리드 데이터 구조** : IPsec VPN으로 온프레미스 MySQL을 안전하게 연동해 데이터 주권과 클라우드 확장성을 동시에 확보
-- **자동 확장 · 고가용성** : VMSS Auto Scaling과 가용 영역 분산으로 트래픽 변동 대응 및 SPOF 제거
-- **IaC 자동화** : 22개 Terraform 파일로 전체 인프라를 코드화해 재현성·일관성·신속한 복제 확보 (수동 구축 대비 배포 시간 단축, Auto Scaling·DR 리전 LRS 분리·캐시 계층으로 운영 비용도 절감)
+- **웹 계층 장애 대응·자동 확장** : VMSS 인스턴스 1대 중지 후 웹 접속과 CPU 부하에 따른 2대 → 5대 확장을 확인했다. DB·VPN 등 전체 경로의 단일 장애 지점 제거까지 검증한 것은 아니다.
+- **IaC 구성** : 역할별 Terraform 파일과 부팅 스크립트로 인프라·웹 서비스 배포를 정의했다. 수동 구축 대비 배포 시간과 비용 절감액은 정량 측정하지 않았다.
 
 <br>
 
@@ -254,10 +277,10 @@ Central에서 회원가입(test01)을 한 뒤 온프레미스 MySQL의 `shop_use
 |---|---|---|
 | HTTPS 미적용 | AppGW 리스너가 80(HTTP)으로 운영 | 443 리스너·인증서 적용, Key Vault 연동 SSL 종단 |
 | 온프레미스 DB 단일 | MySQL 단일 인스턴스 | DB 이중화 또는 읽기 복제본 추가 |
-| VPN 단일 터널(SPOF) | VPN GW·Bluemax·ISP 단일 경로 | Active-Active VPN, 회선 이중화, ExpressRoute 도입 |
+| 온프레미스 연결 경로 | 리전별 VPN 연결이 있어도 온프레미스 방화벽·회선의 장애 영향은 남음 | Active-Active VPN, 회선 이중화, ExpressRoute 도입 |
 | 비밀번호 평문 하드코딩 | tfvars·install.sh에 평문 저장 | Azure Key Vault + Managed Identity로 시크릿 관리 |
 | 스토리지 Access Key 인증 | 키 유출 위험 | Entra ID 인증·SAS 적용, 키 정기 회전 |
-| Traffic Manager 절체 지연 | DNS TTL(30초)만큼 지연 | Front Door(L7) 도입으로 즉시 절체 |
+| Traffic Manager 절체 지연 | DNS TTL을 30초로 설정했으나 실제 절체 시간은 미측정 | 상태 점검·DNS 캐시를 포함한 절체 시간 측정, Front Door 등 대안 비교 |
 | CI/CD 부재 | Terraform 수동 apply | 파이프라인 구축으로 코드 변경 자동 배포 |
 
 <br>
